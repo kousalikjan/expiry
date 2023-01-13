@@ -7,8 +7,8 @@
     <div class="prose p-8">
         <h1 class="mb-0">Welcome to Expiry!</h1>
         <p class="text-lg mt-0 mb-8">Application for storing receipts</p>
-        {% if logged|default(false) %}
-            <a class="btn btn-sm btn-accent lg:btn-md">See inventory</a>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <a class="btn btn-primary">See inventory</a>
         {% else %}
             <p class="text-lg">You must be registered to use this application!</p>
             <a class="btn btn-primary">Sign up</a>
