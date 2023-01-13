@@ -18,7 +18,7 @@ class CategoryController extends BaseController
         $this->categoryService = $categoryService;
     }
 
-    #[Route('/category/{id}', name: 'app_category', requirements: ['id' => '\d+'])]
+    #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
     public function index(int $id): Response
     {
         $this->checkOwner($id);

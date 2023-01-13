@@ -8,7 +8,7 @@
             </label>
 
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow rounded-box bg-base-100 w-52">
-                <li><a href="{{ path('app_category', {id: app.user.id}) }}" class="text-lg">Inventory</a></li>
+                <li><a href="{{ path('app_categories', {id: app.user.id}) }}" class="text-lg">Inventory</a></li>
                     <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">Profile</a></li>
                     <div class="divider my-0"></div>
                     <li><a class="text-lg text-gray-600" href="{{ path('app_logout') }}">Logout</a></li>
@@ -20,7 +20,7 @@
     <div class="navbar-center hidden lg:flex">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <ul tabindex="0" class="menu menu-horizontal px-1">
-            <li><a href="{{ path('app_category', {id: app.user.id}) }}">Inventory</a></li>
+            <li><a href="{{ path('app_categories', {id: app.user.id}) }}">Inventory</a></li>
 
             <li tabindex="0">
                 <a>
