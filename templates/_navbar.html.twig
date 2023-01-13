@@ -36,6 +36,11 @@
         </ul>
     </div>
     <div class="navbar-end">
+        {% if logged|default(false) %}
         <a class="btn btn-sm btn-accent lg:btn-md">Add item</a>
+            {% else %}
+                <a class="btn btn-sm btn-ghost lg:btn-md">Sign in</a>
+                <a class="btn btn-sm btn-primary lg:btn-md">Sign up</a>
+        {% endif %}
     </div>
 </div>

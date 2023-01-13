@@ -4,10 +4,15 @@
 
 {% block body %}
 
-    <article class="prose">
-        <h1 class=>Welcome to Expiry!</h1>
-        <p class="text-lg">Application for storing receipts!</p>
-        <button class="btn btn-primary">Submit</button>
-    </article>
+    <div class="prose p-8">
+        <h1 class="mb-0">Welcome to Expiry!</h1>
+        <p class="text-lg mt-0 mb-16">Application for storing receipts</p>
+        {% if logged|default(false) %}
+            <a class="btn btn-sm btn-accent lg:btn-md">See inventory</a>
+        {% else %}
+            <p class="text-lg">You must be registered to use this app</p>
+            <a class="btn btn-primary">Sign up</a>
+        {% endif %}
+    </div>
 
 {% endblock %}
