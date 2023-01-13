@@ -3,22 +3,27 @@
 {% block title %}Expiry - Log in{% endblock %}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <article class="flex flex-col items-center my-16 gap-6">
+        <div class="flex flex-col items-center gap-2">
+        <h1 class="h1">Sign in!</h1>
+        {% if error %}
+            <div class="text-error text-xl">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        </div>
+        <form action="{{ path('app_login') }}" method="post" class="form-control w-full px-6 max-w-md gap-8">
+            <div>
+                <label for="username">Email</label>
+                <input type="email" id="username" name="_username" value="{{ last_username }}" class="input input-bordered w-full">
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="_password" class="input input-bordered w-full">
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-    <form action="{{ path('app_login') }}" method="post">
-        <label for="username">Email:</label>
-        <input type="text" id="username" name="_username" value="{{ last_username }}">
+            <button type="submit" class="btn max-w-md">Login</button>
+        </form>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="_password">
+    </article>
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-        {# If you want to control the URL the user is redirected to on success
-        <input type="hidden" name="_target_path" value="/account"> #}
-
-        <button type="submit">login</button>
-    </form>
 {% endblock %}
