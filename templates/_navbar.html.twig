@@ -1,4 +1,5 @@
-<div class="navbar bg-base-100">
+<header>
+<nav class="navbar bg-base-100">
     <div class="navbar-start">
         <div class="dropdown">
             <label tabindex="0" class="btn btn-ghost lg:hidden">
@@ -13,24 +14,24 @@
                     </a>
                     <ul class="p-2 mt-3 shadow bg-base-100 rounded-box w-48">
                         <li><a>Detail</a></li>
-                        <li><a>Logout</a></li>
+                        <li><a href="{{ path('app_logout') }}">Logout</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
-        <a class="btn btn-ghost normal-case text-xl">Expiry!</a>
+        <a href="{{ path('app_index') }}" class="btn btn-ghost normal-case text-xl">Expiry!</a>
     </div>
     <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1">
+        <ul tabindex="0" class="menu menu-horizontal px-1">
             <li><a>Inventory</a></li>
             <li tabindex="0">
                 <a>
                     Profile
                     <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
                 </a>
-                <ul class="p-2 mt-3 shadow bg-base-100 rounded-box w-48">
+                <ul class="p-2 shadow bg-base-100 rounded-box w-48">
                     <li><a>Detail</a></li>
-                    <li><a>Logout</a></li>
+                    <li><a href="{{ path('app_logout') }}">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -39,8 +40,9 @@
         {% if logged|default(false) %}
         <a class="btn btn-sm btn-accent lg:btn-md">Add item</a>
             {% else %}
-                <a class="btn btn-sm btn-ghost lg:btn-md">Sign in</a>
-                <a class="btn btn-sm btn-primary lg:btn-md">Sign up</a>
+                <a href="{{ path('app_login') }}" class="btn btn-sm btn-ghost lg:btn-md">Sign in</a>
+                <a href="{{ path('app_register') }}" class="btn btn-sm btn-primary lg:btn-md">Sign up</a>
         {% endif %}
     </div>
-</div>
+</nav>
+</header>
