@@ -4,7 +4,6 @@
 
 {% block body %}
     <article class="m-8 flex flex-col gap-8">
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <section>
                 <h1 class="h1 mb-4">Profile page</h1>
                 <p>You can change your password or delete your account here.</p>
@@ -16,6 +15,5 @@
             <section>
                 <h2 class="text-2xl font-semibold">Password change</h2>
             </section>
-        {% endif %}
     </article>
 {% endblock %}
