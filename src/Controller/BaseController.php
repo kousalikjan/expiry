@@ -13,8 +13,11 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class BaseController extends AbstractController
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    protected UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
     }
 
     protected function checkOwner($id)

@@ -20,6 +20,9 @@ class Category
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    #[ORM\Column(length: 7)]
+    private ?string $color = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -48,4 +51,32 @@ class Category
 
         return $this;
     }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(string $color): self
+    {
+        $this->color = $color;
+        return $this;
+    }
+
+    public function getRed(): ?string
+    {
+        return hexdec(substr($this->color, 1, 2));
+    }
+
+    public function getGreen(): ?string
+    {
+        return hexdec(substr($this->color, 3, 2));
+    }
+
+    public function getBlue(): ?string
+    {
+        return hexdec(substr($this->color, 5, 2));
+    }
+
+
 }
