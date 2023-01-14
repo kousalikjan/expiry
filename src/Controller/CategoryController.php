@@ -9,6 +9,8 @@ use App\Repository\UserRepository;
 use App\Service\CategoryService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends BaseController
@@ -31,7 +33,7 @@ class CategoryController extends BaseController
 
     #[Route('/users/{userId}/categories/create', name: 'app_category_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
     #[Route('/users/{userId}/categories/{catId}/edit', name: 'app_category_edit', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
-    public function createEdit(int $userId, ?int $catId, Request $request): Response
+    public function createEdit(int $userId, ?int $catId, Request $request, MailerInterface $mailer): Response
     {
         $this->checkOwner($userId);
         $category = $catId !== null ? $this->findOrFail($catId) : new Category();
