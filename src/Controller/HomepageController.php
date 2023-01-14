@@ -21,12 +21,16 @@ class HomepageController extends AbstractController
     public function sendEmail(MailerInterface $mailer): Response
     {
         $email = (new Email())
-            ->from('code@expiry.live')
             ->to('kakaovnikk@gmail.com')
-            ->subject("Hello from Symfony")
+            ->subject("Hello from code")
             ->text('Hello ' . $this->getUser()->getUserIdentifier() . ' this has been send from code!');
 
-        $mailer->send($email);
+        try {
+            $mailer->send($email);
+        } catch (TransportExceptionInterface $e)
+        {
+            dd($e);
+        }
 
         return $this->redirectToRoute('app_index');
     }
