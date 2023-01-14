@@ -3,9 +3,36 @@
 {% block title %}Categories{% endblock %}
 
 {% block body %}
-    <article class="m-8 flex flex-col gap-8">
+    <article class="m-8 mt-6">
             <section>
-                <h1 class="h1 mb-4">Categories</h1>
+                <h1 class="h1 mb-10">Categories</h1>
+                <div class="flex flex-col gap-5 mb-12">
+                {% for category in categories %}
+                    <div class="flex items-center justify-between py-2.5 px-4 rounded-lg border border-slate-100 shadow hover:bg-gray-100">
+                        <article class="flex items-center gap-6">
+                            <div class="inline-block w-2 h-2 rounded-full bg-sky-500"></div>
+                            <div>
+                                <h2 class="text-xl">{{ category.name }}</h2>
+                                <p class="text-sm text-gray-600">4 items</p>
+                            </div>
+                        </article>
+                        <div class="flex gap-8">
+                            <a href="{{ path('app_index') }}" class="link link-info link-hover">Detail</a>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z" />
+                            </svg>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+                <a href="#" class="btn btn-outline btn-accent">
+                    <article class="flex gap-4 items-center text-slate-600 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                        </svg>
+                        <p class="text-xl">New category</p>
+                    </article>
+                </a>
             </section>
     </article>
 {% endblock %}

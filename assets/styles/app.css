@@ -7,3 +7,7 @@
         @apply font-extrabold text-4xl text-gray-800
     }
 }
+
+.justify-self-flex-end {
+    justify-self: flex-end;
+}
