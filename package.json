@@ -2,7 +2,7 @@
     "devDependencies": {
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
-        "@hotwired/stimulus": "^3.0.0",
+        "@hotwired/stimulus": "^3.2.1",
         "@symfony/stimulus-bridge": "^3.2.0",
         "@symfony/webpack-encore": "^4.0.0",
         "@tailwindcss/typography": "^0.5.9",
@@ -25,6 +25,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "daisyui": "^2.46.1"
+        "daisyui": "^2.46.1",
+        "stimulus-use": "^0.51.2"
     }
 }
