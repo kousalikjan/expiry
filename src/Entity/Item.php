@@ -30,6 +30,12 @@ class Item
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    public function __construct()
+    {
+        $this->purchase = new \DateTime();
+        $this->amount = 1;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

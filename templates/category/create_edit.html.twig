@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {% if create %}New Category {% else %} Edit Category {% endif %}
+    {% if create %}New Category {% else %} Edit {{ category.name }} {% endif %}
 {% endblock %}
 
 {% block body %}
     <article class="flex flex-col mt-6 mx-8 gap-6">
         <h1 class="h1">
-            {% if create %}New Category {% else %} Edit Category {% endif %}
+            {% if create %}New Category {% else %} Edit {{ category.name }} {% endif %}
         </h1>
         {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-8'}}) }}
         {{ form_row(form.name) }}

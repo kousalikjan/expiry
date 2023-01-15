@@ -47,7 +47,7 @@ class CategoryController extends BaseController
             $this->categoryRepository->save($category, true);
             return $this->redirectToRoute('app_categories', ['id' => $userId]);
         }
-        return $this->render('category/create_edit.html.twig', ['form' => $form->createView(), 'create' => $catId === null]);
+        return $this->render('category/create_edit.html.twig', ['form' => $form->createView(), 'create' => $catId === null, 'category' => $category]);
 
     }
 

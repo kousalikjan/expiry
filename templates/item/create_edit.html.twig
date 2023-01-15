@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if create %}New item {% else %} Edit {{ item.name }} {% endif %}
+{% endblock %}
+
+{% block body %}
+    <article class="flex flex-col mt-6 mx-8 gap-6">
+        <h1 class="h1">
+            {% if create %}New item {% else %} Edit {{ item.name }} {% endif %}
+        </h1>
+        {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.category) }}
+        {{ form_row(form.amount) }}
+        {{ form_row(form.purchase) }}
+        <button type="submit" class="btn max-w-md">
+            {% if create %} Create {% else %} Edit {% endif %}
+        </button>
+
+        {{ form_end(form) }}
+    </article>
+{% endblock %}

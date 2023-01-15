@@ -38,7 +38,7 @@
     </div>
     <div class="navbar-end">
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a class="btn btn-sm btn-accent lg:btn-md">Add item</a>
+        <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">Add item</a>
             {% else %}
                 <a href="{{ path('app_login') }}" class="btn btn-sm btn-ghost lg:btn-md">Sign in</a>
                 <a href="{{ path('app_register') }}" class="btn btn-sm btn-primary lg:btn-md">Sign up</a>

@@ -1,5 +1,5 @@
 
-{%- block text_row -%}
+{%- block form_row -%}
     {%- set widget_attr = {'attr': {'class': 'input input-bordered w-full'}} -%}
     {%- if help is not empty -%}
         {%- set widget_attr = {attr: {'aria-describedby': id ~"_help", 'class': 'input input-bordered w-full'}} -%}
@@ -12,4 +12,4 @@
         </div>
         {{- form_help(form) -}}
     </div>
-{%- endblock text_row -%}
+{%- endblock form_row -%}

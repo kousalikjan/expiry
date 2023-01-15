@@ -11,3 +11,8 @@
 .justify-self-flex-end {
     justify-self: flex-end;
 }
+
+label.required::after {
+    content: "*";
+    color: red;
+}
