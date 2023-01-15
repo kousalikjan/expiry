@@ -20,10 +20,13 @@ class BaseController extends AbstractController
         $this->userRepository = $userRepository;
     }
 
-    protected function checkUser($id)
+    protected function findOrFailUser($id): User
     {
         $user = $this->userRepository->find($id);
+        if($user === null)
+            throw $this->createNotFoundException();
         if($user->getUserIdentifier() !== $this->getUser()->getUserIdentifier())
             throw $this->createAccessDeniedException();
+        return $user;
     }
 }

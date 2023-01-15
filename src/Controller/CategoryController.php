@@ -26,16 +26,16 @@ class CategoryController extends BaseController
     #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
     public function index(int $id): Response
     {
-        $this->checkUser($id);
+        $user = $this->findOrFailUser($id);
         return $this->render('category/index.html.twig', [
-            'categories' => $this->getUser()->getCategories()]);
+            'categories' => $user->getCategories()]);
     }
 
     #[Route('/users/{userId}/categories/create', name: 'app_category_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
     #[Route('/users/{userId}/categories/{catId}/edit', name: 'app_category_edit', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     public function createEdit(int $userId, ?int $catId, Request $request, MailerInterface $mailer): Response
     {
-        $this->checkUser($userId);
+        $user = $this->findOrFailUser($userId);
 
         $category = $catId !== null ? $this->findOrFail($catId) : new Category();
         $form = $this->createForm(CategoryType::class, $category);
@@ -43,7 +43,7 @@ class CategoryController extends BaseController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            $this->getUser()->addCategory($category);
+            $user->addCategory($category);
             $this->categoryRepository->save($category, true);
             return $this->redirectToRoute('app_categories', ['id' => $userId]);
         }

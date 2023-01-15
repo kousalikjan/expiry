@@ -10,7 +10,7 @@ class UserController extends BaseController
     #[Route('/users/{id}', name: 'app_profile', requirements: ['id' => '\d+'])]
     public function index(int $id): Response
     {
-        $this->checkUser($id);
-        return $this->render('profile/index.html.twig', ['user' => $this->getUser()]);
+        $user = $this->findOrFailUser($id);
+        return $this->render('profile/index.html.twig', ['user' => $user]);
     }
 }

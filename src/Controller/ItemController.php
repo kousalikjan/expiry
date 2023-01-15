@@ -27,7 +27,7 @@ class ItemController extends BaseController
         requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     public function index(int $userId, int $catId): Response
     {
-        $this->checkUser($userId);
+        $this->findOrFailUser($userId); // Obligatory, checks for id in URL only
         $category = $this->findOrFailCategory($catId);
         return $this->render('item/index.html.twig', [
             'category' => $category]);
