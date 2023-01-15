@@ -20,11 +20,10 @@ class BaseController extends AbstractController
         $this->userRepository = $userRepository;
     }
 
-    protected function checkOwner($id)
+    protected function checkUser($id)
     {
         $user = $this->userRepository->find($id);
         if($user->getUserIdentifier() !== $this->getUser()->getUserIdentifier())
             throw $this->createAccessDeniedException();
     }
-
 }

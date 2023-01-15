@@ -26,7 +26,7 @@ class CategoryController extends BaseController
     #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
     public function index(int $id): Response
     {
-        $this->checkOwner($id);
+        $this->checkUser($id);
         return $this->render('category/index.html.twig', [
             'categories' => $this->getUser()->getCategories()]);
     }
@@ -35,7 +35,8 @@ class CategoryController extends BaseController
     #[Route('/users/{userId}/categories/{catId}/edit', name: 'app_category_edit', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     public function createEdit(int $userId, ?int $catId, Request $request, MailerInterface $mailer): Response
     {
-        $this->checkOwner($userId);
+        $this->checkUser($userId);
+
         $category = $catId !== null ? $this->findOrFail($catId) : new Category();
         $form = $this->createForm(CategoryType::class, $category);
 
@@ -55,6 +56,7 @@ class CategoryController extends BaseController
         $category = $this->categoryRepository->find($id);
         if($category === null)
             throw $this->createNotFoundException();
+        $this->denyAccessUnlessGranted('access', $category);
         return $category;
     }
 
