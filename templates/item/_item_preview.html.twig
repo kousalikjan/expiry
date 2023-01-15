@@ -1,0 +1,17 @@
+<article class="card card-side bg-base-100 shadow-xl border border-slate-100 h-28">
+    <figure><img src="{{ asset('img/uctenka-jysk.jpg') }}" alt="Photo of {{ item.name }}" class="h-full w-24"/></figure>
+    <div class="px-2 py-0.5 flex justify-between w-full">
+        <div>
+            <h2 class="text-lg font-semibold">{{ item.name }}</h2>
+
+            {% if item.expires is not null %}
+                <p>Expires: {{ item.expires }}</p>
+            {% endif %}
+
+            {% if item.amount is not empty  %}
+                <p>Count: {{ item.amount }}</p>
+            {% endif %}
+        </div>
+        <a href="#" class="self-end pb-2 pr-4 text-lg link link-info link-hover" >Detail</a>
+    </div>
+</article>

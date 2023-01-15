@@ -21,9 +21,9 @@ class HomepageController extends AbstractController
     public function sendEmail(MailerInterface $mailer): Response
     {
         $email = (new Email())
-            ->to('kakaovnikk@gmail.com')
-            ->subject("Hello from code")
-            ->text('Hello ' . $this->getUser()->getUserIdentifier() . ' this has been send from code!');
+            ->to('cabaktom@fit.cvut.cz')
+            ->subject("Ahoj Tomáší")
+            ->text('Zašel bych na boulder:(');
 
         try {
             $mailer->send($email);

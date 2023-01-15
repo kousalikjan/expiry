@@ -29,6 +29,7 @@ class ItemController extends BaseController
     {
         $this->findOrFailUser($userId); // Obligatory, checks for id in URL only
         $category = $this->findOrFailCategory($catId);
+
         return $this->render('item/index.html.twig', [
             'category' => $category]);
     }

@@ -6,6 +6,11 @@
     <article class="m-8 mt-6">
         <section>
             <h1 class="h1 mb-10">{{ category.name }}</h1>
+            <div class="flex flex-col gap-5 mb-12">
+                {% for item in category.items %}
+                    {{ include('item/_item_preview.html.twig') }}
+                {% endfor %}
+            </div>
         </section>
     </article>
 {% endblock %}
