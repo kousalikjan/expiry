@@ -10,14 +10,7 @@
             {% if create %}New Category {% else %} Edit Category {% endif %}
         </h1>
         {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-8'}}) }}
-        <div>
-            {{ form_label(form.name) }}
-            {{ form_widget(form.name, {'attr': {'class': 'input input-bordered w-full'}}) }}
-            <div class="text-error font-semibold">
-                {{ form_errors(form.name) }}
-            </div>
-        </div>
-
+        {{ form_row(form.name) }}
         <div class="flex flex-col">
             {{ form_label(form.color) }}
             {{ form_widget(form.color, {'attr': {'class': 'bg-base-100 w-10 h-10'}}) }}
