@@ -44,22 +44,28 @@ class ItemController extends BaseController
     public function createEdit(int $userId, ?int $catId, Request $request): Response
     {
         $user = $this->findOrFailUser($userId);
-        $category = null;
-        if($catId !== null){
+        $item = new Item();
+
+        if($catId !== null)
+        {
             $category = $this->findOrFailCategory($catId);
+            $item->setCategory($category);
         }
 
-        $item = new Item();
         $form = $this->createForm(ItemType::class, $item, [
             'categories' => $user->getCategories()
         ]);
         $form->handleRequest($request);
+
         if($form->isSubmitted() && $form->isValid())
         {
-            dd($form);
+            $category = $item->getCategory();
+            $category->addItem($item);
+            $this->itemRepository->save($item, true);
+            return $this->redirectToRoute('app_items_category',
+                ['userId' => $userId, 'catId' => $category->getId()]);
         }
-        return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'create' => $catId === null, 'category' => $category]);
-
+        return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'create' => $catId === null]);
     }
 
 

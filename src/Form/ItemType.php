@@ -25,7 +25,7 @@ class ItemType extends AbstractType
             ->add('name', TextType::class, [
                 'required' => true,
                 'label' => "Item name",
-                'constraints' => [new Length(['max' => 20])]
+                'constraints' => [new Length(['max' => 20, 'min' => 3])]
             ])
             ->add('category', EntityType::class, [
                 'required' => true,
