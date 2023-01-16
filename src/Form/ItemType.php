@@ -43,7 +43,12 @@ class ItemType extends AbstractType
                 'required' => false,
                 'label' => 'Date of Purchase',
                 'widget' => 'single_text'
-        ]);
+            ])
+            ->add('expiration', DateType::class, [
+                'required' => false,
+                'label' => 'Date of Expiration',
+                'widget' => 'single_text'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
