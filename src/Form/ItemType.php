@@ -7,6 +7,7 @@ use App\Entity\Item;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -48,7 +49,12 @@ class ItemType extends AbstractType
                 'required' => false,
                 'label' => 'Date of Expiration',
                 'widget' => 'single_text'
-            ]);
+            ])
+            ->add('expirationCheckbox', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Expiration/Warranty',
+                'mapped' => false,
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

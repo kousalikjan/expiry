@@ -59,6 +59,7 @@ class ItemController extends BaseController
 
         if($form->isSubmitted() && $form->isValid())
         {
+            //$form->get('expirationCheckbox');
             $category = $item->getCategory();
             $category->addItem($item);
             $this->itemRepository->save($item, true);
