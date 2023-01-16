@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomepageController extends AbstractController
 {
-    #[Route('/', name: 'app_index')]
+    #[Route('/{_locale}', name: 'app_index', requirements: ['_locale' => 'en|cs'], defaults: ['_locale' => 'en'])]
     public function homepage(): Response
     {
         return $this->render('index.html.twig');
