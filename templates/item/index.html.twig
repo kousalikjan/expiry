@@ -12,5 +12,10 @@
                 {% endfor %}
             </div>
         </section>
+
+        {% include 'form/_add_link.html.twig' with {
+            'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
+            'text': 'New item',} %}
+
     </article>
 {% endblock %}

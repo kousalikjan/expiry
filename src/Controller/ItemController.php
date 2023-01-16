@@ -65,7 +65,7 @@ class ItemController extends BaseController
             return $this->redirectToRoute('app_items_category',
                 ['userId' => $userId, 'catId' => $category->getId()]);
         }
-        return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'create' => $catId === null]);
+        return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'create' => true]);
     }
 
 
