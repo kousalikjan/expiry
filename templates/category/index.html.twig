@@ -11,7 +11,6 @@
                     {{ include('category/_category_preview.html.twig') }}
                 {% endfor %}
                 </div>
-
                 {% include 'form/_add_link.html.twig' with {
                     'action': path('app_category_create', {userId: app.user.id}),
                     'text': 'New category',} %}
