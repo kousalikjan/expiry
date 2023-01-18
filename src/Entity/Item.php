@@ -30,6 +30,9 @@ class Item
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    private array $files = [];
+
     public function __construct()
     {
         $this->purchase = new \DateTime();
@@ -97,6 +100,24 @@ class Item
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getFiles(): array
+    {
+        return $this->files;
+    }
+
+    public function setFiles(?array $files): self
+    {
+        $this->files = $files;
+
+        return $this;
+    }
+
+    public function addFile($filename): self {
+        $this->files[] = $filename;
 
         return $this;
     }

@@ -56,7 +56,7 @@ class ItemType extends AbstractType
                 'label' => 'Expiration/Warranty',
                 'mapped' => false,
             ])
-            ->add('receipt', FileType::class, [
+            ->add('files', FileType::class, [
                 'required' => false,
                 'label' => 'Receipt file',
                 'mapped' => false,
