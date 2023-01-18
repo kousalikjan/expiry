@@ -13,3 +13,18 @@
         {{- form_help(form) -}}
     </div>
 {%- endblock form_row -%}
+
+{%- block file_row -%}
+    {%- set widget_attr = {'attr': {'class': 'file-input file-input-bordered w-full'}} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help", 'class': 'file-input file-input-bordered w-full'}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        <div class="text-error font-semibold">
+            {{- form_errors(form) -}}
+        </div>
+        {{- form_help(form) -}}
+    </div>
+{%- endblock file_row -%}

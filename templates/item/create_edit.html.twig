@@ -33,7 +33,6 @@
 
         {{ form_row(form.purchase) }}
 
-
         <div {{ stimulus_controller('form-hide') }}>
             <div class="flex justify-between cursor-pointer mb-4">
             {{ form_label(form.expirationCheckbox, 'Expiration/Warranty', {'label_attr': {'class': 'font-semibold text-lg'}})}}
@@ -44,7 +43,9 @@
             </div>
         </div>
 
-        <button type="submit" class="btn max-w-md">
+        {{ form_row(form.receipt) }}
+
+        <button type="submit" class="btn btn-secondary max-w-md">
             {% if create %} Create {% else %} Edit {% endif %}
         </button>
 
