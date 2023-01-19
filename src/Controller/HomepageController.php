@@ -21,7 +21,7 @@ class HomepageController extends AbstractController
     }
 
 
-    #[Route('/{_locale}', name: 'app_index', requirements: ['_locale' => 'en|cs'], defaults: ['_locale' => 'en'])]
+    #[Route('/', name: 'app_index')]
     public function homepage(): Response
     {
         return $this->render('index.html.twig');

@@ -3,41 +3,46 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\User;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
-use App\Repository\UserRepository;
-use App\Service\CategoryService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CategoryController extends BaseController
+class CategoryController extends AbstractController
 {
     private CategoryRepository $categoryRepository;
 
-    public function __construct(UserRepository $userRepository, CategoryRepository $categoryRepository)
+    public function __construct(CategoryRepository $categoryRepository)
     {
-        parent::__construct($userRepository);
         $this->categoryRepository = $categoryRepository;
     }
 
     #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
-    public function index(int $id): Response
+    public function index(User $user): Response
     {
-        $user = $this->findOrFailUser($id);
+        $this->denyAccessUnlessGranted('access', $user);
         return $this->render('category/index.html.twig', [
             'categories' => $user->getCategories()]);
     }
 
     #[Route('/users/{userId}/categories/create', name: 'app_category_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
     #[Route('/users/{userId}/categories/{catId}/edit', name: 'app_category_edit', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
-    public function createEdit(int $userId, ?int $catId, Request $request, MailerInterface $mailer): Response
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    public function createEdit(User $user, ?Category $category, Request $request): Response
     {
-        $user = $this->findOrFailUser($userId);
+        // So I can't create categories for other users
+        $this->denyAccessUnlessGranted('access', $user);
 
-        $category = $catId !== null ? $this->findOrFail($catId) : new Category();
+        if($category)
+            $this->denyAccessUnlessGranted('access', $category);
+        else
+            $category = new Category();
+
         $form = $this->createForm(CategoryType::class, $category);
 
         $form->handleRequest($request);
@@ -45,19 +50,9 @@ class CategoryController extends BaseController
         {
             $user->addCategory($category);
             $this->categoryRepository->save($category, true);
-            return $this->redirectToRoute('app_categories', ['id' => $userId]);
+            return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
-        return $this->render('category/create_edit.html.twig', ['form' => $form->createView(), 'create' => $catId === null, 'category' => $category]);
+        return $this->render('category/create_edit.html.twig', ['form' => $form->createView(), 'create' => !$category->getId(), 'category' => $category]);
 
     }
-
-    private function findOrFail(int $id): Category
-    {
-        $category = $this->categoryRepository->find($id);
-        if($category === null)
-            throw $this->createNotFoundException();
-        $this->denyAccessUnlessGranted('access', $category);
-        return $category;
-    }
-
 }

@@ -18,7 +18,9 @@ class AccessVoter extends Voter
         if ($attribute != self::ACCESS)
             return false;
 
-        if(!$subject instanceof Category && !$subject instanceof Item)
+        if(!$subject instanceof Category
+            && !$subject instanceof Item
+            && !$subject instanceof User)
             return false;
 
         return true;
@@ -34,13 +36,15 @@ class AccessVoter extends Voter
         }
 
         if($subject instanceof Category)
-            return $user->getCategories()->contains($subject);
+            return $subject->getOwner()->getUserIdentifier() === $user->getUserIdentifier();
 
         if($subject instanceof Item)
-            return $subject->getCategory()->getOwner() === $user;
+            return $subject->getCategory()->getOwner()->getUserIdentifier() === $user->getUserIdentifier();
+
+        if($subject instanceof User)
+            return $subject->getUserIdentifier() === $user->getUserIdentifier();
 
         // This should never be reached
         return false;
     }
-
 }
