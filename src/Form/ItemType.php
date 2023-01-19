@@ -38,6 +38,7 @@ class ItemType extends AbstractType
             ])
             ->add('amount', NumberType::class, [
                 'required' => true,
+                'html5' => true,
                 'label' => "Quantity",
                 'empty_data' => 1,
             ])

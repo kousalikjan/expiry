@@ -6,6 +6,7 @@
         </label>
     </div>
     <div class="flex flex-col gap-6" data-form-hide-target="mainContent">
-        {{ form_row(row) }}
+        {% block form_body %}
+        {% endblock form_body %}
     </div>
 </div>

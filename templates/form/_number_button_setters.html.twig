@@ -1,0 +1,20 @@
+<div class="form-control" {{ stimulus_controller('form-set-days') }}>
+    {{ form_label(input) }}
+    <div class="flex flex-col gap-2">
+        <div class="input-group">
+            {{- form_widget(input, {'attr': {
+                'class': 'input input-bordered w-full',
+                'data-form-set-days-target': 'input'}}) -}}
+            <span>DAYS</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5" data-action="click->form-set-days#set">
+            <button class="btn btn-outline btn-xs" data-days="14">2 weeks before</button>
+            <button class="btn btn-outline btn-xs" data-days="30">1 month before</button>
+            <button class="btn btn-outline btn-xs" data-days="60">2 months before</button>
+            <button class="btn btn-outline btn-xs" data-days="90">3 months before</button>
+        </div>
+    </div>
+</div>
+<div class="text-error font-semibold">
+    {{- form_errors(input) -}}
+</div>

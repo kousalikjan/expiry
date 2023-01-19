@@ -17,11 +17,13 @@ class WarrantyType extends AbstractType
             ->add('expiration', DateType::class, [
                 'required' => true,
                 'label' => 'Date of Expiration',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
             ])
             ->add('notifyDaysBefore', NumberType::class, [
                 'required' => false,
-                'label' => "Notify me days before"
+                'html5' => true,
+                'label' => "Notify before expiration?",
+                'attr' => ['placeholder' => "Empty for no notification", 'data-form-hide-target' => 'notifyInput']
             ]);
     }
 

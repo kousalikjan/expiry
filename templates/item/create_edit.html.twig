@@ -12,10 +12,23 @@
         {% include 'form/_number_plus_minus.html.twig' with {
             'input': form.amount
         } %}
-        {{ form_row(form.purchase) }}
-        {{ form_row(form.warranty.expiration) }}
-        {{ form_row(form.warranty.notifyDaysBefore) }}
 
+        {{ form_row(form.purchase, {'attr': {'class': 'lolec'}}) }}
+
+        {% embed 'form/_toggle_form.html.twig' %}
+            {% block form_body %}
+
+                {{ form_row(form.warranty.expiration, {'attr': {
+                    'data-form-hide-target': 'expirationInput',
+                    'required': true
+                }, 'label_attr': {'class': 'required'}}) }}
+
+                {% include 'form/_number_button_setters.html.twig' with {
+                    'input': form.warranty.notifyDaysBefore
+                } %}
+
+            {% endblock %}
+        {% endembed %}
 
         <button type="submit" class="btn btn-primary max-w-md">Create</button>
         {{ form_end(form) }}

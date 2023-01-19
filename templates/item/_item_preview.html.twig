@@ -4,8 +4,8 @@
         <div>
             <h2 class="text-lg font-semibold">{{ item.name }}</h2>
 
-            {% if item.expiration is not null %}
-                {# <p>Expires: {{ item.expiration|date("d.m.Y") }}</p> #}
+            {% if item.warranty is not null %}
+                <p>Expires: {{ item.warranty.expiration|date("d.m.Y") }}</p>
             {% endif %}
 
             {% if item.amount is not empty  %}
