@@ -6,16 +6,28 @@
     <article class="m-8 mt-6">
         <section>
             <h1 class="h1 mb-10">{{ category.name }}</h1>
-            <div class="grid grid-cols-1 gap-5 mb-12 lg:grid-cols-2 gap-y-8 xl:grid-cols-3">
+
+            <div class="flex flex-col gap-8 mb-12">
                 {% for item in category.items %}
                     {{ include('item/_item_preview.html.twig') }}
                 {% endfor %}
             </div>
         </section>
 
-        {% include 'form/_add_link.html.twig' with {
-            'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
-            'text': 'New item',} %}
+        <article class="flex flex-col gap-4 items-center lg:items-start flex-shrink">
 
+            {% include 'form/_add_link.html.twig' with {
+                'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
+                'text': 'Add item',} %}
+            <div class="divider"></div>
+
+            {% include 'form/_edit_link.html.twig' with {
+                'action': path('app_category_edit', {userId: app.user.id, catId: category.id}),
+                'text': 'Edit category',} %}
+
+            {% include 'form/_delete_link.html.twig' with {
+                'action': '#',
+                'text': 'Delete category',} %}
+        </article>
     </article>
 {% endblock %}
