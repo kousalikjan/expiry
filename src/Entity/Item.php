@@ -23,15 +23,12 @@ class Item
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $purchase = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $expiration = null;
-
     #[ORM\ManyToOne(inversedBy: 'items')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
-    private array $files = [];
+    #[ORM\OneToOne(mappedBy: 'item', cascade: ['persist', 'remove'])]
+    private ?Warranty $warranty = null;
 
     public function __construct()
     {
@@ -80,17 +77,6 @@ class Item
         return $this;
     }
 
-    public function getExpiration(): ?\DateTimeInterface
-    {
-        return $this->expiration;
-    }
-
-    public function setExpiration(?\DateTimeInterface $expiration): self
-    {
-        $this->expiration = $expiration;
-
-        return $this;
-    }
 
     public function getCategory(): ?Category
     {
@@ -104,20 +90,19 @@ class Item
         return $this;
     }
 
-    public function getFiles(): array
+    public function getWarranty(): ?Warranty
     {
-        return $this->files;
+        return $this->warranty;
     }
 
-    public function setFiles(?array $files): self
+    public function setWarranty(Warranty $warranty): self
     {
-        $this->files = $files;
+        // set the owning side of the relation if necessary
+        if ($warranty->getItem() !== $this) {
+            $warranty->setItem($this);
+        }
 
-        return $this;
-    }
-
-    public function addFile($filename): self {
-        $this->files[] = $filename;
+        $this->warranty = $warranty;
 
         return $this;
     }

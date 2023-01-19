@@ -9,42 +9,15 @@
         {{ form_row(form.name) }}
         {{ form_row(form.category) }}
 
-        <div class="form-control">
-            {{ form_label(form.amount) }}
-            <div class="input-group" {{ stimulus_controller('form-plus-minus') }}>
-                <button class="btn btn-square btn-outline btn-error" data-action="click->form-plus-minus#minus" >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
-                    </svg>
-                </button>
-               {{ form_widget(form.amount, {'attr': {'class': 'input input-bordered w-full', 'data-form-plus-minus-target': 'input'}}) }}
-                <button class="btn btn-square btn-outline btn-success" data-action="click->form-plus-minus#plus" >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                </button>
-            </div>
-            {{ form_errors(form.amount) }}
-        </div>
-
+        {% include 'form/_number_plus_minus.html.twig' with {
+            'input': form.amount
+        } %}
         {{ form_row(form.purchase) }}
+        {{ form_row(form.warranty.expiration) }}
+        {{ form_row(form.warranty.notifyDaysBefore) }}
 
-        <div {{ stimulus_controller('form-hide') }}>
-            <div class="flex justify-between cursor-pointer mb-4">
-            {{ form_label(form.expirationCheckbox, 'Expiration/Warranty', {'label_attr': {'class': 'font-semibold text-lg'}})}}
-            {{ form_widget(form.expirationCheckbox, {'attr': {'class': 'toggle toggle-primary', 'data-action': 'click->form-hide#toggle', 'checked': 'checked'}}) }}
-            </div>
-            <div class="flex flex-col gap-6" data-form-hide-target="mainContent">
-            {{ form_row(form.expiration) }}
-            </div>
-        </div>
 
-        {{ form_row(form.files) }}
-
-        <button type="submit" class="btn btn-primary max-w-md">
-             Create
-        </button>
-
+        <button type="submit" class="btn btn-primary max-w-md">Create</button>
         {{ form_end(form) }}
     </article>
 {% endblock %}

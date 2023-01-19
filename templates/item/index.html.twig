@@ -14,18 +14,18 @@
             </div>
         </section>
 
-        <article class="flex flex-col gap-4 items-center lg:items-start flex-shrink">
+        <article class="flex flex-col gap-4 items-center lg:items-start">
 
-            {% include 'form/_add_link.html.twig' with {
+            {% include 'components/_add_link.html.twig' with {
                 'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
                 'text': 'Add item',} %}
             <div class="divider"></div>
 
-            {% include 'form/_edit_link.html.twig' with {
+            {% include 'components/_edit_link.html.twig' with {
                 'action': path('app_category_edit', {userId: app.user.id, catId: category.id}),
                 'text': 'Edit category',} %}
 
-            {% include 'form/_delete_link.html.twig' with {
+            {% include 'components/_delete_link.html.twig' with {
                 'action': '#',
                 'text': 'Delete category',} %}
         </article>

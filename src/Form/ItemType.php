@@ -46,21 +46,8 @@ class ItemType extends AbstractType
                 'label' => 'Date of Purchase',
                 'widget' => 'single_text'
             ])
-            ->add('expiration', DateType::class, [
-                'required' => false,
-                'label' => 'Date of Expiration',
-                'widget' => 'single_text'
-            ])
-            ->add('expirationCheckbox', CheckboxType::class, [
-                'required' => false,
-                'label' => 'Expiration/Warranty',
-                'mapped' => false,
-            ])
-            ->add('files', FileType::class, [
-                'required' => false,
-                'label' => 'Receipt file',
-                'mapped' => false,
-                'multiple' => true,
+            ->add('warranty', WarrantyType::class, [
+                'required' => false
             ]);
     }
 

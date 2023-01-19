@@ -11,9 +11,11 @@
                     {{ include('category/_category_preview.html.twig') }}
                 {% endfor %}
                 </div>
-                {% include 'form/_add_link.html.twig' with {
+                <article class="flex flex-col items-center lg:items-start">
+                {% include 'components/_add_link.html.twig' with {
                     'action': path('app_category_create', {userId: app.user.id}),
                     'text': 'New category',} %}
+                </article>
             </section>
     </article>
 {% endblock %}
