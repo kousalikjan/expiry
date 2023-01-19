@@ -34,7 +34,8 @@ class ItemType extends AbstractType
                 'label' => 'Category',
                 'class' => Category::class,
                 'choices' => $options['categories'],
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'placeholder' => 'Select a category'
             ])
             ->add('amount', NumberType::class, [
                 'required' => true,

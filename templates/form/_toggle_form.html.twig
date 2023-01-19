@@ -1,11 +1,11 @@
 <div {{ stimulus_controller('form-hide') }}>
     <div>
-        <label class="font-semibold text-lg flex justify-between cursor-pointer mb-4">
-            <span>Expiration/Warranty</span>
-            <input type="checkbox" class="toggle toggle-primary" data-action="click->form-hide#toggle" checked>
+        <label class="font-semibold text-lg flex justify-between cursor-pointer">
+            <span>{{ toggle_label }}</span>
+            <input type="checkbox" class="toggle toggle-secondary" data-action="click->form-hide#toggle">
         </label>
     </div>
-    <div class="flex flex-col gap-6" data-form-hide-target="mainContent">
+    <div class="flex flex-col gap-6 mt-6 hidden" data-form-hide-target="mainContent">
         {% block form_body %}
         {% endblock form_body %}
     </div>

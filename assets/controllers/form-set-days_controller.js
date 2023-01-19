@@ -11,7 +11,6 @@ export default class extends Controller {
         {
             this.inputTarget.value = e.target.dataset.days;
         }
-        console.log(e.target);
     }
 
 }

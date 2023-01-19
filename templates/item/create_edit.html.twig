@@ -5,6 +5,8 @@
 {% block body %}
     <article class="flex flex-col mt-6 mx-8 gap-6 items-center">
         <h1 class="h1">New item</h1>
+
+        {# Mandatory #}
         {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
         {{ form_row(form.name) }}
         {{ form_row(form.category) }}
@@ -15,22 +17,29 @@
 
         {{ form_row(form.purchase, {'attr': {'class': 'lolec'}}) }}
 
-        {% embed 'form/_toggle_form.html.twig' %}
-            {% block form_body %}
+        {# Expiration/Warranty #}
+        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Expiration/Warranty?"} %}
 
+            {% block form_body %}
                 {{ form_row(form.warranty.expiration, {'attr': {
                     'data-form-hide-target': 'expirationInput',
-                    'required': true
+                    'required': false
                 }, 'label_attr': {'class': 'required'}}) }}
 
                 {% include 'form/_number_button_setters.html.twig' with {
                     'input': form.warranty.notifyDaysBefore
                 } %}
-
             {% endblock %}
+
         {% endembed %}
 
-        <button type="submit" class="btn btn-primary max-w-md">Create</button>
+        {# Additional information #}
+        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Additional information?"} %}
+        {% endembed %}
+
+
+
+        <button type="submit" class="btn btn-primary max-w-md">Add files</button>
         {{ form_end(form) }}
     </article>
 {% endblock %}
