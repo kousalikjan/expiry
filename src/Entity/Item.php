@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Config\Currency;
 use App\Repository\ItemRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ItemRepository::class)]
 class Item
@@ -14,10 +16,13 @@ class Item
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 20)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 20)]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero]
     private ?int $amount = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
@@ -29,6 +34,25 @@ class Item
 
     #[ORM\OneToOne(mappedBy: 'item', cascade: ['persist', 'remove'])]
     private ?Warranty $warranty = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    #[Assert\Length(max: 20)]
+    private ?string $vendor = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $price = null;
+
+    #[ORM\Column(length: 3, nullable: true)]
+    #[Assert\Length(max: 3)]
+    private ?string $currency = null;
+
+    #[ORM\Column(length: 128, nullable: true)]
+    #[Assert\Length(max: 128)]
+    private ?string $barcode = null;
+
+    #[ORM\Column(length: 40, nullable: true)]
+    #[Assert\Length(max: 40)]
+    private ?string $note = null;
 
     public function __construct()
     {
@@ -103,6 +127,66 @@ class Item
         }
 
         $this->warranty = $warranty;
+
+        return $this;
+    }
+
+    public function getVendor(): ?string
+    {
+        return $this->vendor;
+    }
+
+    public function setVendor(?string $vendor): self
+    {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getCurrency(): ?string
+    {
+        return $this->currency;
+    }
+
+    public function setCurrency(?string $currency): self
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    public function getBarcode(): ?string
+    {
+        return $this->barcode;
+    }
+
+    public function setBarcode(?string $barcode): self
+    {
+        $this->barcode = $barcode;
+
+        return $this;
+    }
+
+    public function getNote(): ?string
+    {
+        return $this->note;
+    }
+
+    public function setNote(?string $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

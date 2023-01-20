@@ -3,9 +3,8 @@
 {% block title %}New item{% endblock %}
 
 {% block body %}
-    <article class="flex flex-col mt-6 mx-8 gap-6 items-center">
+    <article class="flex flex-col mt-6 mb-24 mx-8 gap-6 items-center">
         <h1 class="h1">New item</h1>
-
         {# Mandatory #}
         {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
         {{ form_row(form.name) }}
@@ -15,27 +14,33 @@
             'input': form.amount
         } %}
 
-        {{ form_row(form.purchase, {'attr': {'class': 'lolec'}}) }}
-
+        {{ form_row(form.purchase) }}
+        <div class="divider my-2"></div>
         {# Expiration/Warranty #}
         {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Expiration/Warranty?"} %}
-
             {% block form_body %}
                 {{ form_row(form.warranty.expiration, {'attr': {
                     'data-form-hide-target': 'addRequired',
-                    'required': false
+                    'required': toggled
                 }, 'label_attr': {'class': 'required'}}) }}
 
                 {% include 'form/_number_button_setters.html.twig' with {
                     'input': form.warranty.notifyDaysBefore
                 } %}
             {% endblock %}
-
         {% endembed %}
+
 
         {# Additional information #}
         {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Additional information?"} %}
+            {% block form_body %}
+                {{ include('form/_price_currency_input.html.twig') }}
+                {{ form_row(form.vendor) }}
+                {{ form_row(form.barcode) }}
+                {{ form_row(form.note) }}
+            {% endblock %}
         {% endembed %}
+
 
 
 

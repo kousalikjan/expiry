@@ -17,8 +17,7 @@ class CategoryType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
-                'label' => "Category name",
-                'constraints' => [new Length(['max' => 20])]
+                'label' => "Category name"
             ])
             ->add('color', ColorType::class, [
                 'label' => "Category color"

@@ -2,10 +2,14 @@
     <div>
         <label class="font-semibold text-lg flex justify-between cursor-pointer">
             <span>{{ toggle_label }}</span>
-            <input type="checkbox" class="toggle toggle-secondary" data-action="click->form-hide#toggle">
+            <input type="checkbox"
+                   class="toggle toggle-secondary"
+                   data-action="click->form-hide#toggle"
+                    {% if toggled %} checked {% endif %}
+            >
         </label>
     </div>
-    <div class="flex flex-col gap-6 mt-6 hidden" data-form-hide-target="mainContent">
+    <div class="flex flex-col gap-6 mt-6 {% if not toggled %} hidden {% endif %}" data-form-hide-target="mainContent">
         {% block form_body %}
         {% endblock form_body %}
     </div>

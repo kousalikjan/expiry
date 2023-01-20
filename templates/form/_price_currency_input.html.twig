@@ -1,0 +1,14 @@
+<div class="form-control">
+    {{ form_label(form.price) }}
+        <div class="input-group w-full">
+            {{ form_widget(form.price, {'attr': {
+                'class': 'input input-bordered w-full'}}) }}
+           <div>
+                   {{ form_widget(form.currency, {'attr': {
+                       'class': 'select select-bordered rounded-none rounded-r-lg pr-10 pl-8'
+                   }}) }}
+                {{ form_errors(form.currency) }}
+           </div>
+        </div>
+    {{ form_errors(form.price) }}
+</div>

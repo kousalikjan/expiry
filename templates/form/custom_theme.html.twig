@@ -1,3 +1,10 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_errors -%}
+    <div class="text-error font-semibold">
+        {{ parent() }}
+    </div>
+{%- endblock -%}
 
 {%- block form_row -%}
     {%- set widget_attr = {'attr': {'class': 'input input-bordered w-full'}} -%}

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Config\Currency;
 use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\User;
@@ -65,6 +66,6 @@ class ItemController extends AbstractController
             return $this->redirectToRoute('app_items_category',
                 ['userId' => $user->getId(), 'catId' => $category->getId()]);
         }
-        return $this->render('item/create_edit.html.twig', ['form' => $form->createView()]);
+        return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'toggled' => $form->isSubmitted()]);
     }
 }

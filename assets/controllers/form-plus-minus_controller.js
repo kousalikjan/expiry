@@ -7,6 +7,8 @@ export default class extends Controller {
     minus(e)
     {
         e.preventDefault();
+        if(this.inputTarget.value <= 0)
+            return;
         this.inputTarget.value = --this.inputTarget.value;
     }
 
