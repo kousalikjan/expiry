@@ -23,7 +23,7 @@ class WarrantyType extends AbstractType
                 'required' => false,
                 'html5' => true,
                 'label' => "Notify before expiration?",
-                'attr' => ['placeholder' => "Empty for no notification", 'data-form-hide-target' => 'notifyInput']
+                'attr' => ['placeholder' => "Empty for no notification", 'data-form-hide-target' => 'resetValue']
             ]);
     }
 

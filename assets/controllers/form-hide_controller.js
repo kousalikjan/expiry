@@ -2,23 +2,21 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
 
-    static targets = ['mainContent', 'expirationInput', 'notifyInput']
+    static targets = ['mainContent', 'addRequired', 'resetValue']
 
     toggle()
     {
        this.mainContentTarget.classList.toggle('hidden');
 
-       if(this.hasExpirationInputTarget)
-       {
-           this.expirationInputTarget.toggleAttribute("required");
-           this.expirationInputTarget.value = this.expirationInputTarget.defaultValue;
-       }
+       this.addRequiredTargets.forEach(target => {
+           target.toggleAttribute("required")
+           target.value = target.defaultValue;
+       })
 
-       if(this.hasNotifyInputTarget)
-       {
-           console.log("xddd");
-           this.notifyInputTarget.value = this.notifyInputTarget.defaultValue;
-       }
+        this.resetValueTargets.forEach(target => {
+            target.value = target.defaultValue;
+        })
+
     }
 
 }
