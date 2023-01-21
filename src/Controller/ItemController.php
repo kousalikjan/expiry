@@ -62,23 +62,13 @@ class ItemController extends AbstractController
             $category->addItem($item);
             $this->itemRepository->save($item, true);
 
-            return $this->redirectToRoute('app_items_category',
-                ['userId' => $user->getId(), 'catId' => $category->getId()]);
+            return $this->redirectToRoute('app_item_file_edit',
+                ['userId' => $user->getId(), 'catId' => $category->getId(), 'itemId' => $item->getId()]);
         }
         return $this->render('item/create.html.twig', ['form' => $form->createView(), 'toggled' => $form->isSubmitted()]);
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_edit')]
-    #[Entity('user', options: ['id' => 'userId'])]
-    #[Entity('category', options: ['id' => 'catId'])]
-    #[Entity('item', options: ['id' => 'itemId'])]
-    public function edit(User $user, Category $category, Item $item, Request $request): Response
-    {
-        return $this->render('item/files.html.twig', [
-            'user' => $user,
-            'category' => $category,
-            'item' => $item]);
-    }
+
 
 
 }

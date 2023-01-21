@@ -31,6 +31,20 @@ class ItemFileController extends AbstractController
         $this->itemFileRepository = $itemFileRepository;
     }
 
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_file_edit')]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    public function index(User $user, Category $category, Item $item): Response
+    {
+        $this->denyAccessUnlessGranted('access', $item);
+
+        return $this->render('item/files.html.twig', [
+            'user' => $user,
+            'category' => $category,
+            'item' => $item]);
+    }
+
 
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_add', methods: ['POST'])]
     #[Entity('user', options: ['id' => 'userId'])]
@@ -59,7 +73,7 @@ class ItemFileController extends AbstractController
                     'application/vnd.ms-excel',
                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 ],
-                'mimeTypesMessage' => 'The mime type of the file is invalid!'
+                'mimeTypesMessage' => 'Invalid mime type!'
             ])]
         );
 
@@ -68,7 +82,7 @@ class ItemFileController extends AbstractController
             $violation = $violations[0];
             $this->addFlash('error', $violation->getMessage());
 
-            return $this->redirectToRoute('app_item_edit', [
+            return $this->redirectToRoute('app_item_file_edit', [
                 'userId' => $user->getId(),
                 'catId' => $category->getId(),
                 'itemId' => $item->getId()
@@ -86,7 +100,7 @@ class ItemFileController extends AbstractController
 
         $this->itemFileRepository->save($itemFile, true);
 
-        return $this->redirectToRoute('app_item_edit', [
+        return $this->redirectToRoute('app_item_file_edit', [
             'userId' => $user->getId(),
             'catId' => $category->getId(),
             'itemId' => $item->getId()
@@ -98,7 +112,7 @@ class ItemFileController extends AbstractController
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
     #[Entity('file', options: ['id' => 'fileId'])]
-    public function downloadItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper): Response
+    public function downloadItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper, Request $request): Response
     {
         $this->denyAccessUnlessGranted('access', $item);
 
@@ -109,16 +123,23 @@ class ItemFileController extends AbstractController
         });
 
         $response->headers->set('Content-Type', $file->getMimeType());
-        $disposition = HeaderUtils::makeDisposition(
-            HeaderUtils::DISPOSITION_ATTACHMENT,
-            $file->getOriginalFilename(),
-            "expiry-file"
-        );
 
-        $response->headers->set('Content-Disposition', $disposition);
+        if($request->query->get('save'))
+        {
+            $disposition = HeaderUtils::makeDisposition(
+                HeaderUtils::DISPOSITION_ATTACHMENT,
+                $file->getOriginalFilename(),
+                "expiry-file"
+            );
+            $response->headers->set('Content-Disposition', $disposition);
+        }
 
         return $response;
     }
+
+
+
+
 
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/delete', name: 'app_item_file_delete', methods: ['GET'])]
     #[Entity('user', options: ['id' => 'userId'])]
@@ -132,7 +153,7 @@ class ItemFileController extends AbstractController
         $this->itemFileRepository->remove($file, true);
         $uploaderHelper->deleteFile($file->getItemFilePath());
 
-        return $this->redirectToRoute('app_item_edit', [
+        return $this->redirectToRoute('app_item_file_edit', [
             'userId' => $user->getId(),
             'catId' => $category->getId(),
             'itemId' => $item->getId()

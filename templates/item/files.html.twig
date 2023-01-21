@@ -1,22 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New item{% endblock %}
+{% block title %}Manage files{% endblock %}
 
 
 {% block body %}
-    <article>
-        <h1 class="h1">Add files</h1>
+    <article class="flex flex-col mt-6 mb-24 mx-8 gap-8 items-center">
+        <h1 class="h1">Manage files</h1>
 
-        <ul>
-            {% for file in item.itemFiles %}
-                <li><a href="{{ path('app_item_file_download', {userId: user.id, catId: category.id, itemId: item.id, fileId: file.id}) }}">{{ file.originalFilename }}</a></li>
-            {% endfor %}
+        <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id}) }}" method="POST" enctype="multipart/form-data"
+        class="form-control w-full max-w-md gap-3 pb-8">
+            <input type="file" name="item-file" class="file-input file-input-bordered w-full">
+            <button type="submit" class="btn btn-primary w-full">Upload</button>
+        </form>
+
+        <ul class="flex flex-col gap-8 mb-12 w-full max-w-md">
+
+        {% for file in item.itemFiles %}
+            <li>
+                {{ include('item/_file_preview.html.twig') }}
+            </li>
+        {% endfor %}
         </ul>
 
-        <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id}) }}" method="POST" enctype="multipart/form-data">
-            <input type="file" name="item-file" class="file-input file-input-bordered">
-            <button type="submit" class="btn btn-primary">Upload</button>
-        </form>
     </article>
-
 {% endblock %}
