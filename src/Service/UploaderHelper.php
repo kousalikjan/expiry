@@ -46,14 +46,4 @@ class UploaderHelper
         // returns filename stored on our filesystem
         return $newFilename;
     }
-
-    public function getTargetDirectory(int $userId, int $itemId)
-    {
-        return $this->targetDirectory
-            .DIRECTORY_SEPARATOR
-            .$userId
-            .DIRECTORY_SEPARATOR
-            .$itemId;
-    }
-
 }

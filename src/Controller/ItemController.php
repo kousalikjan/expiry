@@ -68,7 +68,7 @@ class ItemController extends AbstractController
         return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'toggled' => $form->isSubmitted()]);
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}', name: 'app_item_edit')]
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_edit')]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
