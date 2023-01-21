@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ItemRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,10 +55,14 @@ class Item
     #[Assert\Length(max: 40)]
     private ?string $note = null;
 
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemFile::class)]
+    private Collection $itemFiles;
+
     public function __construct()
     {
         $this->purchase = new \DateTime();
         $this->amount = 1;
+        $this->itemFiles = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,4 +195,13 @@ class Item
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, ItemFile>
+     */
+    public function getItemFiles(): Collection
+    {
+        return $this->itemFiles;
+    }
+
 }

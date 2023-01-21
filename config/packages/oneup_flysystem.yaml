@@ -1,0 +1,10 @@
+# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle
+oneup_flysystem:
+    adapters:
+        private_uploads_adapter:
+            local:
+                location: '%kernel.project_dir%/var/uploads'
+    filesystems:
+        private_uploads_filesystem:
+            adapter: private_uploads_adapter
+            alias: League\Flysystem\Filesystem

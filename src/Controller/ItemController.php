@@ -37,13 +37,13 @@ class ItemController extends AbstractController
             'category' => $category]);
     }
 
-
     #[Route('/users/{userId}/items/create', name: 'app_item_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
     #[Route('/users/{userId}/categories/{catId}/items/create', name: 'app_item_create_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     public function create(User $user, ?Category $category, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('access', $user);
         $item = new Item();
 
         if ($category) {
@@ -67,4 +67,18 @@ class ItemController extends AbstractController
         }
         return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'toggled' => $form->isSubmitted()]);
     }
+
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}', name: 'app_item_edit')]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    public function edit(User $user, Category $category, Item $item, Request $request): Response
+    {
+        return $this->render('item/files_form.html.twig', [
+            'user' => $user,
+            'category' => $category,
+            'item' => $item]);
+    }
+
+
 }
