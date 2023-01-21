@@ -65,7 +65,7 @@ class ItemController extends AbstractController
             return $this->redirectToRoute('app_items_category',
                 ['userId' => $user->getId(), 'catId' => $category->getId()]);
         }
-        return $this->render('item/create_edit.html.twig', ['form' => $form->createView(), 'toggled' => $form->isSubmitted()]);
+        return $this->render('item/create.html.twig', ['form' => $form->createView(), 'toggled' => $form->isSubmitted()]);
     }
 
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_edit')]
@@ -74,7 +74,7 @@ class ItemController extends AbstractController
     #[Entity('item', options: ['id' => 'itemId'])]
     public function edit(User $user, Category $category, Item $item, Request $request): Response
     {
-        return $this->render('item/files_form.html.twig', [
+        return $this->render('item/files.html.twig', [
             'user' => $user,
             'category' => $category,
             'item' => $item]);

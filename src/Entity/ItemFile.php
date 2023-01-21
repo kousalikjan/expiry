@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ItemFileRepository;
+use App\Service\UploaderHelper;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ItemFileRepository::class)]
@@ -75,5 +76,10 @@ class ItemFile
         $this->mimeType = $mimeType;
 
         return $this;
+    }
+
+    public function getItemFilePath(): string
+    {
+        return UploaderHelper::ITEM_FILE.DIRECTORY_SEPARATOR.$this->getFilename();
     }
 }

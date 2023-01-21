@@ -11,8 +11,10 @@ use App\Service\UploaderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -30,7 +32,7 @@ class ItemFileController extends AbstractController
     }
 
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_add_file', methods: ['POST'])]
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_add', methods: ['POST'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
@@ -90,4 +92,52 @@ class ItemFileController extends AbstractController
             'itemId' => $item->getId()
         ]);
     }
+
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/download', name: 'app_item_file_download', methods: ['GET'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    #[Entity('file', options: ['id' => 'fileId'])]
+    public function downloadItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper): Response
+    {
+        $this->denyAccessUnlessGranted('access', $item);
+
+        $response = new StreamedResponse(function () use ($file, $uploaderHelper) {
+            $outputStream = fopen('php://output', 'wb');
+            $fileStream = $uploaderHelper->readStream($file->getItemFilePath());
+            stream_copy_to_stream($fileStream, $outputStream);
+        });
+
+        $response->headers->set('Content-Type', $file->getMimeType());
+        $disposition = HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            $file->getOriginalFilename(),
+            "expiry-file"
+        );
+
+        $response->headers->set('Content-Disposition', $disposition);
+
+        return $response;
+    }
+
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/delete', name: 'app_item_file_delete', methods: ['GET'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    #[Entity('file', options: ['id' => 'fileId'])]
+    public function deleteItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper): Response
+    {
+        $this->denyAccessUnlessGranted('access', $item);
+
+        $this->itemFileRepository->remove($file, true);
+        $uploaderHelper->deleteFile($file->getItemFilePath());
+
+        return $this->redirectToRoute('app_item_edit', [
+            'userId' => $user->getId(),
+            'catId' => $category->getId(),
+            'itemId' => $item->getId()
+        ]);
+    }
+
+
 }

@@ -21,6 +21,11 @@ class UploaderHelper
         $this->slugger = $slugger;
     }
 
+    public function readStream(string $path)
+    {
+        return $this->filesystem->readStream($path);
+    }
+
     public function uploadFile(UploadedFile $file): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -46,4 +51,10 @@ class UploaderHelper
         // returns filename stored on our filesystem
         return $newFilename;
     }
+
+    public function deleteFile(string $path)
+    {
+        $this->filesystem->delete($path);
+    }
+
 }
