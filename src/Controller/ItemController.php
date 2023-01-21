@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Config\Currency;
 use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\User;
