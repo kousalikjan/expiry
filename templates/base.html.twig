@@ -17,14 +17,25 @@
     <body>
         {% include('_navbar.html.twig') %}
 
-        {% for message in app.flashes('error') %}
-            <div class="alert alert-error shadow-lg rounded-none">
-                <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+
+        <div class="toast toast-top toast-end top-12 absolute z-50">
+            {% for message in app.flashes('error') %}
+                <div class="flex bg-error p-3.5 rounded-xl gap-8 justify-between items-center" {{ stimulus_controller('toast-hide') }}>
                     <span>{{ message }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" data-action="click->toast-hide#close">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+            {% for message in app.flashes('success') %}
+                <div class="flex bg-success p-3.5 rounded-xl gap-8 justify-between items-center" {{ stimulus_controller('toast-hide') }}>
+                    <span>{{ message }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" data-action="click->toast-hide#close">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
+            {% endfor %}
+        </div>
 
         {% block body %}{% endblock %}
     </body>

@@ -50,6 +50,7 @@ class CategoryController extends AbstractController
         {
             $user->addCategory($category);
             $this->categoryRepository->save($category, true);
+            $this->addFlash('success', 'Category successfully created!');
             return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
         return $this->render('category/create_edit.html.twig', ['form' => $form->createView(), 'create' => !$category->getId(), 'category' => $category]);

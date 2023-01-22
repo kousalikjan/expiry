@@ -62,6 +62,8 @@ class ItemController extends AbstractController
             $category->addItem($item);
             $this->itemRepository->save($item, true);
 
+            $this->addFlash('success', 'Item successfully created!');
+
             return $this->redirectToRoute('app_item_file_edit',
                 ['userId' => $user->getId(), 'catId' => $category->getId(), 'itemId' => $item->getId()]);
         }
