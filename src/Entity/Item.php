@@ -204,4 +204,15 @@ class Item
         return $this->itemFiles;
     }
 
+    public function warrantyToggled(): bool {
+        return $this->getWarranty() !== null;
+    }
+
+    public function additionalToggled(): bool {
+        return $this->getPrice() !== null ||
+            $this->getVendor() !== null ||
+            $this->getBarcode() !== null ||
+            $this->getNote() !== null;
+    }
+
 }

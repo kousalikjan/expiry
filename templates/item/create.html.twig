@@ -17,11 +17,11 @@
         {{ form_row(form.purchase) }}
         <div class="divider my-2"></div>
         {# Expiration/Warranty #}
-        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Expiration/Warranty?"} %}
+        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Expiration/Warranty?", 'toggled': warrantyToggled} %}
             {% block form_body %}
                 {{ form_row(form.warranty.expiration, {'attr': {
                     'data-form-hide-target': 'addRequired',
-                    'required': toggled
+                    'required': warrantyToggled,
                 }, 'label_attr': {'class': 'required'}}) }}
 
                 {% include 'form/_number_button_setters.html.twig' with {
@@ -32,7 +32,7 @@
 
 
         {# Additional information #}
-        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Additional information?"} %}
+        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Additional information?", 'toggled': additionalToggled} %}
             {% block form_body %}
                 {{ include('form/_price_currency_input.html.twig') }}
                 {{ form_row(form.vendor) }}

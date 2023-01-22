@@ -8,12 +8,19 @@
         <h1 class="h1">Manage files</h1>
 
         <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id}) }}" method="POST" enctype="multipart/form-data"
-        class="form-control w-full max-w-md gap-3 pb-8">
+        class="form-control w-full max-w-md gap-3">
             <input type="file" name="item-file" class="file-input file-input-bordered w-full">
-            <button type="submit" class="btn btn-primary w-full">Upload</button>
+            <button type="submit" class="btn btn-outline btn-info w-full">
+                <span class="flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                    </svg>
+                    Upload
+                </span>
+            </button>
         </form>
 
-        <ul class="flex flex-col gap-8 mb-12 w-full max-w-md">
+        <ul class="flex flex-col gap-8 mb-8 w-full max-w-md">
 
         {% for file in item.itemFiles %}
             <li>
@@ -21,6 +28,8 @@
             </li>
         {% endfor %}
         </ul>
+
+        <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">Finish</a>
 
     </article>
 {% endblock %}

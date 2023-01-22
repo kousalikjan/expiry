@@ -31,7 +31,22 @@ class ItemFileController extends AbstractController
         $this->itemFileRepository = $itemFileRepository;
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_add', methods: ['POST'])]
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_edit', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], methods: ['GET'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    public function edit(User $user, Category $category, Item $item): Response
+    {
+        $this->denyAccessUnlessGranted('access', $item);
+
+        return $this->render('item/files.html.twig', [
+            'user' => $user,
+            'category' => $category,
+            'item' => $item]);
+    }
+
+
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_add', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], methods: ['POST'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
@@ -74,7 +89,6 @@ class ItemFileController extends AbstractController
             ]);
         }
 
-
         // store file and get its filename
         $filename = $uploaderHelper->uploadFile($uploadedFile, $uploadedFile->getMimeType() === "image/jpeg");
 
@@ -92,7 +106,7 @@ class ItemFileController extends AbstractController
         ]);
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/download', name: 'app_item_file_download', methods: ['GET'])]
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/download', name: 'app_item_file_download', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+', 'fileId' => '\d+'], methods: ['GET'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
@@ -122,7 +136,7 @@ class ItemFileController extends AbstractController
         return $response;
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/delete', name: 'app_item_file_delete', methods: ['GET'])]
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/delete', name: 'app_item_file_delete', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+', 'fileId' => '\d+'],  methods: ['GET'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]

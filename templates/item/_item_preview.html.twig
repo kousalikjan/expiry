@@ -12,6 +12,6 @@
                 <p>Count: {{ item.amount }}</p>
             {% endif %}
         </div>
-        <a href="#" class="self-end pb-2 pr-4 text-lg link link-info link-hover" >Detail</a>
+        <a href="{{ path('app_item_edit', {userId: app.user.id, catId: category.id, itemId: item.id}) }}" class="self-end pb-2 pr-4 text-lg link link-info link-hover" >Detail</a>
     </div>
 </article>

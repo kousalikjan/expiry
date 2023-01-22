@@ -63,25 +63,26 @@ class ItemController extends AbstractController
             $this->itemRepository->save($item, true);
 
             $this->addFlash('success', 'Item successfully created!');
+            $this->addFlash('info', 'Pressing back will not delete the item');
 
             return $this->redirectToRoute('app_item_file_edit',
                 ['userId' => $user->getId(), 'catId' => $category->getId(), 'itemId' => $item->getId()]);
         }
-        return $this->render('item/create.html.twig', ['form' => $form->createView(), 'toggled' => $form->isSubmitted()]);
+        return $this->render('item/create.html.twig', ['form' => $form->createView(),
+            'warrantyToggled' => $item->warrantyToggled(),
+            'additionalToggled' => $item->additionalToggled()]);
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_file_edit')]
+     #[Route('/users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_edit', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'],  defaults: ['redirect' => false])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
-    public function edit(User $user, Category $category, Item $item): Response
+    public function edit(User $user, Category $category, Item $item, bool $redirect, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $item);
-
-        return $this->render('item/files.html.twig', [
-            'user' => $user,
-            'category' => $category,
-            'item' => $item]);
+        return $this->render('item/edit.html.twig', [
+            'item' => $item
+        ]);
     }
+
 
 }
