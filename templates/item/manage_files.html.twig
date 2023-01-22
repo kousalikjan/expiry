@@ -7,7 +7,7 @@
     <article class="flex flex-col mt-6 mb-24 mx-8 gap-8 items-center">
         <h1 class="h1">Manage files</h1>
 
-        <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id}) }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id})~'?redirect=1' }}" method="POST" enctype="multipart/form-data"
         class="form-control w-full max-w-md gap-3">
             <input type="file" name="item-file" class="file-input file-input-bordered w-full">
             <button type="submit" class="btn btn-outline btn-info w-full">
@@ -28,6 +28,10 @@
             </li>
         {% endfor %}
         </ul>
-        <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">back</a>
-    </article>
+        {% if redirect %}
+            <a href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}" class="btn btn-primary w-full max-w-md">finish</a>
+        {% else %}
+            <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">back</a>
+        {% endif %}
+        </article>
 {% endblock %}

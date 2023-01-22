@@ -31,18 +31,20 @@ class ItemFileController extends AbstractController
         $this->itemFileRepository = $itemFileRepository;
     }
 
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{redirect}', name: 'app_item_file_edit_redirect', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], methods: ['GET'])]
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_edit', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], methods: ['GET'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
-    public function edit(User $user, Category $category, Item $item, Request $request): Response
+    public function edit(User $user, Category $category, Item $item, ?bool $redirect, Request $request): Response
     {
         $this->denyAccessUnlessGranted('access', $item);
 
         return $this->render('item/manage_files.html.twig', [
             'user' => $user,
             'category' => $category,
-            'item' => $item]);
+            'item' => $item,
+            'redirect' => $redirect]);
     }
 
 
@@ -82,10 +84,11 @@ class ItemFileController extends AbstractController
             $violation = $violations[0];
             $this->addFlash('error', $violation->getMessage());
 
-            return $this->redirectToRoute('app_item_file_edit', [
+            return $this->redirectToRoute('app_item_file_edit_redirect', [
                 'userId' => $user->getId(),
                 'catId' => $category->getId(),
-                'itemId' => $item->getId()
+                'itemId' => $item->getId(),
+                'redirect'=> $request->query->get('redirect'),
             ]);
         }
 
@@ -99,10 +102,11 @@ class ItemFileController extends AbstractController
 
         $this->itemFileRepository->save($itemFile, true);
         $this->addFlash('success', 'File successfully uploaded!');
-        return $this->redirectToRoute('app_item_file_edit', [
+        return $this->redirectToRoute('app_item_file_edit_redirect', [
             'userId' => $user->getId(),
             'catId' => $category->getId(),
-            'itemId' => $item->getId()
+            'itemId' => $item->getId(),
+            'redirect'=> $request->query->get('redirect'),
         ]);
     }
 
@@ -141,17 +145,18 @@ class ItemFileController extends AbstractController
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
     #[Entity('file', options: ['id' => 'fileId'])]
-    public function deleteItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper): Response
+    public function deleteItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper, Request $request): Response
     {
         $this->denyAccessUnlessGranted('access', $item);
 
         $this->itemFileRepository->remove($file, true);
         $uploaderHelper->deleteFile($file->getItemFilePath());
 
-        return $this->redirectToRoute('app_item_file_edit', [
+        return $this->redirectToRoute('app_item_file_edit_redirect', [
             'userId' => $user->getId(),
             'catId' => $category->getId(),
-            'itemId' => $item->getId()
+            'itemId' => $item->getId(),
+            'redirect'=> $request->query->get('redirect'),
         ]);
     }
 

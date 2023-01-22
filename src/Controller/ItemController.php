@@ -65,8 +65,8 @@ class ItemController extends AbstractController
             $this->addFlash('success', 'Item successfully created!');
             $this->addFlash('info', 'Pressing back will not delete the item');
 
-            return $this->redirectToRoute('app_item_file_edit',
-                ['userId' => $user->getId(), 'catId' => $category->getId(), 'itemId' => $item->getId()]);
+            return $this->redirectToRoute('app_item_file_edit_redirect',
+                ['userId' => $user->getId(), 'catId' => $category->getId(), 'itemId' => $item->getId(), 'redirect' => true]);
         }
         return $this->render('item/create.html.twig', ['form' => $form->createView(),
             'warrantyToggled' => $item->warrantyToggled(),
