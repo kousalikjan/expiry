@@ -35,11 +35,11 @@ class ItemFileController extends AbstractController
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
-    public function edit(User $user, Category $category, Item $item): Response
+    public function edit(User $user, Category $category, Item $item, Request $request): Response
     {
         $this->denyAccessUnlessGranted('access', $item);
 
-        return $this->render('item/files.html.twig', [
+        return $this->render('item/manage_files.html.twig', [
             'user' => $user,
             'category' => $category,
             'item' => $item]);
@@ -98,7 +98,7 @@ class ItemFileController extends AbstractController
         $itemFile->setMimeType($uploadedFile->getMimeType() ?? 'application/octet-stream');
 
         $this->itemFileRepository->save($itemFile, true);
-
+        $this->addFlash('success', 'File successfully uploaded!');
         return $this->redirectToRoute('app_item_file_edit', [
             'userId' => $user->getId(),
             'catId' => $category->getId(),

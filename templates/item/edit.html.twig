@@ -5,6 +5,8 @@
 {% block body %}
     <article class="flex flex-col mt-6 mb-24 mx-8 gap-6 items-center">
         <h1 class="h1">{{ item.name }}</h1>
-
+        <a href="{{ path('app_item_file_edit', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id})}}"
+        class="btn btn-outline btn-info w-full max-w-md">Manage files</a>
+        {% include 'item/_create_edit_from.html.twig' with {buttonText: 'save'} %}
     </article>
 {% endblock %}

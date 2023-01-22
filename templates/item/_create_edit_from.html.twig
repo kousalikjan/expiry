@@ -1,0 +1,38 @@
+{# Mandatory #}
+{{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.category) }}
+
+    {% include 'form/_number_plus_minus.html.twig' with {
+        'input': form.amount
+    } %}
+
+    {{ form_row(form.purchase) }}
+    <div class="divider my-2"></div>
+    {# Expiration/Warranty #}
+        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Expiration/Warranty?", 'toggled': warrantyToggled} %}
+            {% block form_body %}
+                {{ form_row(form.warranty.expiration, {'attr': {
+                    'data-form-hide-target': 'addRequired',
+                    'required': warrantyToggled,
+                }, 'label_attr': {'class': 'required'}}) }}
+
+                {% include 'form/_number_button_setters.html.twig' with {
+                    'input': form.warranty.notifyDaysBefore
+                } %}
+            {% endblock %}
+        {% endembed %}
+
+
+    {# Additional information #}
+    {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Additional information?", 'toggled': additionalToggled} %}
+        {% block form_body %}
+            {{ include('form/_price_currency_input.html.twig') }}
+            {{ form_row(form.vendor) }}
+            {{ form_row(form.barcode) }}
+            {{ form_row(form.note) }}
+        {% endblock %}
+    {% endembed %}
+
+    <button type="submit" class="btn btn-primary max-w-md">{{ buttonText }}</button>
+{{ form_end(form) }}

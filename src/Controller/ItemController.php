@@ -73,14 +73,35 @@ class ItemController extends AbstractController
             'additionalToggled' => $item->additionalToggled()]);
     }
 
-     #[Route('/users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_edit', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'],  defaults: ['redirect' => false])]
+    #[Route('/users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_edit', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'],  defaults: ['redirect' => false])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
     public function edit(User $user, Category $category, Item $item, bool $redirect, Request $request): Response
     {
+        $this->denyAccessUnlessGranted('access', $user);
+        $form = $this->createForm(ItemType::class, $item, [
+            'categories' => $user->getCategories()
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $this->itemRepository->save($item, true);
+            $this->addFlash('success', 'Item successfully updated!');
+
+            return $this->redirectToRoute('app_items_category', [
+                'userId' => $user->getId(),
+                'catId' => $item->getCategory()->getId()
+            ]);
+        }
+
         return $this->render('item/edit.html.twig', [
-            'item' => $item
+            'item' => $item,
+            'form' => $form->createView(),
+            'warrantyToggled' => $item->warrantyToggled(),
+            'additionalToggled' => $item->additionalToggled()
         ]);
     }
 
