@@ -10,6 +10,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class UploaderHelper
 {
     const ITEM_FILE = 'item_file';
+    const THUMBNAIL = 'thumbnail-';
 
     private Filesystem $filesystem;
 
@@ -26,7 +27,7 @@ class UploaderHelper
         return $this->filesystem->readStream($path);
     }
 
-    public function uploadFile(UploadedFile $file): string
+    public function uploadFile(UploadedFile $file, bool $createThumbnail): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
@@ -54,7 +55,11 @@ class UploaderHelper
 
     public function deleteFile(string $path)
     {
-        $this->filesystem->delete($path);
+        try {
+            $this->filesystem->delete($path);
+        } catch (FilesystemException $e) {
+            throw new \Exception("Could not delete file %s", $path);
+        }
     }
 
 }

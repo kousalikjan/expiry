@@ -31,21 +31,6 @@ class ItemFileController extends AbstractController
         $this->itemFileRepository = $itemFileRepository;
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_file_edit')]
-    #[Entity('user', options: ['id' => 'userId'])]
-    #[Entity('category', options: ['id' => 'catId'])]
-    #[Entity('item', options: ['id' => 'itemId'])]
-    public function index(User $user, Category $category, Item $item): Response
-    {
-        $this->denyAccessUnlessGranted('access', $item);
-
-        return $this->render('item/files.html.twig', [
-            'user' => $user,
-            'category' => $category,
-            'item' => $item]);
-    }
-
-
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_add', methods: ['POST'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
@@ -91,7 +76,7 @@ class ItemFileController extends AbstractController
 
 
         // store file and get its filename
-        $filename = $uploaderHelper->uploadFile($uploadedFile);
+        $filename = $uploaderHelper->uploadFile($uploadedFile, $uploadedFile->getMimeType() === "image/jpeg");
 
         $itemFile = new ItemFile($item);
         $itemFile->setFilename($filename);
@@ -136,10 +121,6 @@ class ItemFileController extends AbstractController
 
         return $response;
     }
-
-
-
-
 
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/delete', name: 'app_item_file_delete', methods: ['GET'])]
     #[Entity('user', options: ['id' => 'userId'])]

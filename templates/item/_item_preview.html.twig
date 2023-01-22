@@ -1,5 +1,5 @@
 <article class="card card-side bg-base-100 shadow-xl border border-slate-100 h-28">
-    <figure><img src="{{ asset('img/uctenka-jysk.jpg') }}" alt="Photo of {{ item.name }}" class="h-full w-24"/></figure>
+    <figure><img src="{{ asset('img/no-image.png') }}" alt="Photo of {{ item.name }}" class="h-full w-24"/></figure>
     <div class="px-2 py-0.5 flex justify-between w-full">
         <div>
             <h2 class="text-lg font-semibold">{{ item.name }}</h2>
@@ -8,7 +8,7 @@
                 <p>Expires: {{ item.warranty.expiration|date("d.m.Y") }}</p>
             {% endif %}
 
-            {% if item.amount is not empty  %}
+            {% if item.amount is not null  %}
                 <p>Count: {{ item.amount }}</p>
             {% endif %}
         </div>
