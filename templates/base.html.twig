@@ -44,6 +44,12 @@
                 </div>
             {% endfor %}
         </div>
+        <div class="text-sm breadcrumbs ml-8">
+            <ul>
+               {% block breadcrumbs %}
+                {% endblock breadcrumbs %}
+            </ul>
+        </div>
         {% block body %}{% endblock %}
     </body>
 </html>

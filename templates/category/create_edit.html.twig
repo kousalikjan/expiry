@@ -4,8 +4,14 @@
     {% if create %}New Category {% else %} Edit {{ category.name }} {% endif %}
 {% endblock %}
 
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">Home</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">Inventory</a></li>
+    <li><a href="#">New category</a></li>
+{% endblock %}
+
 {% block body %}
-    <article class="flex flex-col mt-6 mx-8 gap-6">
+    <article class="flex flex-col mt-6 mx-8 gap-6 items-center">
         <h1 class="h1">
             {% if create %}New Category {% else %} Edit {{ category.name }} {% endif %}
         </h1>

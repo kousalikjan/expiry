@@ -2,25 +2,28 @@
 
 {% block title %}{{ category.name }}{% endblock %}
 
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">Home</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">Inventory</a></li>
+    <li><a href="#">{{ category.name }}</a></li>
+{% endblock %}
+
 {% block body %}
-    <article class="m-8 mt-6">
-        <section>
-            <h1 class="h1 mb-10">{{ category.name }}</h1>
-
-            <div class="flex flex-col gap-8 mb-12">
-                {% for item in category.items %}
-                    {{ include('item/_item_preview.html.twig') }}
-                {% endfor %}
-            </div>
-        </section>
-
-        <article class="flex flex-col gap-4 items-center lg:items-start">
-
+    <article class="m-8 mt-6 flex flex-col items-center gap-6">
+        <h1 class="h1">{{ category.name }}</h1>
+        <article class="flex flex-col items-center w-full">
             {% include 'components/_add_link.html.twig' with {
                 'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
                 'text': 'Add item',} %}
+        </article>
+        <section class="flex flex-col gap-8 w-full max-w-xl">
+            {% for item in category.items %}
+                {{ include('item/_item_preview.html.twig') }}
+            {% endfor %}
             <div class="divider"></div>
+        </section>
 
+        <article class="flex flex-col gap-4 items-center w-full">
             {% include 'components/_edit_link.html.twig' with {
                 'action': path('app_category_edit', {userId: app.user.id, catId: category.id}),
                 'text': 'Edit category',} %}

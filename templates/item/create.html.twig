@@ -2,6 +2,13 @@
 
 {% block title %}New item{% endblock %}
 
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">Home</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">Inventory</a></li>
+    <li><a href="#">New item</a></li>
+{% endblock %}
+
+
 {% block body %}
     <article class="flex flex-col mt-6 mb-24 mx-8 gap-6 items-center">
         <h1 class="h1">New item</h1>

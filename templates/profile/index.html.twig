@@ -2,6 +2,11 @@
 
 {% block title %}Profile{% endblock %}
 
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">Home</a></li>
+    <li><a href="#">Profile</a></li>
+{% endblock %}
+
 {% block body %}
     <article class="m-8 flex flex-col gap-8">
             <section>

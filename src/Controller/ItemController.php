@@ -98,6 +98,7 @@ class ItemController extends AbstractController
         }
 
         return $this->render('item/edit.html.twig', [
+            'category' => $category,
             'item' => $item,
             'form' => $form->createView(),
             'warrantyToggled' => $item->warrantyToggled(),

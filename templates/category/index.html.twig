@@ -2,20 +2,23 @@
 
 {% block title %}Categories{% endblock %}
 
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">Home</a></li>
+    <li><a href="#">Inventory</a></li>
+{% endblock %}
+
 {% block body %}
-    <article class="m-8 mt-6">
-            <section>
-                <h1 class="h1 mb-10">Categories</h1>
-                <div class="flex flex-col gap-5 mb-12" {{ stimulus_controller('kebab-menu') }}>
-                {% for category in categories %}
-                    {{ include('category/_category_preview.html.twig') }}
-                {% endfor %}
-                </div>
-                <article class="flex flex-col items-center lg:items-start">
+    <article class="m-8 mt-6 flex flex-col items-center gap-6">
+            <h1 class="h1">Categories</h1>
+            <article class="flex flex-col items-center w-full">
                 {% include 'components/_add_link.html.twig' with {
                     'action': path('app_category_create', {userId: app.user.id}),
                     'text': 'New category',} %}
-                </article>
-            </section>
+            </article>
+            <div class="flex flex-col gap-5 mb-12 w-full max-w-xl" {{ stimulus_controller('kebab-menu') }}>
+            {% for category in categories %}
+                {{ include('category/_category_preview.html.twig') }}
+            {% endfor %}
+            </div>
     </article>
 {% endblock %}
