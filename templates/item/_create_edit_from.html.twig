@@ -12,10 +12,10 @@
     {# Expiration/Warranty #}
         {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Expiration/Warranty?", 'toggled': warrantyToggled} %}
             {% block form_body %}
-                {{ form_row(form.warranty.expiration, {'attr': {
-                    'data-form-hide-target': 'addRequired',
-                    'required': warrantyToggled,
-                }, 'label_attr': {'class': 'required'}}) }}
+
+                {% include 'form/_date_adder.html.twig' with {
+                    'input': form.warranty.expiration
+                }%}
 
                 {% include 'form/_number_button_setters.html.twig' with {
                     'input': form.warranty.notifyDaysBefore

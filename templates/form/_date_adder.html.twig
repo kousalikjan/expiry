@@ -1,0 +1,21 @@
+<div class="form-control" {{ stimulus_controller('form-date-add') }}>
+    {{ form_label(input, "Date of Expiration", {'label_attr': {'class': 'required'}}) }}
+    <div class="flex flex-col gap-2">
+            {{ form_widget(input, {'attr': {
+                'class': 'input input-bordered w-full',
+                'required': warrantyToggled,
+                'data-form-hide-target': 'addRequired',
+                'data-form-date-add-target': 'input'}}) }}
+        <div class="grid grid-cols-3 gap-2.5" data-action="click->form-date-add#set">
+            <button class="btn btn-outline btn-success btn-xs" data-days="+year">+1 year</button>
+            <button class="btn btn-outline btn-success btn-xs" data-days="+month">+1 month</button>
+            <button class="btn btn-outline btn-success btn-xs" data-days="+week">+1 week</button>
+            <button class="btn btn-outline btn-error btn-xs" data-days="-year">-1 year</button>
+            <button class="btn btn-outline btn-error btn-xs" data-days="-month">-1 month</button>
+            <button class="btn btn-outline btn-error btn-xs" data-days="-week">-1 week</button>
+        </div>
+    </div>
+</div>
+<div class="text-error font-semibold">
+    {{- form_errors(input) -}}
+</div>
