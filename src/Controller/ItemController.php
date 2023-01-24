@@ -7,6 +7,7 @@ use App\Entity\Item;
 use App\Entity\User;
 use App\Form\ItemType;
 use App\Repository\ItemRepository;
+use App\Repository\WarrantyRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +18,12 @@ class ItemController extends AbstractController
 {
 
     private ItemRepository $itemRepository;
+    private WarrantyRepository $warrantyRepository;
 
-    public function __construct(ItemRepository $itemRepository)
+    public function __construct(ItemRepository $itemRepository, WarrantyRepository $warrantyRepository)
     {
         $this->itemRepository = $itemRepository;
+        $this->warrantyRepository = $warrantyRepository;
     }
 
     #[Route('/users/{userId}/categories/{catId}/items',
@@ -88,6 +91,12 @@ class ItemController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            if($item->getWarranty() !== null && $item->getWarranty()->getExpiration() === null)
+            {
+                $this->warrantyRepository->remove($item->getWarranty());
+                $item->setNullWarranty();
+            }
+
             $this->itemRepository->save($item, true);
             $this->addFlash('success', 'Item successfully updated!');
 

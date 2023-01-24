@@ -10,11 +10,12 @@ export default class extends Controller {
 
        this.addRequiredTargets.forEach(target => {
            target.toggleAttribute("required")
-           target.value = target.defaultValue;
+           target.value = null;
        })
 
         this.resetValueTargets.forEach(target => {
-            target.value = target.defaultValue;
+
+            target.value = null;
         })
 
     }

@@ -124,7 +124,7 @@ class Item
         return $this->warranty;
     }
 
-    public function setWarranty(Warranty $warranty): self
+    public function setWarranty(?Warranty $warranty): self
     {
         // set the owning side of the relation if necessary
         if ($warranty->getItem() !== $this) {
@@ -213,6 +213,12 @@ class Item
             $this->getVendor() !== null ||
             $this->getBarcode() !== null ||
             $this->getNote() !== null;
+    }
+
+    public function setNullWarranty(): self {
+        $this->warranty = null;
+
+        return $this;
     }
 
 }

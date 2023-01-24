@@ -34,7 +34,7 @@ class Warranty
         return $this->expiration;
     }
 
-    public function setExpiration(\DateTimeInterface $expiration): self
+    public function setExpiration(?\DateTimeInterface $expiration): self
     {
         $this->expiration = $expiration;
 
