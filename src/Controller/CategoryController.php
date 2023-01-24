@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Item;
 use App\Entity\User;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use App\Repository\ItemRepository;
+use App\Service\CategoryService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,11 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CategoryController extends AbstractController
 {
-    private CategoryRepository $categoryRepository;
+    private CategoryService $categoryService;
 
-    public function __construct(CategoryRepository $categoryRepository)
+
+    public function __construct(CategoryService $categoryService)
     {
-        $this->categoryRepository = $categoryRepository;
+        $this->categoryService = $categoryService;
     }
 
     #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
@@ -49,11 +53,22 @@ class CategoryController extends AbstractController
         if($form->isSubmitted() && $form->isValid())
         {
             $user->addCategory($category);
-            $this->categoryRepository->save($category, true);
+            $this->categoryService->save($category, true);
             $this->addFlash('success', 'Category successfully created!');
             return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
         return $this->render('category/create_edit.html.twig', ['form' => $form->createView(), 'create' => !$category->getId(), 'category' => $category]);
 
     }
+
+    #[Route('/users/{userId}/categories/{catId}/delete', name: 'app_category_delete_force', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    public function delete(User $user, Category $category): Response
+    {
+        $this->denyAccessUnlessGranted('access', $category);
+        return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
+        
+    }
+
 }

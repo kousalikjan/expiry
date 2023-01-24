@@ -21,5 +21,10 @@ class CategoryService
         return $this->categoryRepository->find($id);
     }
 
+    public function save(Category $category, bool $flush = false): void
+    {
+        $this->categoryRepository->save($category, $flush);
+    }
+
 
 }
