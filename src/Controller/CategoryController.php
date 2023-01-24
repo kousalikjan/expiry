@@ -67,6 +67,7 @@ class CategoryController extends AbstractController
     public function delete(User $user, Category $category): Response
     {
         $this->denyAccessUnlessGranted('access', $category);
+        $this->categoryService->removeAndRemoveAllItems($category, true);
         return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
 
     }
