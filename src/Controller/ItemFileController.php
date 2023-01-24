@@ -31,7 +31,7 @@ class ItemFileController extends AbstractController
         $this->itemFileRepository = $itemFileRepository;
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{redirect}', name: 'app_item_file_edit_redirect', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], methods: ['GET'])]
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{redirect}', name: 'app_item_file_edit_redirect', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], defaults: ['redirect' => null], methods: ['GET'])]
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_edit', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], methods: ['GET'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
