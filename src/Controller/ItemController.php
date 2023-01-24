@@ -9,6 +9,7 @@ use App\Form\ItemType;
 use App\Repository\ItemFileRepository;
 use App\Repository\ItemRepository;
 use App\Repository\WarrantyRepository;
+use App\Service\ItemService;
 use App\Service\UploaderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,15 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ItemController extends AbstractController
 {
 
-    private ItemRepository $itemRepository;
-    private WarrantyRepository $warrantyRepository;
-    private ItemFileRepository $itemFileRepository;
+    private ItemService $itemService;
 
-    public function __construct(ItemRepository $itemRepository, WarrantyRepository $warrantyRepository, ItemFileRepository $itemFileRepository)
+    public function __construct(ItemService $itemService)
     {
-        $this->itemRepository = $itemRepository;
-        $this->warrantyRepository = $warrantyRepository;
-        $this->itemFileRepository = $itemFileRepository;
+        $this->itemService = $itemService;
     }
 
     #[Route('/users/{userId}/categories/{catId}/items',
@@ -67,7 +64,7 @@ class ItemController extends AbstractController
         {
             $category = $item->getCategory();
             $category->addItem($item);
-            $this->itemRepository->save($item, true);
+            $this->itemService->save($item, true);
 
             $this->addFlash('success', 'Item successfully created!');
             $this->addFlash('info', 'Pressing back will not delete the item');
@@ -97,11 +94,11 @@ class ItemController extends AbstractController
         {
             if($item->getWarranty() !== null && $item->getWarranty()->getExpiration() === null)
             {
-                $this->warrantyRepository->remove($item->getWarranty());
-                $item->setNullWarranty();
+                // User has toggled off the warranty checkbox
+                $this->itemService->removeWarranty($item);
             }
 
-            $this->itemRepository->save($item, true);
+            $this->itemService->save($item, true);
             $this->addFlash('success', 'Item successfully updated!');
 
             return $this->redirectToRoute('app_items_category', [
@@ -123,15 +120,10 @@ class ItemController extends AbstractController
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
-    public function delete(User $user, Category $category, Item $item, UploaderHelper $uploaderHelper, Request $request): Response
+    public function delete(User $user, Category $category, Item $item): Response
     {
         $this->denyAccessUnlessGranted('access', $user);
-        foreach ($item->getItemFiles() as $file)
-        {
-            $uploaderHelper->deleteFile($file->getItemFilePath());
-            $this->itemFileRepository->remove($file);
-        }
-        $this->itemRepository->remove($item, true);
+        $this->itemService->remove($item, true);
         return $this->redirectToRoute('app_items_category', ['userId' => $user->getId(), 'catId' => $category->getId()]);
     }
 

@@ -68,7 +68,7 @@ class CategoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('access', $category);
         return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
-        
+
     }
 
 }
