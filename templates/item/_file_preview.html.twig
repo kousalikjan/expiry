@@ -12,7 +12,7 @@
         {% endif %}"
              alt="Photo for {{ item.name }}" class="h-full w-24"/>
     </figure>
-    <div class="flex items-center justify-around w-full">
+    <div class="flex items-center justify-around w-full relative">
         <a
             href="{{ path('app_item_file_download', {
                     userId: user.id,
@@ -55,6 +55,7 @@
         </svg>
             Delete
         </a>
-
+    <span class="absolute bottom-1 right-3 text-xs">{{ file.originalFilename[:32] }}.{{ file.mimeType|split('/')[1] }}</span>
     </div>
+
 </article>

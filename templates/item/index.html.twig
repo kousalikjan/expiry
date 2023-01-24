@@ -29,7 +29,7 @@
                 'text': 'Edit category',} %}
 
             {% include 'components/_delete_link.html.twig' with {
-                'action': '#',
+                'action': path('app_category_delete', {userId: app.user.id, catId: category.id}),
                 'text': 'Delete category',} %}
         </article>
     </article>

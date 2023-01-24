@@ -15,12 +15,12 @@ class SelectCategoryType extends AbstractType
         $builder
             ->add('category', EntityType::class, [
                 'required' => false,
-                'label' => 'Category to move items into',
+                'label' => 'Category where items will be moved into',
                 'mapped' => false,
                 'class' => Category::class,
                 'choices' => $options['allCategories'],
                 'choice_label' => 'name',
-                'placeholder' => 'Delete all items in the category'
+                'placeholder' => 'Delete items in '.$options['current']
             ]);
     }
 
@@ -29,6 +29,7 @@ class SelectCategoryType extends AbstractType
         $resolver->setDefaults([
             'data_class' => null,
             'allCategories' => [],
+            'current' => null,
         ]);
     }
 }

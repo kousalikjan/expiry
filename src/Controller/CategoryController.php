@@ -70,7 +70,8 @@ class CategoryController extends AbstractController
     {
 
         $form = $this->createForm(SelectCategoryType::class, null, [
-            'allCategories' => $user->getCategories()
+            'allCategories' => array_filter($user->getCategories()->toArray(), fn (Category $elem) => $elem->getId() !== $category->getId() ),
+            'current' => $category->getName()
         ]);
         $this->denyAccessUnlessGranted('access', $category);
 
