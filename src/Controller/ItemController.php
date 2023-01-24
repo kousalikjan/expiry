@@ -6,8 +6,10 @@ use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\User;
 use App\Form\ItemType;
+use App\Repository\ItemFileRepository;
 use App\Repository\ItemRepository;
 use App\Repository\WarrantyRepository;
+use App\Service\UploaderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +21,13 @@ class ItemController extends AbstractController
 
     private ItemRepository $itemRepository;
     private WarrantyRepository $warrantyRepository;
+    private ItemFileRepository $itemFileRepository;
 
-    public function __construct(ItemRepository $itemRepository, WarrantyRepository $warrantyRepository)
+    public function __construct(ItemRepository $itemRepository, WarrantyRepository $warrantyRepository, ItemFileRepository $itemFileRepository)
     {
         $this->itemRepository = $itemRepository;
         $this->warrantyRepository = $warrantyRepository;
+        $this->itemFileRepository = $itemFileRepository;
     }
 
     #[Route('/users/{userId}/categories/{catId}/items',
@@ -113,6 +117,22 @@ class ItemController extends AbstractController
             'warrantyToggled' => $item->warrantyToggled(),
             'additionalToggled' => $item->additionalToggled()
         ]);
+    }
+
+    #[Route('/users/{userId}/categories/{catId}/items/{itemId}/delete', name: 'app_item_delete', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    public function delete(User $user, Category $category, Item $item, UploaderHelper $uploaderHelper, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('access', $user);
+        foreach ($item->getItemFiles() as $file)
+        {
+            $uploaderHelper->deleteFile($file->getItemFilePath());
+            $this->itemFileRepository->remove($file);
+        }
+        $this->itemRepository->remove($item, true);
+        return $this->redirectToRoute('app_items_category', ['userId' => $user->getId(), 'catId' => $category->getId()]);
     }
 
 
