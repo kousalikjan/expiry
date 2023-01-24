@@ -23,6 +23,6 @@
     <ul class="menu p-2 shadow rounded-box bg-base-100 w-52 absolute bottom-0 right-0 translate-y-full z-10 hidden"
     data-kebab-menu-target="content">
         <li><a href="{{ path('app_category_edit', {userId: app.user.id, catId: category.id}) }}">Edit</a></li>
-        <li><a href="#" class="text-error">Delete</a></li>
+        <li><a href="{{ path('app_category_delete', {userId: app.user.id, catId: category.id}) }}" class="text-error">Delete</a></li>
     </ul>
 </div>

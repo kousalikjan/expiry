@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Delete {{ category.name }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">Home</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">Inventory</a></li>
+    <li><a href="#">Delete {{ category.name }}</a></li>
+{% endblock %}
+
+{% block body %}
+    <article class="flex flex-col mt-6 mx-8 gap-6 items-center">
+        <h1>Delete {{ category.name }}</h1>
+        {{ form_start(form) }}
+        {{ form_row(form.category) }}
+        <button type="submit" class="btn btn-primary max-w-md">
+            DELETE
+        </button>
+        {{ form_end(form) }}
+    </article>
+{% endblock %}

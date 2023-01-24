@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\User;
 use App\Form\CategoryType;
+use App\Form\SelectCategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\ItemRepository;
 use App\Service\CategoryService;
@@ -61,15 +62,25 @@ class CategoryController extends AbstractController
 
     }
 
-    #[Route('/users/{userId}/categories/{catId}/delete', name: 'app_category_delete_force', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
+
+    #[Route('/users/{userId}/categories/{catId}/delete', name: 'app_category_delete', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
-    public function delete(User $user, Category $category): Response
+    public function delete(User $user, Category $category, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $category);
-        $this->categoryService->removeAndRemoveAllItems($category, true);
-        return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
 
+        $form = $this->createForm(SelectCategoryType::class, null, [
+            'allCategories' => $user->getCategories()
+        ]);
+        $this->denyAccessUnlessGranted('access', $category);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $moveToCategory = $form->get('category')->getData();
+            $this->categoryService->remove($category, $moveToCategory, true);
+            return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
+        }
+        return $this->render('category/delete.html.twig', ['category' => $category, 'form' => $form]);
     }
 
 }

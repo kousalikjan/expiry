@@ -28,14 +28,24 @@ class CategoryService
         $this->categoryRepository->save($category, $flush);
     }
 
-    public function removeAndRemoveAllItems(Category $category, bool $flush = false): void
+    public function remove(Category $category, ?Category $moveToCategory, bool $flush = false): void
     {
-        foreach ($category->getItems() as $item)
+        if($moveToCategory === null)
         {
-            $this->itemService->remove($item);
+            foreach ($category->getItems() as $item)
+            {
+                $this->itemService->remove($item);
+            }
+        }
+        else
+        {
+            foreach ($category->getItems() as $item)
+            {
+                $category->removeItem($item);
+                $moveToCategory->addItem($item);
+            }
         }
         $this->categoryRepository->remove($category, true);
-
 
     }
 

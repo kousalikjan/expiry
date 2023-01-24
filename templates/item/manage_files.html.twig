@@ -38,7 +38,7 @@
         {% if redirect %}
             <a href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}" class="btn btn-primary w-full max-w-md">finish</a>
         {% else %}
-            <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">back</a>
+            <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">save</a>
         {% endif %}
         </article>
 {% endblock %}
