@@ -42,31 +42,31 @@ class NotifyExpirationCommand extends Command
         {
             $io->info($user->getEmail() . ' notifications: ');
             $warranties = $this->warrantyRepository->findToBeNotifiedOfOneUser($user->getId());
-            foreach ($warranties as $warranty)
+            $length = sizeof($warranties);
+
+            if($length === 0)
+                continue;
+
+            $email = (new TemplatedEmail())->to(new Address($user->getEmail()));
+
+            if($length === 1)
+                $email->subject($warranties[0]->getItem()->getName() . 'is about to expire!');
+            else
+                $email->subject($length . ' items are about to expire!');
+
+            $email->htmlTemplate('emails/expiration.html.twig')
+                ->context([
+                    'warranties' => $warranties
+                ]);
+
+            try {
+                $this->mailer->send($email);
+            } catch (TransportExceptionInterface $e)
             {
-                $io->writeln($warranty->getId(). ' - '. $warranty->getItem()->getName() . ' ' . $warranty->getExpiration()->format("d.m.Y"));
+                dd($e);
             }
         }
 
-//        $email = (new TemplatedEmail())
-//            ->to(new Address('kakaovnikk@gmail.com'))
-//            ->subject('Thanks for signing up!')
-//
-//            // path of the Twig template to render
-//            ->htmlTemplate('emails/expiration.html.twig')
-//
-//            // pass variables (name => value) to the template
-//            ->context([
-//                'item' => $this->itemRepository->find(1),
-//            ])
-//        ;
-//
-//        try {
-//            $mailer->send($email);
-//        } catch (TransportExceptionInterface $e)
-//        {
-//            dd($e);
-//        }
         return Command::SUCCESS;
     }
 }

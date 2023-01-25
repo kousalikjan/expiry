@@ -53,6 +53,7 @@ class WarrantyRepository extends ServiceEntityRepository
             ->innerJoin('w_category.owner', 'w_owner')
             ->andWhere('w_owner.id = :userId')
             ->setParameter('userId', $userId)
+            ->orderBy('w_category.id')
             ->getQuery()
             ->getResult();
     }

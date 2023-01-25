@@ -1,5 +1,73 @@
-<h1>Notification: {{ item.name }}</h1>
+{% apply inline_css %}
+<style>
 
-<p>
-    {{ item.name }} has expiration date set to {{ item.expiration|date("d.m.Y") }}
-</p>
+    body {
+        background-color: #fefefe;
+    }
+
+    h1 {
+        color: #540cf1;
+        margin-top: 0;
+    }
+
+    h2, p {
+        color: #222222;
+        margin-bottom: 0;
+    }
+
+    .container {
+        width: 500px;
+        margin: auto;
+    }
+
+    p {
+        margin-top: 0;
+    }
+
+    a {
+        color: #3b82f6;
+        text-decoration: none;
+    }
+
+    .button {
+        margin-top: 2rem;
+        padding: 1rem 2rem;
+        color: white;
+        border-radius: 1000px;
+        background-color: #540cf1;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    article {
+        background-color: white;
+        border: #dddddd 1px solid;
+        padding: 0.75rem 1.5rem;
+        margin-top: 1.5rem;
+        border-radius: 10px;
+
+    }
+
+</style>
+
+
+
+<div class="container gap-2">
+    <h1>{{ warranties|length }} items are about to expire!</h1>
+{% for warranty in warranties %}
+    <article>
+        <h2>{{ warranty.item.name }}</h2>
+        <p>Category: <a href="{{ path('app_categories', {id: warranty.item.category.owner.id}) }}">{{ warranty.item.category.name }}</a></p>
+        <p>Expiration: {{ warranty.expiration|date("d.m.Y") }}</p>
+        <p>Amount: {{ warranty.item.amount }}</p>
+    </article>
+{% endfor %}
+    <a class="button" href="www.expiry.live">Show in Expiry</a>
+</div>
+
+{% endapply %}
+
