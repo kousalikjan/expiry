@@ -47,6 +47,16 @@ class NotifyExpirationCommand extends Command
             if($length === 0)
                 continue;
 
+            foreach ($warranties as $warranty)
+            {
+                $io->writeln('------------------');
+                $io->writeln($warranty->getItem()->getName());
+                $io->writeln($warranty->getItem()->getCategory()->getName());
+                $io->writeln($warranty->getExpiration()->format('d.m.Y'));
+                $io->writeln($warranty->getNotifyDaysBefore());
+                //$warranty->setNotified(true);
+                //$this->warrantyRepository->save($warranty);
+            }
             $email = (new TemplatedEmail())->to(new Address($user->getEmail()));
 
             if($length === 1)
@@ -66,6 +76,8 @@ class NotifyExpirationCommand extends Command
                 dd($e);
             }
         }
+
+        //$this->warrantyRepository->flush();
 
         return Command::SUCCESS;
     }

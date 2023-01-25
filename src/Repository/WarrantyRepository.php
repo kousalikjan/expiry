@@ -39,6 +39,11 @@ class WarrantyRepository extends ServiceEntityRepository
         }
     }
 
+    public function flush(): void
+    {
+        $this->getEntityManager()->flush();
+    }
+
     /**
      * @return Warranty[] Warranties to be notified for given user
      */
