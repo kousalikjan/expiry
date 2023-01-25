@@ -24,6 +24,15 @@ class Warranty
     #[ORM\JoinColumn(nullable: false)]
     private ?Item $item = null;
 
+    #[ORM\Column]
+    private ?bool $notified = null;
+
+    public function __construct()
+    {
+        $this->notified = false;
+    }
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +70,18 @@ class Warranty
     public function setItem(Item $item): self
     {
         $this->item = $item;
+
+        return $this;
+    }
+
+    public function isNotified(): ?bool
+    {
+        return $this->notified;
+    }
+
+    public function setNotified(bool $notified): self
+    {
+        $this->notified = $notified;
 
         return $this;
     }

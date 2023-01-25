@@ -39,6 +39,25 @@ class WarrantyRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Warranty[] Warranties to be notified for given user
+     */
+    public function findToBeNotifiedOfOneUser(int $userId): array
+    {
+        return $this->createQueryBuilder('w')
+            ->andWhere('w.notified = false')
+            ->andWhere('w.notifyDaysBefore is not null')
+            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->innerJoin('w.item', 'w_item')
+            ->innerJoin('w_item.category', 'w_category')
+            ->innerJoin('w_category.owner', 'w_owner')
+            ->andWhere('w_owner.id = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 //    /**
 //     * @return Warranty[] Returns an array of Warranty objects
 //     */

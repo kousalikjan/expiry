@@ -35,9 +35,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Category::class, orphanRemoval: true)]
     private Collection $categories;
 
+    #[ORM\Column]
+    private ?bool $allowNotifications = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->allowNotifications = true;
     }
 
     public function getId(): ?int
@@ -136,6 +140,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $category->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isAllowNotifications(): ?bool
+    {
+        return $this->allowNotifications;
+    }
+
+    public function setAllowNotifications(bool $allowNotifications): self
+    {
+        $this->allowNotifications = $allowNotifications;
 
         return $this;
     }
