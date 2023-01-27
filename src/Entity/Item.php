@@ -60,8 +60,6 @@ class Item
 
     public function __construct()
     {
-        $this->purchase = new \DateTime();
-        $this->amount = 1;
         $this->itemFiles = new ArrayCollection();
     }
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\User;
+use App\Factory\ItemFactory;
 use App\Form\ItemType;
 use App\Repository\ItemFileRepository;
 use App\Repository\ItemRepository;
@@ -48,7 +49,7 @@ class ItemController extends AbstractController
     public function create(User $user, ?Category $category, Request $request): Response
     {
         $this->denyAccessUnlessGranted('access', $user);
-        $item = new Item();
+        $item = ItemFactory::createItem($user);
 
         if ($category) {
             $this->denyAccessUnlessGranted('access', $category);
@@ -56,7 +57,7 @@ class ItemController extends AbstractController
         }
 
         $form = $this->createForm(ItemType::class, $item, [
-            'categories' => $user->getCategories()
+            'categories' => $user->getCategories(),
         ]);
 
         $form->handleRequest($request);

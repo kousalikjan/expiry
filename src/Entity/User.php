@@ -45,6 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->categories = new ArrayCollection();
         $this->allowNotifications = true;
+        $this->defaultCurrency = 'CZK';
     }
 
     public function getId(): ?int
