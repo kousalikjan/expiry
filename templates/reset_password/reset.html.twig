@@ -3,10 +3,11 @@
 {% block title %}Reset your password{% endblock %}
 
 {% block body %}
-    <h1>Reset your password</h1>
-
-    {{ form_start(resetForm) }}
+    <article class="flex flex-col items-center my-16 gap-10 mx-8 items-center">
+        <h1 class="h1">Reset password</h1>
+        {{ form_start(resetForm, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
         {{ form_row(resetForm.plainPassword) }}
         <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
+        {{ form_end(resetForm) }}
+    </article>
 {% endblock %}
