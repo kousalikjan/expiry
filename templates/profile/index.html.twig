@@ -14,8 +14,11 @@
                 <p>You can change your password or delete your account here.</p>
             </section>
             <section>
-                <h2 class="text-2xl font-semibold">Preferences</h2>
-
+                <h2 class="text-2xl font-semibold mb-4">Preferences</h2>
+                {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
+                {{ form_row(form.defaultCurrency) }}
+                <button type="submit" class="btn btn-primary btn-outline max-w-md">submit</button>
+                {{ form_end(form) }}
             </section>
             <section>
                 <h2 class="text-2xl font-semibold">Password change</h2>

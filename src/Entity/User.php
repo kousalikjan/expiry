@@ -38,6 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?bool $allowNotifications = null;
 
+    #[ORM\Column(length: 3, nullable: true)]
+    private ?string $defaultCurrency = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -152,6 +155,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setAllowNotifications(bool $allowNotifications): self
     {
         $this->allowNotifications = $allowNotifications;
+
+        return $this;
+    }
+
+    public function getDefaultCurrency(): ?string
+    {
+        return $this->defaultCurrency;
+    }
+
+    public function setDefaultCurrency(?string $defaultCurrency): self
+    {
+        $this->defaultCurrency = $defaultCurrency;
 
         return $this;
     }
