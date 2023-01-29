@@ -10,7 +10,7 @@
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow rounded-box bg-base-100 w-52">
                 <li><a href="{{ path('app_categories', {id: app.user.id}) }}" class="text-lg">Inventory</a></li>
                     <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">Profile</a></li>
-                    <li class="block divider my-0"></li>
+                    <li class="block divider my-2"></li>
                     <li><a class="text-lg text-gray-600" href="{{ path('app_logout') }}">Logout</a></li>
             </ul>
         </div>
@@ -33,12 +33,20 @@
                 </ul>
             </li>
         {% endif %}
-            <li><a href="{{ path('app_set_locale', {'_locale': 'cs_CZ'}) }}">Czech</a></li>
-            <li><a href="{{ path('app_set_locale', {'_locale': 'en_US'}) }}">English</a></li>
         </ul>
 
     </div>
     <div class="navbar-end">
+        <div class="dropdown dropdown-end">
+            <label tabindex="0" class="btn btn-ghost rounded-btn font-normal mr-1 lg:mr-3 px-1 flex-nowrap">
+                <span>{{ app.request.locale[0:2] }}</span>
+                <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
+            </label>
+            <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                <li><a href="{{ path('app_set_locale', {'_locale': 'cs_CZ'}) }}">Čeština</a></li>
+                <li><a href="{{ path('app_set_locale', {'_locale': 'en_US'}) }}">English</a></li>
+            </ul>
+        </div>
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
         <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">Add item</a>
             {% else %}
