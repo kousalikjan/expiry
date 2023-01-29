@@ -15,17 +15,21 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HomepageController extends AbstractController
 {
-    #[Route('/{_locale<%supported_locales%>}/', name: 'app_index')]
+    #[Route('/', name: 'app_index')]
     public function index(TranslatorInterface $translator, Request $request): Response
     {
         dump($request->getLocale());
         return $this->render('index.html.twig');
     }
 
-    #[Route('/')]
-    public function indexNoLocale()
+    #[Route('/set-locale/{_locale<%supported_locales%>}', name: 'app_set_locale')]
+    public function setLocale(Request $request, string $_locale): Response
     {
-        return $this->redirectToRoute('app_index', ['_locale' => 'en']);
+        $request->getSession()->set('_locale', $_locale);
+        $referer = $request->headers->get('referer');
+        if(!$referer)
+            return $this->redirectToRoute('app_index');
+        return $this->redirect($referer);
     }
 
 }

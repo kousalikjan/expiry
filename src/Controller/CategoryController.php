@@ -26,7 +26,7 @@ class CategoryController extends AbstractController
         $this->categoryService = $categoryService;
     }
 
-    #[Route('/{_locale<%supported_locales%>}/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
+    #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
     public function index(User $user): Response
     {
         $this->denyAccessUnlessGranted('access', $user);

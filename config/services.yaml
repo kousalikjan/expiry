@@ -5,7 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     files_directory: '%kernel.project_dir%/public/uploads/files'
-    supported_locales: 'en|cs'
+    supported_locales: 'en_US|cs_CZ'
+    default_locale: 'en'
 
 services:
     # default configuration for services in *this* file
