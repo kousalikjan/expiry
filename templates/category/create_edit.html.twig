@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {% if create %}New Category {% else %} Edit {{ category.name }} {% endif %}
+    {% if create %}{{ 'New category'|trans }} {% else %} {{ 'Edit'|trans }} {{ category.name }} {% endif %}
 {% endblock %}
 
 {% block breadcrumbs %}
-    <li><a href="{{ path('app_index') }}">Home</a></li>
-    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">Inventory</a></li>
-    <li><a href="#">New category</a></li>
+    <li><a href="{{ path('app_index') }}">{{ 'Home'|trans }}</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Inventory'|trans }}</a></li>
+    <li><a href="#">{{ 'New category'|trans }}</a></li>
 {% endblock %}
 
 {% block body %}
     <article class="flex flex-col mt-6 mx-8 gap-6 items-center">
         <h1 class="h1">
-            {% if create %}New Category {% else %} Edit {{ category.name }} {% endif %}
+            {% if create %}{{ 'New category'|trans }} {% else %} {{ 'Edit'|trans }} {{ category.name }} {% endif %}
         </h1>
         {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-8'}}) }}
         {{ form_row(form.name) }}
@@ -26,7 +26,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary max-w-md">
-            {% if create %} Create {% else %} Edit {% endif %}
+            {% if create %} {{ 'Create'|trans }} {% else %} {{ 'Edit'|trans }} {% endif %}
         </button>
 
         {{ form_end(form) }}

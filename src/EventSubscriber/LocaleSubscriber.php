@@ -25,11 +25,11 @@ class LocaleSubscriber implements EventSubscriberInterface
         }
 
         // session exists
-        dump('base: ' . $request->getLocale());
+        //dump('base: ' . $request->getLocale());
         $request->setLocale($request->getSession()->get('_locale', $request->getLocale()));
         $this->translator->setLocale($request->getLocale());
-        dump('request locale: ' . $request->getLocale());
-        dump('translator locale: ' . $this->translator->getLocale());
+       // dump('request locale: ' . $request->getLocale());
+        //dump('translator locale: ' . $this->translator->getLocale());
 
     }
 

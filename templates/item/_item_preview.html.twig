@@ -5,13 +5,15 @@
             <h2 class="text-lg font-semibold">{{ item.name }}</h2>
 
             {% if item.warranty is not null %}
-                <p>Expires: {{ item.warranty.expiration|date("d.m.Y") }}</p>
+                <p>{{ 'Expires'|trans }}: {{ item.warranty.expiration|date("d.m.Y") }}</p>
             {% endif %}
 
             {% if item.amount is not null  %}
-                <p>Count: {{ item.amount }}</p>
+                <p>{{ 'Count'|trans }}: {{ item.amount }}</p>
             {% endif %}
         </div>
-        <a href="{{ path('app_item_edit', {userId: app.user.id, catId: category.id, itemId: item.id}) }}" class="self-end pb-2 pr-4 text-lg link link-info link-hover" >Detail</a>
+        <a href="{{ path('app_item_edit', {userId: app.user.id, catId: category.id, itemId: item.id}) }}"
+           class="self-end pb-2 pr-4 text-lg link link-info link-hover" >
+            {{ 'Detail'|trans }}</a>
     </div>
 </article>

@@ -3,22 +3,22 @@
 {% block title %}Profile{% endblock %}
 
 {% block breadcrumbs %}
-    <li><a href="{{ path('app_index') }}">Home</a></li>
-    <li><a href="#">Profile</a></li>
+    <li><a href="{{ path('app_index') }}">{{ 'Home'|trans }}</a></li>
+    <li><a href="#">{{ 'Profile'|trans }}</a></li>
 {% endblock %}
 
 {% block body %}
     <article class="m-8 flex flex-col gap-20 items-center">
             <section class="w-full max-w-md">
-                <h1 class="h1 mb-4">Profile page</h1>
+                <h1 class="h1 mb-4">{{ 'Profile page'|trans }}</h1>
                 <p>Email: {{ user.email }}</p>
-                <a href="{{ path('app_forgot_password_request') }}" class="text-info">Forgotten password?</a>
+                <a href="{{ path('app_forgot_password_request') }}" class="text-info">{{ 'Change password?'|trans }}</a>
             </section>
             <section class="w-full max-w-md">
-                <h2 class="text-3xl font-semibold mb-4">Preferences</h2>
+                <h2 class="text-3xl font-semibold mb-4">{{ 'Preferences'|trans }}</h2>
                 {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-3'}}) }}
                 {{ form_row(form.defaultCurrency) }}
-                <button type="submit" class="btn btn-primary btn-outline max-w-md">save</button>
+                <button type="submit" class="btn btn-primary btn-outline max-w-md">{{ 'save'|trans }}</button>
                 {{ form_end(form) }}
             </section>
     </article>

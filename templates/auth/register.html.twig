@@ -16,7 +16,7 @@
             {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'checkbox checkbox-primary'}}) }}
         </div>
 
-            <button type="submit" class="btn max-w-md">Register</button>
+            <button type="submit" class="btn max-w-md">{{ 'Register'|trans }}</button>
         {{ form_end(registrationForm) }}
     </article>
 {% endblock %}

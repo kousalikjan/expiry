@@ -7,11 +7,11 @@
             ></div>
             <div>
                 <h2 class="text-xl">{{ category.name }}</h2>
-                <p class="text-sm text-gray-600">{{ category.items|length }} items</p>
+                <p class="text-sm text-gray-600">{{ category.items|length }} {{ 'items'|trans }}</p>
             </div>
         </article>
         <div class="flex gap-8">
-            <a href="{{ path('app_items_category', {userId: app.user.id, catId: category.id}) }}" class="link link-info link-hover">Detail</a>
+            <a href="{{ path('app_items_category', {userId: app.user.id, catId: category.id}) }}" class="link link-info link-hover">{{ 'Detail'|trans }}</a>
             <button
             data-action="click->kebab-menu#toggle">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -22,7 +22,7 @@
     </div>
     <ul class="menu p-2 shadow rounded-box bg-base-100 w-52 absolute bottom-0 right-0 translate-y-full z-10 hidden"
     data-kebab-menu-target="content">
-        <li><a href="{{ path('app_category_edit', {userId: app.user.id, catId: category.id}) }}">Edit</a></li>
-        <li><a href="{{ path('app_category_delete', {userId: app.user.id, catId: category.id}) }}" class="text-error">Delete</a></li>
+        <li><a href="{{ path('app_category_edit', {userId: app.user.id, catId: category.id}) }}">{{ 'Edit'|trans }}</a></li>
+        <li><a href="{{ path('app_category_delete', {userId: app.user.id, catId: category.id}) }}" class="text-error">{{ 'Delete'|trans }}</a></li>
     </ul>
 </div>

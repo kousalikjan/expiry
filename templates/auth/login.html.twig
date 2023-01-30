@@ -5,7 +5,7 @@
 {% block body %}
     <article class="flex flex-col items-center my-16 gap-6">
         <div class="flex flex-col items-center gap-2">
-        <h1 class="h1">Sign in!</h1>
+        <h1 class="h1">{{ 'Sign in!'|trans }}</h1>
         {% if error %}
             <div class="text-error text-xl">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -16,20 +16,20 @@
                 <input type="email" id="username" name="_username" value="{{ last_username }}" class="input input-bordered w-full">
             </div>
             <div>
-                <label for="password">Password</label>
+                <label for="password">{{ 'Password'|trans }}</label>
                 <input type="password" id="password" name="_password" class="input input-bordered w-full">
             </div>
 
                 <label class="cursor-pointer flex items-center gap-4">
                     <input type="checkbox" class="toggle toggle-primary" name="_remember_me"/>
-                    Remember me
+                    {{ 'Remember me'|trans }}
                 </label>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button type="submit" class="btn max-w-md">Login</button>
+            <button type="submit" class="btn max-w-md">{{ 'Login'|trans }}</button>
         </form>
-        <a href="{{ path('app_forgot_password_request') }}" class="text-info">Forgotten password?</a>
+        <a href="{{ path('app_forgot_password_request') }}" class="text-info">{{ 'Forgotten password?'|trans }}</a>
     </article>
 
 {% endblock %}

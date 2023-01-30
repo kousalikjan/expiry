@@ -1,18 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Manage files{% endblock %}
+{% block title %}{{ 'Manage files'|trans }}{% endblock %}
 
 
 {% block breadcrumbs %}
-    <li><a href="{{ path('app_index') }}">Home</a></li>
-    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">Inventory</a></li>
+    <li><a href="{{ path('app_index') }}">{{ 'Home'|trans }}</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Inventory'|trans }}</a></li>
     <li><a href="{{ path('app_items_category', {userId: app.user.id, catId: category.id}) }}">{{ category.name }}</a></li>
     <li><a href="{{ path('app_item_edit', {userId: app.user.id, catId: category.id, itemId: item.id}) }}">{{ item.name }}</a></li>
 {% endblock %}
 
 {% block body %}
     <article class="flex flex-col mt-6 mb-24 mx-8 gap-8 items-center">
-        <h1 class="h1">Manage files</h1>
+        <h1 class="h1">{{ 'Manage files'|trans }}</h1>
 
         <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id})}}{% if redirect %}?redirect=1{% endif %}" method="POST" enctype="multipart/form-data"
         class="form-control w-full max-w-md gap-3">
@@ -22,7 +22,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                     </svg>
-                    Upload
+                    {{ 'Upload'|trans }}
                 </span>
             </button>
         </form>
@@ -36,9 +36,9 @@
         {% endfor %}
         </ul>
         {% if redirect %}
-            <a href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}" class="btn btn-primary w-full max-w-md">finish</a>
+            <a href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}" class="btn btn-primary w-full max-w-md">{{ 'finish'|trans }}</a>
         {% else %}
-            <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">save</a>
+            <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">{{ 'save'|trans }}</a>
         {% endif %}
         </article>
 {% endblock %}
