@@ -18,7 +18,7 @@ class DefaultSettingType extends AbstractType
             ->add('defaultCurrency', ChoiceType::class, [
                 'required' => true,
                 'choices' => ['CZK' => 'CZK', 'EUR' => 'EUR', 'USD' => 'USD'],
-                'placeholder' => false
+                'placeholder' => false,
             ]);
     }
 

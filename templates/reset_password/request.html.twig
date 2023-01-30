@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% block title %}{{ 'Reset your password'|trans }}{% endblock %}
 
 {% block body %}
     {% for flash_error in app.flashes('reset_password_error') %}
@@ -8,17 +8,17 @@
     {% endfor %}
 
 <article class="flex flex-col items-center my-16 gap-10 mx-8 items-center">
-    <h1 class="h1">Reset password</h1>
+    <h1 class="h1">{{ 'Reset password'|trans }}</h1>
 
     {{ form_start(requestForm, {'attr': {'class': 'form-control w-full max-w-md gap-0.5'}}) }}
         {{ form_row(requestForm.email) }}
         <div>
             <small>
-               We will send you a link to reset your password.
+                {{ 'We will send you a link to reset your password'|trans }}
             </small>
         </div>
 
-        <button class="btn btn-primary mt-8">Send password reset email</button>
+        <button class="btn btn-primary mt-8">{{ 'Send password reset email'|trans }}</button>
     {{ form_end(requestForm) }}
 </article>
 {% endblock %}

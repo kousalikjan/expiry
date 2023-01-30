@@ -20,7 +20,7 @@ class SelectCategoryType extends AbstractType
                 'class' => Category::class,
                 'choices' => $options['allCategories'],
                 'choice_label' => 'name',
-                'placeholder' => 'Delete items in '.$options['current']
+                'placeholder' => 'Delete items'
             ]);
     }
 
@@ -28,8 +28,7 @@ class SelectCategoryType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => null,
-            'allCategories' => [],
-            'current' => null,
+            'allCategories' => []
         ]);
     }
 }
