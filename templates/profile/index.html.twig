@@ -16,8 +16,13 @@
             </section>
             <section class="w-full max-w-md">
                 <h2 class="text-3xl font-semibold mb-4">{{ 'Preferences'|trans }}</h2>
-                {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-3'}}) }}
+                {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
+                {{ form_row(form.preferredLocale) }}
                 {{ form_row(form.defaultCurrency) }}
+                <div class="flex gap-4">
+                    {{ form_label(form.allowNotifications) }}
+                    {{ form_widget(form.allowNotifications, {'attr': {'class': 'toggle toggle-secondary'}}) }}
+                </div>
                 <button type="submit" class="btn btn-primary btn-outline max-w-md">{{ 'save'|trans }}</button>
                 {{ form_end(form) }}
             </section>

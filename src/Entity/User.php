@@ -41,11 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 3, nullable: true)]
     private ?string $defaultCurrency = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $preferredLocale = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->allowNotifications = true;
-        $this->defaultCurrency = 'CZK';
     }
 
     public function getId(): ?int
@@ -168,6 +170,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDefaultCurrency(?string $defaultCurrency): self
     {
         $this->defaultCurrency = $defaultCurrency;
+
+        return $this;
+    }
+
+    public function getPreferredLocale(): ?string
+    {
+        return $this->preferredLocale;
+    }
+
+    public function setPreferredLocale(?string $preferredLocale): self
+    {
+        $this->preferredLocale = $preferredLocale;
 
         return $this;
     }

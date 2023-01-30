@@ -56,6 +56,8 @@ If an account matching your email exists, then an email was just sent that conta
 If you don't receive an email please check your spam folder or: 'Pokud vám email nepřišel, zkontrolujte prosím vaši spam složku, nebo '
 try again: 'zkuste znovu zažádat o obnovení'
 Default currency: 'Preferovaná měna'
+Preferred language: 'Jazyk aplikace'
+Allow notifications: 'Přijímat notifikace'
 CZK: CZK
 USD: USD
 EUR: EUR
