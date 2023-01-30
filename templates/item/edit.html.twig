@@ -14,7 +14,7 @@
         <h1 class="h1">{{ item.name }}</h1>
         <a href="{{ path('app_item_file_edit', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id})}}"
         class="btn btn-outline btn-info w-full max-w-md">{{ 'Manage files'|trans }}</a>
-        {% include 'item/_create_edit_form.html.twig' with {buttonText: 'save'} %}
+        {% include 'item/_create_edit_form.html.twig' with {buttonText: 'save'|trans} %}
         <div class="flex mt-6 w-full justify-center">
         {% include 'components/_delete_link.html.twig' with {
             'action': path('app_item_delete', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id}),

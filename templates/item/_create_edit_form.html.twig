@@ -10,7 +10,7 @@
     {{ form_row(form.purchase) }}
     <div class="divider my-2"></div>
     {# Expiration/Warranty #}
-        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Expiration/Warranty?", 'toggled': warrantyToggled} %}
+        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': 'Expiration/Warranty?'|trans, 'toggled': warrantyToggled} %}
             {% block form_body %}
 
                 {% include 'form/_date_adder.html.twig' with {
@@ -25,7 +25,7 @@
 
 
     {# Additional information #}
-    {% embed 'form/_toggle_form.html.twig' with {'toggle_label': "Additional information?", 'toggled': additionalToggled} %}
+    {% embed 'form/_toggle_form.html.twig' with {'toggle_label': 'Additional information?'|trans, 'toggled': additionalToggled} %}
         {% block form_body %}
             {{ include('form/_price_currency_input.html.twig') }}
             {{ form_row(form.vendor) }}

@@ -12,6 +12,6 @@
 {% block body %}
     <article class="flex flex-col mt-6 mb-24 mx-8 gap-6 items-center">
         <h1 class="h1">{{ 'New item'|trans }}</h1>
-        {% include 'item/_create_edit_form.html.twig' with {buttonText: 'continue'} %}
+        {% include 'item/_create_edit_form.html.twig' with {buttonText: 'continue'|trans} %}
     </article>
 {% endblock %}
