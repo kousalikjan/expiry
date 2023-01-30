@@ -78,7 +78,7 @@ class CategoryController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $moveToCategory = $form->get('category')->getData();
             $this->categoryService->remove($category, $moveToCategory, true);
-            $this->addFlash('success', $category->getName() . ' successfully deleted!');
+            $this->addFlash('success', 'Category successfully deleted!');
             return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
         return $this->render('category/delete.html.twig', ['category' => $category, 'form' => $form]);

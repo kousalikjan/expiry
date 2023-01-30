@@ -21,7 +21,7 @@
         <div class="toast toast-bottom toast-end bottom-10 lg:top-20 absolute z-50">
             {% for message in app.flashes('error') %}
                 <div class="flex bg-error p-3.5 rounded-xl gap-8 justify-between items-center" {{ stimulus_controller('toast-hide') }}>
-                    <span>{{ message }}</span>
+                    <span>{{ message|trans }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" data-action="click->toast-hide#close">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -29,7 +29,7 @@
             {% endfor %}
             {% for message in app.flashes('success') %}
                 <div class="flex bg-success p-3.5 rounded-xl gap-8 justify-between items-center" {{ stimulus_controller('toast-hide') }}>
-                    <span>{{ message }}</span>
+                    <span>{{ message|trans }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" data-action="click->toast-hide#close">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -37,7 +37,7 @@
             {% endfor %}
             {% for message in app.flashes('info') %}
                 <div class="flex bg-info p-3.5 rounded-xl gap-8 justify-between items-center" {{ stimulus_controller('toast-hide') }}>
-                    <span>{{ message }}</span>
+                    <span>{{ message|trans }}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" data-action="click->toast-hide#close">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>

@@ -20,17 +20,11 @@ class LocaleSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {
-            dump('no session');
             return;
         }
 
-        // session exists
-        //dump('base: ' . $request->getLocale());
         $request->setLocale($request->getSession()->get('_locale', $request->getLocale()));
         $this->translator->setLocale($request->getLocale());
-       // dump('request locale: ' . $request->getLocale());
-        //dump('translator locale: ' . $this->translator->getLocale());
-
     }
 
     public static function getSubscribedEvents()
