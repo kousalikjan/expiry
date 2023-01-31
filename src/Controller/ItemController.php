@@ -89,16 +89,14 @@ class ItemController extends AbstractController
             'categories' => $user->getCategories()
         ]);
 
-        $form->handleRequest($request);
+        $oldExpiration = null;
+        if( $item->getWarranty() !== null)
+            $oldExpiration = clone $item->getWarranty()->getExpiration();
 
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
         {
-            if($item->getWarranty() !== null && $item->getWarranty()->getExpiration() === null)
-            {
-                // User has toggled off the warranty checkbox
-                $this->itemService->removeWarranty($item);
-            }
-
+            $this->itemService->handleWarrantyChanges($item, $oldExpiration);
             $this->itemService->save($item, true);
             $this->addFlash('success', 'Item successfully updated!');
 

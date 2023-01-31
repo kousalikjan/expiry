@@ -27,12 +27,6 @@ class ItemService
         $this->itemRepository->save($item, $flush);
     }
 
-    public function removeWarranty(Item $item): void
-    {
-        $this->warrantyRepository->remove($item->getWarranty());
-        $item->setNullWarranty();
-    }
-
     public function remove(Item $item, bool $flush = false)
     {
         foreach ($item->getItemFiles() as $file)
@@ -42,5 +36,33 @@ class ItemService
         }
         $this->itemRepository->remove($item, $flush);
     }
+
+    public function find(int $id): Item|null
+    {
+        return $this->itemRepository->find($id);
+    }
+
+    public function handleWarrantyChanges(Item $item, ?\DateTime $oldExpiration): void
+    {
+        if($item->getWarranty() !== null && $item->getWarranty()->getExpiration() === null)
+        {
+            // User has toggled off the warranty checkbox
+            $this->removeWarranty($item);
+        }
+
+        if($item->getWarranty()?->getExpiration() !== null && $item->getWarranty()->getExpiration() != $oldExpiration )
+        {
+            // User has changed expiration date
+            $item->getWarranty()->setNotified(false);
+        }
+
+    }
+
+    private function removeWarranty(Item $item): void
+    {
+        $this->warrantyRepository->remove($item->getWarranty());
+        $item->setNullWarranty();
+    }
+
 
 }
