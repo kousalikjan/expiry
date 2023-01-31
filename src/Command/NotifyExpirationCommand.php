@@ -13,6 +13,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Translation\LocaleSwitcher;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
     name: 'app:notify-expiration',
@@ -24,13 +26,18 @@ class NotifyExpirationCommand extends Command
     private WarrantyRepository $warrantyRepository;
     private UserRepository $userRepository;
     private MailerInterface $mailer;
+    private LocaleSwitcher $localeSwitcher;
+    private TranslatorInterface $translator;
 
-    public function __construct(WarrantyRepository $warrantyRepository, UserRepository $userRepository, MailerInterface $mailer)
+
+    public function __construct(WarrantyRepository $warrantyRepository, UserRepository $userRepository, MailerInterface $mailer, LocaleSwitcher $localeSwitcher, TranslatorInterface $translator)
     {
         parent::__construct();
         $this->warrantyRepository = $warrantyRepository;
         $this->userRepository = $userRepository;
         $this->mailer = $mailer;
+        $this->localeSwitcher = $localeSwitcher;
+        $this->translator = $translator;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -57,28 +64,31 @@ class NotifyExpirationCommand extends Command
                 //$warranty->setNotified(true);
                 //$this->warrantyRepository->save($warranty);
             }
-            $email = (new TemplatedEmail())->to(new Address($user->getEmail()));
 
-            if($length === 1)
-                $email->subject($warranties[0]->getItem()->getName() . 'is about to expire!');
-            else
-                $email->subject($length . ' items are about to expire!');
+            $this->localeSwitcher->runWithLocale($user->getPreferredLocale(), function() use ($user, $length, $warranties, $io) {
 
-            $email->htmlTemplate('emails/expiration.html.twig')
-                ->context([
-                    'warranties' => $warranties
-                ]);
+                $email = (new TemplatedEmail())->to(new Address($user->getEmail()));
 
-            try {
-                $this->mailer->send($email);
-            } catch (TransportExceptionInterface $e)
-            {
-                dd($e);
-            }
+                if($length === 1) {
+                    $email->subject($warranties[0]->getItem()->getName() . ' ' . $this->translator->trans('is about to expire!'));
+                }
+                else
+                    $email->subject($length . ' '. $this->translator->trans('items are about to expire!'));
+
+                $email->htmlTemplate('emails/expiration.html.twig')
+                    ->context([
+                        'warranties' => $warranties
+                    ]);
+
+                try {
+                    $this->mailer->send($email);
+                } catch (TransportExceptionInterface $e)
+                {
+                    $io->error($e->getMessage());
+                }
+            });
+
         }
-
-        //$this->warrantyRepository->flush();
-
         return Command::SUCCESS;
     }
 }
