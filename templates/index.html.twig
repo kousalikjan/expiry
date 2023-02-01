@@ -11,7 +11,8 @@
             <a href="{{ path('app_categories', {id: app.user.id}) }}" class="btn btn-primary">{{ 'See inventory'|trans }}</a>
         {% else %}
             <p class="text-lg">{{ 'You must be registered to use this application!'|trans }}</p>
-            <a class="btn btn-primary">{{ 'Sign up'|trans }}</a>
+            <a href="{{ path('app_register') }}" class="btn btn-sm btn-primary lg:btn-md">{{ 'Sign up'|trans }}</a>
+            <a href="{{ path('app_login') }}" class="btn btn-sm btn-ghost lg:btn-md">{{ 'Login'|trans }}</a>
         {% endif %}
     </div>
 

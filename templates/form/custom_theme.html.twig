@@ -15,7 +15,11 @@
         {{- form_label(form) -}}
         {{- form_widget(form, widget_attr) -}}
         <div class="text-error font-semibold">
-        {{- form_errors(form) -}}
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message|trans }}</li>
+                {% endfor %}
+            </ul>
         </div>
         {{- form_help(form) -}}
     </div>
