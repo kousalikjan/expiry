@@ -914,10 +914,15 @@
   resolved "https://registry.npmjs.org/@hotwired/stimulus-webpack-helpers/-/stimulus-webpack-helpers-1.0.1.tgz"
   integrity sha512-wa/zupVG0eWxRYJjC1IiPBdt3Lruv0RqGN+/DTMmUWUyMAEB27KXmVY6a8YpUVTM7QwVuaLNGW4EqDgrS2upXQ==
 
-"@hotwired/stimulus@^3.2.1":
+"@hotwired/stimulus@^3.0.0":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.1.tgz#e3de23623b0c52c247aba4cd5d530d257008676b"
   integrity sha512-HGlzDcf9vv/EQrMJ5ZG6VWNs8Z/xMN+1o2OhV1gKiSG6CqZt5MCBB1gRg5ILiN3U0jEAxuDTNPRfBcnZBDmupQ==
+
+"@hotwired/turbo@^7.0.1":
+  version "7.2.5"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-7.2.5.tgz#2d9d6bde8a9549c3aea8970445ade16ffd56719a"
+  integrity sha512-o5PByC/mWkmTe4pWnKrixhPECJUxIT/NHtxKqjq7n9Fj6JlNza1pgxdTCJVIq+PI0j95U+7mA3N4n4A/QYZtZQ==
 
 "@jest/schemas@^29.0.0":
   version "29.0.0"
@@ -1037,6 +1042,9 @@
     acorn "^8.0.5"
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
+
+"@symfony/ux-turbo@file:vendor/symfony/ux-turbo/assets":
+  version "0.1.0"
 
 "@symfony/webpack-encore@^4.0.0":
   version "4.2.0"
