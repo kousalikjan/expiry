@@ -21,8 +21,8 @@
         </div>
         {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-8'}}) }}
         {{ form_row(form.category) }}
-            <button type="submit" class="btn btn-error max-w-md col-span-2 block" data-action="submit-delete-category#onSubmit"
-                    {{ stimulus_controller('submit-delete-category', {
+            <button type="submit" class="btn btn-error max-w-md col-span-2 block" data-action="click->sweetalert-confirm#onSubmit"
+                    {{ stimulus_controller('sweetalert-confirm', {
                         title: 'Delete'|trans ~ ' ' ~ category.name,
                         text: 'You won\'t be able to revert this!'|trans,
                         confirmButtonText: 'Yes, delete it!'|trans

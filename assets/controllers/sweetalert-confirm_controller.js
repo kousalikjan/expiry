@@ -1,12 +1,14 @@
 import { Controller } from '@hotwired/stimulus';
 import Swal from 'sweetalert2'
+import { visit } from '@hotwired/turbo';
 
 export default class extends Controller {
 
     static values = {
         title: String,
         text: String,
-        confirmButtonText: String
+        confirmButtonText: String,
+        urlConfirm: {type: String, default: 'none'}
     }
 
     onSubmit(event) {
@@ -21,7 +23,11 @@ export default class extends Controller {
             confirmButtonText: this.confirmButtonTextValue,
         }).then((result) => {
             if (result.isConfirmed) {
-                this.element.parentNode.submit();
+                console.log(this.urlConfirmValue);
+                if(this.urlConfirmValue === 'none')
+                    this.element.parentNode.submit();
+                else
+                    visit(this.urlConfirmValue)
             }
         })
     }
