@@ -35,6 +35,7 @@ class UserController extends AbstractController
             $this->addFlash('success', 'User successfully updated!');
             return $this->redirectToRoute('app_set_locale', ['_locale' => $user->getPreferredLocale()]);
         }
-        return $this->render('profile/index.html.twig', ['user' => $user, 'form' => $form]);
+        return $this->render('profile/index.html.twig', ['user' => $user, 'form' => $form
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 }

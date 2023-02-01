@@ -58,7 +58,11 @@ class CategoryController extends AbstractController
             $this->addFlash('success', 'Category successfully created!');
             return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
-        return $this->render('category/create_edit.html.twig', ['form' => $form->createView(), 'create' => !$category->getId(), 'category' => $category]);
+        return $this->render('category/create_edit.html.twig', [
+            'form' => $form->createView(),
+            'create' => !$category->getId(),
+            'category' => $category
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
 
     }
 
@@ -81,7 +85,8 @@ class CategoryController extends AbstractController
             $this->addFlash('success', 'Category successfully deleted!');
             return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
-        return $this->render('category/delete.html.twig', ['category' => $category, 'form' => $form]);
+        return $this->render('category/delete.html.twig', ['category' => $category, 'form' => $form
+            ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
 }

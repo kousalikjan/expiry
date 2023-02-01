@@ -75,7 +75,8 @@ class ItemController extends AbstractController
         }
         return $this->render('item/create.html.twig', ['form' => $form->createView(),
             'warrantyToggled' => $item->warrantyToggled(),
-            'additionalToggled' => $item->additionalToggled()]);
+            'additionalToggled' => $item->additionalToggled()
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     #[Route('/users/{userId}/categories/{catId}/items/{itemId}/edit', name: 'app_item_edit', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'],  defaults: ['redirect' => false])]
@@ -112,7 +113,7 @@ class ItemController extends AbstractController
             'form' => $form->createView(),
             'warrantyToggled' => $item->warrantyToggled(),
             'additionalToggled' => $item->additionalToggled()
-        ]);
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     #[Route('/users/{userId}/categories/{catId}/items/{itemId}/delete', name: 'app_item_delete', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'])]
