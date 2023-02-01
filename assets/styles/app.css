@@ -6,6 +6,9 @@
     .h1 {
         @apply font-extrabold text-4xl text-gray-800
     }
+    .btn {
+        @apply no-animation
+    }
 }
 
 .justify-self-flex-end {
