@@ -36,9 +36,31 @@
         {% endfor %}
         </ul>
         {% if redirect %}
-            <a href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}" class="btn btn-primary w-full max-w-md">{{ 'finish'|trans }}</a>
+            <a
+                href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}"
+                class="btn btn-primary w-full max-w-md"
+                {% if item.itemFiles|length < 1 %}
+                    {{ stimulus_controller('sweetalert-confirm', {
+                        title: 'No files uploaded'|trans,
+                        text: 'Do you want to finish the item without any uploaded file?'|trans,
+                        confirmButtonText: 'Yes, finish!'|trans,
+                        cancelButtonText: 'Cancel'|trans,
+                        urlConfirm: path('app_items_category', {userId: user.id, catId: category.id}),
+                        icon: 'question',
+                        confirmColor: '37cdbe'
+                    }) }}
+                    data-action="click->sweetalert-confirm#onSubmit"
+                {% endif %}
+            >
+                {{ 'finish'|trans }}
+            </a>
         {% else %}
-            <a href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}" class="btn btn-primary w-full max-w-md">{{ 'save'|trans }}</a>
+            <a
+                href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}"
+                class="btn btn-primary w-full max-w-md"
+            >
+                {{ 'save'|trans }}
+            </a>
         {% endif %}
         </article>
 {% endblock %}

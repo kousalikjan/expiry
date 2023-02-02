@@ -17,7 +17,7 @@
                 'text': 'Add item'|trans,} %}
         </article>
         <section class="flex flex-col gap-8 w-full max-w-xl">
-            {% for item in category.items %}
+            {% for item in items %}
                 {{ include('item/_item_preview.html.twig') }}
             {% endfor %}
             <div class="divider"></div>
@@ -30,7 +30,9 @@
 
             {% include 'components/_delete_link.html.twig' with {
                 'action': path('app_category_delete', {userId: app.user.id, catId: category.id}),
-                'text': 'Delete'|trans ~ ' ' ~ category.name} %}
+                'text': 'Delete'|trans ~ ' ' ~ category.name,
+                'confirm': false
+            } %}
         </article>
     </article>
 {% endblock %}

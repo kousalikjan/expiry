@@ -22,7 +22,10 @@
         <div class="flex mt-6 w-full justify-center">
         {% include 'components/_delete_link.html.twig' with {
             'action': path('app_item_delete', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id}),
-            'text': 'Delete'|trans ~ ' ' ~ item.name,} %}
+            'text': 'Delete'|trans ~ ' ' ~ item.name,
+             cancelButtonText: 'Cancel'|trans,
+            'confirm': true
+        } %}
         </div>
     </article>
 {% endblock %}

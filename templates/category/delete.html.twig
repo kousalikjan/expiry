@@ -25,7 +25,8 @@
                     {{ stimulus_controller('sweetalert-confirm', {
                         title: 'Delete'|trans ~ ' ' ~ category.name,
                         text: 'You won\'t be able to revert this!'|trans,
-                        confirmButtonText: 'Yes, delete it!'|trans
+                        confirmButtonText: 'Yes, delete it!'|trans,
+                        cancelButtonText: 'Cancel'|trans,
                     }) }}>
                 {{ 'Delete'|trans }} {{ category.name }}
             </button>

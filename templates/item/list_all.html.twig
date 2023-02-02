@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'All items'|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">{{ 'Home'|trans }}</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Inventory'|trans }}</a></li>
+    <li><a href="#">{{ 'All items'|trans }}</a></li>
+{% endblock %}
+
+{% block body %}
+    <article class="m-8 mt-6 flex flex-col items-center gap-6">
+        <h1 class="h1">{{ 'All items'|trans }}</h1>
+        <article class="flex flex-col items-center w-full">
+            {% include 'components/_add_link.html.twig' with {
+                'action': path('app_item_create', {userId: app.user.id}),
+                'text': 'Add item'|trans,} %}
+        </article>
+        <section class="flex flex-col gap-8 w-full max-w-xl">
+            {% for item in items %}
+                {% include('item/_item_preview.html.twig') with {showCategory: true} %}
+            {% endfor %}
+        </section>
+    </article>
+{% endblock %}

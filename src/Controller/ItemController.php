@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ItemController extends AbstractController
 {
@@ -33,14 +34,25 @@ class ItemController extends AbstractController
         requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
-    public function index(User $user, Category $category): Response
+    public function listInCategory(User $user, ?Category $category): Response
     {
         $this->denyAccessUnlessGranted('access', $user);
         $this->denyAccessUnlessGranted('access', $category);
 
-        return $this->render('item/index.html.twig', [
-            'category' => $category]);
+        return $this->render('item/list_in_category.html.twig', [
+            'category' => $category,
+            'items' => $category->getItems()]);
     }
+
+    #[Route('/users/{id}/items', name: 'app_items', requirements: ['id' => '\d+'])]
+    #[IsGranted('access', 'user')]
+    public function listAll(User $user): Response
+    {
+        return $this->render('item/list_all.html.twig', [
+            'items' => $this->itemService->findUserItems($user->getId())
+        ]);
+    }
+
 
     #[Route('/users/{userId}/items/create', name: 'app_item_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
     #[Route('/users/{userId}/categories/{catId}/items/create', name: 'app_item_create_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]

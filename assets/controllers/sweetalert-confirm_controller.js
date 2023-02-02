@@ -8,22 +8,26 @@ export default class extends Controller {
         title: String,
         text: String,
         confirmButtonText: String,
-        urlConfirm: {type: String, default: 'none'}
+        cancelButtonText: String,
+        urlConfirm: {type: String, default: 'none'},
+        icon: {type: String, default: 'warning'},
+        confirmColor: {type: String, default: '#dc5b5b'}
     }
 
     onSubmit(event) {
         event.preventDefault();
+        console.log(this.confirmColorValue);
         Swal.fire({
             title: this.titleValue,
             text: this.textValue,
-            icon: 'warning',
+            icon: this.iconValue,
             showCancelButton: true,
+            cancelButtonText: this.cancelButtonTextValue,
             cancelButtonColor: '#b4bbc2',
-            confirmButtonColor: '#dc5b5b',
+            confirmButtonColor: this.confirmColorValue,
             confirmButtonText: this.confirmButtonTextValue,
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(this.urlConfirmValue);
                 if(this.urlConfirmValue === 'none')
                     this.element.parentNode.submit();
                 else
