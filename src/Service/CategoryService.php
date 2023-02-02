@@ -46,7 +46,6 @@ class CategoryService
             }
         }
         $this->categoryRepository->remove($category, true);
-
     }
 
 

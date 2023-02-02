@@ -64,5 +64,10 @@ class ItemService
         $item->setNullWarranty();
     }
 
+    public function findUserItems(int $userId): array
+    {
+        return $this->itemRepository->findUserItems($userId);
+    }
+
 
 }

@@ -10,6 +10,7 @@ use App\Form\SelectCategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\ItemRepository;
 use App\Service\CategoryService;
+use App\Service\ItemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,11 +20,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class CategoryController extends AbstractController
 {
     private CategoryService $categoryService;
+    private ItemService $itemService;
 
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(CategoryService $categoryService, ItemService $itemService)
     {
         $this->categoryService = $categoryService;
+        $this->itemService = $itemService;
     }
 
     #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
@@ -31,7 +34,8 @@ class CategoryController extends AbstractController
     {
         $this->denyAccessUnlessGranted('access', $user);
         return $this->render('category/index.html.twig', [
-            'categories' => $user->getCategories()]);
+            'categories' => $user->getCategories(),
+            'itemsCount' => count($this->itemService->findUserItems($user->getId()))]);
     }
 
     #[Route('/users/{userId}/categories/create', name: 'app_category_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]

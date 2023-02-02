@@ -39,6 +39,21 @@ class ItemRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Item[] Items of given user
+     */
+    public function findUserItems(int $userId) : array
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'i_category')
+            ->innerJoin('i_category.owner', 'i_owner')
+            ->andWhere('i_owner.id = :userId')
+            ->setParameter('userId', $userId)
+            ->orderBy('i_category.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Item[] Returns an array of Item objects
 //     */
@@ -63,4 +78,5 @@ class ItemRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }
