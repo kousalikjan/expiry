@@ -69,5 +69,13 @@ class ItemService
         return $this->itemRepository->findUserItems($userId);
     }
 
+    public function findCategoryItemsAndSort(int $catId, ?string $sort): array
+    {
+        if($sort === 'expiration' || $sort === null)
+            return $this->itemRepository->findCategoryItemsSortWarranty($catId);
+        else
+            return $this->itemRepository->findCategoryItemsAndSort($catId, $sort);
+    }
+
 
 }

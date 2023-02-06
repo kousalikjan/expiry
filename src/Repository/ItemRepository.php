@@ -54,6 +54,29 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findCategoryItemsAndSort(int $catId, string $sort): array
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'i_category')
+            ->andWhere('i_category.id = :catId')
+            ->setParameter('catId', $catId)
+            ->orderBy('i.' . $sort)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findCategoryItemsSortWarranty(int $catId): array
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'i_category')
+            ->leftJoin('i.warranty', 'w')
+            ->andWhere('i_category.id = :catId')
+            ->setParameter('catId', $catId)
+            ->orderBy('w.expiration')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Item[] Returns an array of Item objects
 //     */

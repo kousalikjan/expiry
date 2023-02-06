@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\User;
 use App\Factory\ItemFactory;
+use App\Form\FilterItemsType;
 use App\Form\ItemType;
 use App\Repository\ItemFileRepository;
 use App\Repository\ItemRepository;
@@ -29,27 +30,42 @@ class ItemController extends AbstractController
         $this->itemService = $itemService;
     }
 
-    #[Route('/users/{userId}/categories/{catId}/items',
-        name: 'app_items_category',
-        requirements: ['userId' => '\d+', 'catId' => '\d+'])]
+    #[Route('/users/{userId}/categories/{catId}/items', name: 'app_items_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
-    public function listInCategory(User $user, ?Category $category): Response
+    public function listInCategory(User $user, ?Category $category, Request $request): Response
     {
         $this->denyAccessUnlessGranted('access', $user);
         $this->denyAccessUnlessGranted('access', $category);
 
+
+        $form = $this->createForm(FilterItemsType::class, null, ['selected' => $request->query->get('sort')]);
+        $items = $this->itemService->findCategoryItemsAndSort($category->getId(), $request->query->get('sort'));
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $sort = $form->get('sort')->getData();
+            return $this->redirectToRoute('app_items_category', ['userId' => $user->getId(), 'catId' => $category->getId(), 'sort' => $sort]);
+        }
+
         return $this->render('item/list_in_category.html.twig', [
             'category' => $category,
-            'items' => $category->getItems()]);
+            'items' => $items,
+            'form' => $form->createView()
+            ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     #[Route('/users/{id}/items', name: 'app_items', requirements: ['id' => '\d+'])]
     #[IsGranted('access', 'user')]
     public function listAll(User $user): Response
     {
+
+        $form = $this->createForm(FilterItemsType::class);
+
         return $this->render('item/list_all.html.twig', [
-            'items' => $this->itemService->findUserItems($user->getId())
+            'items' => $this->itemService->findUserItems($user->getId()),
+            'form' => $form->createView()
         ]);
     }
 
