@@ -11,7 +11,7 @@
     <article class="base-article">
         <h1 class="h1">{{ 'Notifications'|trans }}</h1>
         {% if items|length > 0 %}
-        <p>{{ 'These items have expired since your last visit'|trans }}!</p>
+        <p>{{ 'These items are about to expire (or has already expired)'|trans }}!</p>
         <a href="{{ path('app_notifications_clear', {id: app.user.id}) }}" class="btn btn-info btn-outline">{{ 'Clear notifications'|trans }}</a>
         <section class="flex flex-col gap-8 w-full max-w-xl">
             {% for item in items %}

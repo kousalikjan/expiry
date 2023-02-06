@@ -1,15 +1,17 @@
 <article class="card card-side bg-base-100 shadow-xl border border-slate-100 h-28">
     <figure>
-        <img src="{% if file.mimeType matches '/image*/' %}
-{{ path('app_item_file_download', {
+        <img
+        {% if file.mimeType matches '/image*/' %}
+        src="{{ path('app_item_file_download', {
             userId: user.id,
             catId: category.id,
             itemId: item.id,
-            fileId: file.id
-        }) }}
+            fileId: file.id,
+            thumbnail: true,
+        }) }}"
         {% else %}
-            {{ asset('img/pdf-icon.jpg') }}
-        {% endif %}"
+            src="{{ asset('img/pdf-icon.jpg') }}"
+        {% endif %}
              alt="Photo for {{ item.name }}" class="h-full w-24"/>
     </figure>
     <div class="flex items-center justify-around w-full relative">

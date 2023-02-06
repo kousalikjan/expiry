@@ -39,6 +39,17 @@ class ItemFileRepository extends ServiceEntityRepository
         }
     }
 
+    public function findImageFiles(int $itemId): array
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.mimeType LIKE :image')
+            ->setParameter(':image', '%'.'image'.'%')
+            ->andWhere('f.item = :itemId')
+            ->setParameter('itemId', $itemId)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return ItemFile[] Returns an array of ItemFile objects
 //     */
@@ -63,4 +74,5 @@ class ItemFileRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

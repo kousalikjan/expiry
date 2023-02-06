@@ -93,10 +93,10 @@ class ItemFileController extends AbstractController
         }
 
         // store file and get its filename
-        $filename = $uploaderHelper->uploadFile($uploadedFile, $uploadedFile->getMimeType() === "image/jpeg");
-
+        $filename = $uploaderHelper->uploadFile($uploadedFile, preg_match('/image\/*/', $uploadedFile->getMimeType()));
         $itemFile = new ItemFile($item);
         $itemFile->setFilename($filename);
+        $itemFile->setThumbnail(preg_match('/image\/*/', $uploadedFile->getMimeType()));
         $itemFile->setOriginalFilename($uploadedFile->getClientOriginalName() ?? $filename);
         $itemFile->setMimeType($uploadedFile->getMimeType() ?? 'application/octet-stream');
 
@@ -119,9 +119,13 @@ class ItemFileController extends AbstractController
     {
         $this->denyAccessUnlessGranted('access', $item);
 
-        $response = new StreamedResponse(function () use ($file, $uploaderHelper) {
+        $response = new StreamedResponse(function () use ($file, $uploaderHelper, $request) {
             $outputStream = fopen('php://output', 'wb');
-            $fileStream = $uploaderHelper->readStream($file->getItemFilePath());
+
+            if($request->query->get('thumbnail'))
+                $fileStream = $uploaderHelper->readStream($file->getItemFileThumbnailPath());
+            else
+                $fileStream = $uploaderHelper->readStream($file->getItemFilePath());
             stream_copy_to_stream($fileStream, $outputStream);
         });
 
@@ -151,6 +155,8 @@ class ItemFileController extends AbstractController
 
         $this->itemFileRepository->remove($file, true);
         $uploaderHelper->deleteFile($file->getItemFilePath());
+        if($file->isThumbnail())
+            $uploaderHelper->deleteFile($file->getItemFileThumbnailPath());
 
         return $this->redirectToRoute('app_item_file_edit_redirect', [
             'userId' => $user->getId(),
@@ -158,6 +164,28 @@ class ItemFileController extends AbstractController
             'itemId' => $item->getId(),
             'redirect'=> $request->query->get('redirect'),
         ]);
+    }
+
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/thumbnail', name: 'app_item_thumbnail', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    public function getItemThumbnail(User $user, Category $category, Item $item, UploaderHelper $uploaderHelper): Response
+    {
+        $this->denyAccessUnlessGranted('access', $item);
+        $items = $this->itemFileRepository->findImageFiles($item->getId());
+        if(count($items) <= 0)
+        {
+            return $this->file('img/no-image.png');
+        }
+        $response = new StreamedResponse(function () use ($uploaderHelper, $items)
+        {
+            $outputStream = fopen('php://output', 'wb');
+            $fileStream = $uploaderHelper->readStream($items[0]->getItemFileThumbnailPath());
+            stream_copy_to_stream($fileStream, $outputStream);
+        });
+        $response->headers->set('Content-Type', $items[0]->getMimeType());
+        return $response;
     }
 
 

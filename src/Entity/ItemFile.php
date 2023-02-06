@@ -27,6 +27,9 @@ class ItemFile
     #[ORM\Column(length: 255)]
     private ?string $mimeType = null;
 
+    #[ORM\Column]
+    private ?bool $thumbnail = null;
+
     public function __construct(Item $item)
     {
         $this->item = $item;
@@ -80,6 +83,29 @@ class ItemFile
 
     public function getItemFilePath(): string
     {
-        return UploaderHelper::ITEM_FILE.DIRECTORY_SEPARATOR.$this->getFilename();
+        return UploaderHelper::ITEM_FILE
+            .DIRECTORY_SEPARATOR
+            .$this->getFilename();
+    }
+
+    public function getItemFileThumbnailPath(): string
+    {
+        return UploaderHelper::ITEM_FILE
+            .DIRECTORY_SEPARATOR
+            .UploaderHelper::THUMBNAIL
+            .DIRECTORY_SEPARATOR
+            .$this->getFilename();
+    }
+
+    public function isThumbnail(): ?bool
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(bool $thumbnail): self
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
     }
 }
