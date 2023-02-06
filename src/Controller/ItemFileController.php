@@ -66,7 +66,7 @@ class ItemFileController extends AbstractController
                 'message' => 'Please select a file to upload!'
             ]),
                 new File([
-                'maxSize' => '5M',
+                'maxSize' => '15M',
                 'mimeTypes' => [
                     'image/*',
                     'application/pdf',
@@ -75,14 +75,15 @@ class ItemFileController extends AbstractController
                     'application/vnd.ms-excel',
                     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
                 ],
-                'mimeTypesMessage' => 'Invalid mime type!'
+                'mimeTypesMessage' => 'Invalid mime type!',
             ])]
         );
 
         if($violations->count() > 0) {
             /** @var ConstraintViolation $violation */
+
             $violation = $violations[0];
-            $this->addFlash('error', $violation->getMessage());
+            $this->addFlash('file_error', $violation->getMessage());
 
             return $this->redirectToRoute('app_item_file_edit_redirect', [
                 'userId' => $user->getId(),
@@ -101,7 +102,7 @@ class ItemFileController extends AbstractController
         $itemFile->setMimeType($uploadedFile->getMimeType() ?? 'application/octet-stream');
 
         $this->itemFileRepository->save($itemFile, true);
-        $this->addFlash('success', 'File successfully uploaded!');
+        $this->addFlash('file_success', 'File successfully uploaded!');
         return $this->redirectToRoute('app_item_file_edit_redirect', [
             'userId' => $user->getId(),
             'catId' => $category->getId(),

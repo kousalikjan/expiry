@@ -14,27 +14,30 @@
     <article class="base-article gap-8">
         <h1 class="h1">{{ 'Manage files'|trans }}</h1>
 
-        <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id})}}{% if redirect %}?redirect=1{% endif %}" method="POST" enctype="multipart/form-data"
-        class="form-control w-full max-w-md gap-3">
-            <input type="file" name="item-file" class="file-input file-input-bordered w-full">
-            <button type="submit" class="btn btn-outline btn-info w-full">
-                <span class="flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
-                    </svg>
-                    {{ 'Upload'|trans }}
-                </span>
-            </button>
-        </form>
+        <turbo-frame id="item-files" class="flex flex-col items-center gap-8 w-full">
 
-        <ul class="flex flex-col gap-8 mb-8 w-full max-w-md">
+            {{ include('components/_file_flashes.html.twig') }}
+            <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id})}}{% if redirect %}?redirect=1{% endif %}" method="POST" enctype="multipart/form-data"
+            class="form-control w-full max-w-md gap-3">
+                <input type="file" name="item-file" class="file-input file-input-bordered w-full">
+                <button type="submit" class="btn btn-outline btn-info w-full">
+                    <span class="flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                        </svg>
+                        {{ 'Upload'|trans }}
+                    </span>
+                </button>
+            </form>
 
-        {% for file in item.itemFiles %}
-            <li>
-                {{ include('file/_file_preview.html.twig') }}
-            </li>
-        {% endfor %}
-        </ul>
+            <ul class="flex flex-col gap-8 mb-8 w-full max-w-md">
+            {% for file in item.itemFiles %}
+                <li>
+                    {{ include('file/_file_preview.html.twig') }}
+                </li>
+            {% endfor %}
+            </ul>
+
         {% if redirect %}
             <a
                 href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}"
@@ -62,5 +65,6 @@
                 {{ 'save'|trans }}
             </a>
         {% endif %}
+        </turbo-frame>
         </article>
 {% endblock %}

@@ -64,8 +64,8 @@ class UploaderHelper
         {
             $photo = $this->imagine->read($stream);
             $photo->thumbnail(new Box(
-                $photo->getSize()->getWidth() / 10,
-               $photo->getSize()->getHeight() / 10),
+                min($photo->getSize()->getWidth() / 10, 200),
+               min($photo->getSize()->getHeight() / 10, 200)),
                 ManipulatorInterface::THUMBNAIL_INSET|ManipulatorInterface::THUMBNAIL_FLAG_NOCLONE);
             $stream = fopen('php://temp', 'r+');
             fwrite($stream, $photo->get('jpg'));
