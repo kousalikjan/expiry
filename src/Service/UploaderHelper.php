@@ -9,7 +9,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class UploaderHelper
 {
-    const ITEM_FILE = 'item_file';
+    const ITEM_FILE = 'file';
     const THUMBNAIL = 'thumbnail-';
 
     private Filesystem $filesystem;

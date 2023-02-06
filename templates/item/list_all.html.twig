@@ -18,7 +18,10 @@
         </article>
         <section class="flex flex-col gap-8 w-full max-w-xl">
             {% for item in items %}
-                {% include('item/_item_preview.html.twig') with {showCategory: true} %}
+                {% include('item/_item_preview.html.twig') with {
+                    showCategory: true,
+                    deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id, from: 'all'})
+                } %}
             {% endfor %}
         </section>
     </article>

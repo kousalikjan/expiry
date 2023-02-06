@@ -19,14 +19,14 @@
         </div>
         <div class="flex flex-col justify-between items-end">
             <a
-                    href="{{ path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}"
+                    href="{{ deletePath }}"
                     class="p-2 text-error hover:text-red-800"
                     {{ stimulus_controller('sweetalert-confirm', {
                         title: 'Delete'|trans ~ ' ' ~ item.name,
                         text: 'You won\'t be able to revert this!'|trans,
                         confirmButtonText: 'Yes, delete it!'|trans,
                         cancelButtonText: 'Cancel'|trans,
-                        urlConfirm: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id})
+                        urlConfirm: deletePath
                     }) }}
                     data-action="click->sweetalert-confirm#onSubmit"
             >

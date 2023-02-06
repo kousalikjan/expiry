@@ -40,7 +40,7 @@ class ItemFileController extends AbstractController
     {
         $this->denyAccessUnlessGranted('access', $item);
 
-        return $this->render('item/manage_files.html.twig', [
+        return $this->render('file/index.html.twig', [
             'user' => $user,
             'category' => $category,
             'item' => $item,

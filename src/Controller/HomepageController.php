@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ItemRepository;
+use App\Repository\WarrantyRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,9 +17,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(TranslatorInterface $translator, Request $request): Response
+    public function index(ItemRepository $itemRepository): Response
     {
-        return $this->render('index.html.twig');
+        $user = $this->getUser();
+        return $this->render('index.html.twig', ['notificationsCount' =>
+            $user ? sizeof($itemRepository->findNotifiedItems($user->getId())) : 0]);
     }
 
     #[Route('/set-locale/{_locale<%supported_locales%>}', name: 'app_set_locale')]

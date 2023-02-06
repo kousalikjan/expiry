@@ -16,7 +16,6 @@ export default class extends Controller {
 
     onSubmit(event) {
         event.preventDefault();
-        console.log(this.confirmColorValue);
         Swal.fire({
             title: this.titleValue,
             text: this.textValue,

@@ -10,7 +10,7 @@
     <article class="base-article">
         <h1 class="h1">{{ 'Sign up'|trans }}</h1>
 
-        {{ form_start(registrationForm, {'attr': {'class': 'form-control w-full px-6 max-w-md gap-8'}}) }}
+        {{ form_start(registrationForm, {'attr': {'class': 'form-control w-full max-w-md gap-8'}}) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.plainPassword) }}
 

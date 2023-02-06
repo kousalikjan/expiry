@@ -14,12 +14,15 @@
         {% include 'components/_add_link.html.twig' with {
             'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
             'text': 'Add item'|trans,} %}
-        <article class="flex flex-col items-center w-full gap-2">
-        {{ include('item/_filters.html.twig') }}
-        </article>
+{#        <article class="flex flex-col items-center w-full gap-2">#}
+{#        {{ include('item/_filters.html.twig') }}#}
+{#        </article>#}
         <section class="flex flex-col gap-8 w-full max-w-xl">
             {% for item in items %}
-                {{ include('item/_item_preview.html.twig') }}
+                {% include('item/_item_preview.html.twig') with {
+                    showCategory: false,
+                    deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id})
+                } %}
             {% endfor %}
             <div class="divider"></div>
         </section>
