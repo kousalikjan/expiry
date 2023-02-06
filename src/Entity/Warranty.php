@@ -27,9 +27,13 @@ class Warranty
     #[ORM\Column]
     private ?bool $notified = null;
 
+    #[ORM\Column]
+    private ?bool $notificationCleared = null;
+
     public function __construct()
     {
         $this->notified = false;
+        $this->notificationCleared = false;
     }
 
 
@@ -82,6 +86,18 @@ class Warranty
     public function setNotified(bool $notified): self
     {
         $this->notified = $notified;
+
+        return $this;
+    }
+
+    public function isNotificationCleared(): ?bool
+    {
+        return $this->notificationCleared;
+    }
+
+    public function setNotificationCleared(?bool $notificationCleared): self
+    {
+        $this->notificationCleared = $notificationCleared;
 
         return $this;
     }

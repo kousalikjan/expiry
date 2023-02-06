@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Item;
 use App\Entity\User;
+use App\Entity\Warranty;
 use App\Form\DefaultSettingType;
 use App\Form\SelectCategoryType;
 use App\Repository\UserRepository;
+use App\Repository\WarrantyRepository;
+use App\Service\ItemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +20,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class UserController extends AbstractController
 {
     private UserRepository $userRepository;
+    private ItemService $itemService;
+    private WarrantyRepository $warrantyRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ItemService $itemService, WarrantyRepository $warrantyRepository)
     {
         $this->userRepository = $userRepository;
+        $this->itemService = $itemService;
+        $this->warrantyRepository = $warrantyRepository;
     }
 
 
@@ -38,4 +46,26 @@ class UserController extends AbstractController
         return $this->render('profile/index.html.twig', ['user' => $user, 'form' => $form
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
+
+   #[Route('/users/{id}/notifications', name: 'app_notifications', requirements: ['id' => '\d+'])]
+   #[IsGranted('access', 'user')]
+   public function showNotifications(User $user): Response
+   {
+        return $this->render('notification/index.html.twig', ['items' => $this->itemService->findNotifiedItems($user->getId())
+        ]);
+   }
+
+   #[Route('/users/{id}/notifications/clear', name: 'app_notifications_clear', requirements: ['id' => '\d+'])]
+   #[IsGranted('access', 'user')]
+   public function clearNotifications(User $user): Response
+   {
+       $items = $this->itemService->findNotifiedItems($user->getId());
+       /** @var Item $item */
+       foreach ($items as $item)
+       {
+           $item->getWarranty()->setNotificationCleared(true);
+           $this->warrantyRepository->save($item->getWarranty(), true);
+       }
+       return $this->redirectToRoute('app_notifications', ['id' => $user->getId()]);
+   }
 }

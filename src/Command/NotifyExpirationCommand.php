@@ -61,8 +61,8 @@ class NotifyExpirationCommand extends Command
                 $io->writeln($warranty->getItem()->getCategory()->getName());
                 $io->writeln($warranty->getExpiration()->format('d.m.Y'));
                 $io->writeln($warranty->getNotifyDaysBefore());
-                //$warranty->setNotified(true);
-                //$this->warrantyRepository->save($warranty);
+                $warranty->setNotified(true);
+                $this->warrantyRepository->save($warranty, true);
             }
 
             $this->localeSwitcher->runWithLocale($user->getPreferredLocale(), function() use ($user, $length, $warranties, $io) {

@@ -20,7 +20,7 @@
                 {{ form_row(form.preferredLocale) }}
                 {{ form_row(form.defaultCurrency) }}
                 <div class="flex gap-4">
-                    {{ form_label(form.allowNotifications) }}
+                    {{ form_label(form.allowNotifications, 'Recieve email notifications') }}
                     {{ form_widget(form.allowNotifications, {'attr': {'class': 'toggle toggle-secondary'}}) }}
                 </div>
                 <button type="submit" class="btn btn-primary btn-outline max-w-md">{{ 'save'|trans }}</button>

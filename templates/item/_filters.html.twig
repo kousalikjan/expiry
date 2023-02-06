@@ -6,6 +6,9 @@
         </svg>
     </h3>
 
-
+    {{ form_start(form, {attr: {class: 'w-full flex flex-col gap-3 max-w-xl', 'data-hide-content-target': 'content'}}) }}
+    {{ form_row(form.sort) }}
+    <button type="submit" class="btn">Filter</button>
+    {{ form_end(form) }}
 
 </article>

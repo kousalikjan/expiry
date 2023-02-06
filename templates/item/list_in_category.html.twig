@@ -11,12 +11,11 @@
 {% block body %}
     <article class="m-8 mt-6 flex flex-col items-center gap-6">
         <h1 class="h1">{{ category.name }}</h1>
+        {% include 'components/_add_link.html.twig' with {
+            'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
+            'text': 'Add item'|trans,} %}
         <article class="flex flex-col items-center w-full gap-2">
-            {{ form_start(form, {attr: {class: 'w-full flex flex-col gap-3 max-w-xl', 'data-hide-content-target': 'content'}}) }}
-            {{ form_row(form.sort) }}
-            <button type="submit" class="btn">Filter</button>
-            {{ form_end(form) }}
-{#        {{ include('item/_filters.html.twig') }}#}
+        {{ include('item/_filters.html.twig') }}
         </article>
         <section class="flex flex-col gap-8 w-full max-w-xl">
             {% for item in items %}
@@ -26,9 +25,6 @@
         </section>
 
         <article class="flex flex-col gap-4 items-center w-full">
-            {% include 'components/_add_link.html.twig' with {
-                'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
-                'text': 'Add item'|trans,} %}
             {% include 'components/_edit_link.html.twig' with {
                 'action': path('app_category_edit', {userId: app.user.id, catId: category.id}),
                 'text': 'Edit'|trans ~ ' ' ~ category.name} %}

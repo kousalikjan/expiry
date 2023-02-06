@@ -77,6 +77,21 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findNotifiedItems(int $userId): array
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'i_category')
+            ->innerJoin('i_category.owner', 'i_owner')
+            ->andWhere('i_owner.id = :userId')
+            ->setParameter('userId', $userId)
+            ->innerJoin('i.warranty', 'i_warranty')
+            ->andWhere('i_warranty.notified = true')
+            ->andWhere('i_warranty.notificationCleared = false')
+            ->orderBy('i_category.id')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Item[] Returns an array of Item objects
 //     */
@@ -101,5 +116,6 @@ class ItemRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 
 }

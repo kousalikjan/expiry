@@ -17,7 +17,7 @@ class FilterItemsType extends AbstractType
         $builder
             ->add('sort', ChoiceType::class, [
                 'required' => false,
-                'choices' => ['Expiration' => 'expiration', 'Item name' => 'name'],
+                'choices' => ['Expiration' => 'expiration', 'Item name' => 'name', 'Count' => 'amount'],
                 'data' => $options['selected'],
                 'placeholder' => false
             ]);

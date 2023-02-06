@@ -71,10 +71,15 @@ class ItemService
 
     public function findCategoryItemsAndSort(int $catId, ?string $sort): array
     {
-        if($sort === 'expiration' || $sort === null)
-            return $this->itemRepository->findCategoryItemsSortWarranty($catId);
-        else
-            return $this->itemRepository->findCategoryItemsAndSort($catId, $sort);
+        return match ($sort) {
+            'name', 'amount' => $this->itemRepository->findCategoryItemsAndSort($catId, $sort),
+            default => $this->itemRepository->findCategoryItemsSortWarranty($catId),
+        };
+    }
+
+    public function findNotifiedItems(int $userId): array
+    {
+        return $this->itemRepository->findNotifiedItems($userId);
     }
 
 

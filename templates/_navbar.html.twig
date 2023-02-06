@@ -9,6 +9,10 @@
 
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow rounded-box bg-base-100 w-52">
                 <li><a href="{{ path('app_categories', {id: app.user.id}) }}" class="text-lg">{{ 'Inventory'|trans }}</a></li>
+                <li><a href="{{ path('app_notifications', {id: app.user.id}) }}" class="text-lg">
+                        {{ 'Notifications'|trans }}
+                    </a>
+                </li>
                     <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Profile'|trans }}</a></li>
                     <li class="block divider my-2"></li>
                     <li><a class="text-lg text-gray-600" href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
@@ -21,7 +25,10 @@
         <ul tabindex="0" class="menu menu-horizontal px-1">
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Inventory'|trans }}</a></li>
-
+            <li><a href="{{ path('app_notifications', {id: app.user.id}) }}">
+                {{ 'Notifications'|trans }}
+                </a>
+            </li>
             <li tabindex="0">
                 <a>
                     {{ 'Profile'|trans }}

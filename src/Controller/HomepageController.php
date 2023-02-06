@@ -18,7 +18,6 @@ class HomepageController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(TranslatorInterface $translator, Request $request): Response
     {
-        dump($request->getLocale());
         return $this->render('index.html.twig');
     }
 

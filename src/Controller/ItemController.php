@@ -45,8 +45,8 @@ class ItemController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            $sort = $form->get('sort')->getData();
-            return $this->redirectToRoute('app_items_category', ['userId' => $user->getId(), 'catId' => $category->getId(), 'sort' => $sort]);
+            return $this->redirectToRoute('app_items_category',
+                ['userId' => $user->getId(), 'catId' => $category->getId(), 'sort' => $form->get('sort')->getData()]);
         }
 
         return $this->render('item/list_in_category.html.twig', [

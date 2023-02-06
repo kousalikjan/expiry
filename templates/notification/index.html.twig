@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Notifications'|trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">{{ 'Home'|trans }}</a></li>
+    <li><a href="#">{{ 'Notifications'|trans }}</a></li>
+{% endblock %}
+
+{% block body %}
+    <article class="m-8 mt-6 flex flex-col items-center gap-6">
+        <h1 class="h1">{{ 'Notifications'|trans }}</h1>
+        {% if items|length > 0 %}
+        <p>{{ 'These items have expired since your last visit'|trans }}!</p>
+        <a href="{{ path('app_notifications_clear', {id: app.user.id}) }}" class="btn btn-info btn-outline">{{ 'Clear notifications'|trans }}</a>
+        <section class="flex flex-col gap-8 w-full max-w-xl">
+            {% for item in items %}
+                {% include('item/_item_preview.html.twig') with {showCategory: true} %}
+            {% endfor %}
+        </section>
+            {% else %}
+                <p>{{ 'You have no notifications'|trans }}!</p>
+        {% endif %}
+    </article>
+{% endblock %}
