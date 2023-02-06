@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block body %}
-    <article class="flex flex-col mt-6 mb-24 mx-8 gap-6 items-center">
+    <article class="base-article mb-24">
         <h1 class="h1">{{ item.name }}</h1>
         <a href="{{ path('app_item_file_edit', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id})}}"
         class="btn btn-info w-full max-w-md">{{ 'Manage files'|trans }}</a>

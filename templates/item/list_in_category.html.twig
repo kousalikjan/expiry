@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block body %}
-    <article class="m-8 mt-6 flex flex-col items-center gap-6">
+    <article class="base-article">
         <h1 class="h1">{{ category.name }}</h1>
         {% include 'components/_add_link.html.twig' with {
             'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),

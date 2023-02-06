@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block body %}
-    <article class="flex flex-col mt-6 mx-8 gap-8 items-center">
+    <article class="base-article">
         <h1 class="h1">
             {% if create %}{{ 'New category'|trans }} {% else %} {{ 'Edit'|trans }} {{ category.name }} {% endif %}
         </h1>

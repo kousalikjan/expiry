@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block body %}
-    <article class="flex flex-col mt-6 mb-24 mx-8 gap-8 items-center">
+    <article class="base-article gap-8">
         <h1 class="h1">{{ 'Manage files'|trans }}</h1>
 
         <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id})}}{% if redirect %}?redirect=1{% endif %}" method="POST" enctype="multipart/form-data"

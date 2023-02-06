@@ -9,6 +9,10 @@
     .btn {
         @apply no-animation
     }
+
+    .base-article {
+        @apply flex flex-col items-center gap-6 m-8 mt-6
+    }
 }
 
 .justify-self-flex-end {
