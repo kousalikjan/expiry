@@ -152,7 +152,7 @@ class ItemController extends AbstractController
     {
         $this->denyAccessUnlessGranted('access', $user);
         $this->itemService->remove($item, true);
-        $this->addFlash('success', 'Item successfully deleted!');
+        $this->addFlash('item_success', 'Item successfully deleted!');
         
         return match ($request->query->get('from')) {
             'all' => $this->redirectToRoute('app_items', ['id' => $user->getId()]),

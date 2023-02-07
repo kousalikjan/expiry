@@ -27,11 +27,13 @@ class ItemService
         $this->itemRepository->save($item, $flush);
     }
 
-    public function remove(Item $item, bool $flush = false)
+    public function remove(Item $item, bool $flush = false): void
     {
         foreach ($item->getItemFiles() as $file)
         {
             $this->uploaderHelper->deleteFile($file->getItemFilePath());
+            if($file->isThumbnail())
+                $this->uploaderHelper->deleteFile($file->getItemFileThumbnailPath());
             $this->itemFileRepository->remove($file);
         }
         $this->itemRepository->remove($item, $flush);

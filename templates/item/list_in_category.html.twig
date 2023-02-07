@@ -18,6 +18,7 @@
         {{ include('item/_filters.html.twig') }}
         </article>
         <turbo-frame id="items-preview" class="flex w-full justify-center">
+            {% include('components/_item_flashes.html.twig') %}
             <section class="flex flex-col gap-8 w-full max-w-xl">
                 {% for item in items %}
                     {% include('item/_item_preview.html.twig') with {
