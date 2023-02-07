@@ -26,10 +26,11 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </a>
-                        {% include('item/_item_preview.html.twig') with {
-                        showCategory: true,
-                        deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id, from: 'notifications'})
-                        } %}
+                            {% include('item/_item_preview.html.twig') with {
+                                showCategory: true,
+                                deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id, from: 'notifications'}),
+                                dataFrame: 'user-notifications'
+                            } %}
                     </div>
                 {% endfor %}
 
@@ -37,8 +38,8 @@
                     <p>{{ 'You have no notifications'|trans }}!</p>
             {% endif %}
             </section>
+            <div class="divider w-full text-2xl p-8">Old notifications</div>
             <section class="flex flex-col gap-8 w-full max-w-xl items-center">
-                <div class="divider w-full text-2xl">Old notifications</div>
                 {% for item in clearedItems %}
                         {% include('item/_item_preview.html.twig') with {
                             showCategory: true,

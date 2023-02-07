@@ -26,7 +26,8 @@
                         text: 'You won\'t be able to revert this!'|trans,
                         confirmButtonText: 'Yes, delete it!'|trans,
                         cancelButtonText: 'Cancel'|trans,
-                        urlConfirm: deletePath
+                        urlConfirm: deletePath,
+                        dataFrame: dataFrame|default('_top')
                     }) }}
                     data-action="click->sweetalert-confirm#onSubmit"
             >

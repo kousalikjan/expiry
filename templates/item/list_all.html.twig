@@ -16,13 +16,16 @@
                 'action': path('app_item_create', {userId: app.user.id}),
                 'text': 'Add item'|trans,} %}
         </article>
-        <section class="flex flex-col gap-8 w-full max-w-xl">
-            {% for item in items %}
-                {% include('item/_item_preview.html.twig') with {
-                    showCategory: true,
-                    deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id, from: 'all'})
-                } %}
-            {% endfor %}
-        </section>
+        <turbo-frame id="items-preview" class="w-full flex justify-center">
+            <section class="flex flex-col gap-8 w-full max-w-xl">
+                {% for item in items %}
+                    {% include('item/_item_preview.html.twig') with {
+                        showCategory: true,
+                        deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id, from: 'all'}),
+                        dataFrame: 'items-preview'
+                    } %}
+                {% endfor %}
+            </section>
+        </turbo-frame>
     </article>
 {% endblock %}

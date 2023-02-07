@@ -11,10 +11,12 @@ export default class extends Controller {
         cancelButtonText: String,
         urlConfirm: {type: String, default: 'none'},
         icon: {type: String, default: 'warning'},
-        confirmColor: {type: String, default: '#dc5b5b'}
+        confirmColor: {type: String, default: '#dc5b5b'},
+        dataFrame: {type: String, default: '_top'}
     }
 
     onSubmit(event) {
+        console.log(event);
         event.preventDefault();
         Swal.fire({
             title: this.titleValue,
@@ -30,7 +32,7 @@ export default class extends Controller {
                 if(this.urlConfirmValue === 'none')
                     this.element.parentNode.submit();
                 else
-                    visit(this.urlConfirmValue)
+                    visit(this.urlConfirmValue, {frame: this.dataFrameValue});
             }
         })
     }
