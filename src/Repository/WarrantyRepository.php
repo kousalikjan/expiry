@@ -50,7 +50,7 @@ class WarrantyRepository extends ServiceEntityRepository
     public function findToBeNotifiedOfOneUser(int $userId): array
     {
         return $this->createQueryBuilder('w')
-            ->andWhere('w.notified = false')
+            ->andWhere('w.notifiedByEmail = false')
             ->andWhere('w.notifyDaysBefore is not null')
             ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
             ->innerJoin('w.item', 'w_item')

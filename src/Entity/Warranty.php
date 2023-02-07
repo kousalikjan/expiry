@@ -25,14 +25,14 @@ class Warranty
     private ?Item $item = null;
 
     #[ORM\Column]
-    private ?bool $notified = null;
+    private ?bool $notifiedByEmail = null;
 
     #[ORM\Column]
     private ?bool $notificationCleared = null;
 
     public function __construct()
     {
-        $this->notified = false;
+        $this->notifiedByEmail = false;
         $this->notificationCleared = false;
     }
 
@@ -80,12 +80,12 @@ class Warranty
 
     public function isNotified(): ?bool
     {
-        return $this->notified;
+        return $this->notifiedByEmail;
     }
 
-    public function setNotified(bool $notified): self
+    public function setNotifiedByEmail(bool $notifiedByEmail): self
     {
-        $this->notified = $notified;
+        $this->notifiedByEmail = $notifiedByEmail;
 
         return $this;
     }

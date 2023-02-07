@@ -85,7 +85,7 @@ class ItemRepository extends ServiceEntityRepository
             ->andWhere('i_owner.id = :userId')
             ->setParameter('userId', $userId)
             ->innerJoin('i.warranty', 'i_warranty')
-            ->andWhere('i_warranty.notified = true')
+            ->andWhere('i_warranty.notifiedByEmail = true')
             ->andWhere('i_warranty.notificationCleared = false')
             ->orderBy('i_category.id')
             ->getQuery()

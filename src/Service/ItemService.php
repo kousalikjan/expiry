@@ -53,7 +53,7 @@ class ItemService
         if($item->getWarranty()?->getExpiration() !== null && $item->getWarranty()->getExpiration() != $oldExpiration )
         {
             // User has changed expiration date
-            $item->getWarranty()->setNotified(false);
+            $item->getWarranty()->setNotifiedByEmail(false);
         }
 
     }
