@@ -72,15 +72,26 @@ class ItemService
     public function findCategoryItemsAndSort(int $catId, ?string $sort): array
     {
         return match ($sort) {
-            'name', 'amount' => $this->itemRepository->findCategoryItemsAndSort($catId, $sort),
-            default => $this->itemRepository->findCategoryItemsSortWarranty($catId),
+            'name', 'amount' => $this->itemRepository->findCategoryItemsAndSortBy($catId, $sort),
+            default => $this->itemRepository->findCategoryItemsSortByExpiration($catId),
         };
     }
 
-    public function findNotifiedItems(int $userId): array
+    public function findToBeNotifiedInAppOneUserByCleared(int $userId, bool $cleared): array
     {
-        return $this->itemRepository->findNotifiedItems($userId);
+        return $this->itemRepository->findToBeNotifiedInAppOneUserByCleared($userId, $cleared);
     }
+
+    public function clearNotification(Item $item): void
+    {
+        if($item->getWarranty() === null)
+            return;
+
+        $warranty =$item->getWarranty();
+        $warranty->setNotificationCleared(true);
+        $this->warrantyRepository->save($warranty, true);
+    }
+
 
 
 }

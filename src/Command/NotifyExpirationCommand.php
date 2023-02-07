@@ -48,7 +48,7 @@ class NotifyExpirationCommand extends Command
         foreach ($users as $user)
         {
             $io->info($user->getEmail() . ' notifications: ');
-            $warranties = $this->warrantyRepository->findToBeNotifiedOfOneUser($user->getId());
+            $warranties = $this->warrantyRepository->findToBeNotifiedByEmailOneUser($user->getId());
             $length = sizeof($warranties);
 
             if($length === 0)
@@ -57,15 +57,16 @@ class NotifyExpirationCommand extends Command
             foreach ($warranties as $warranty)
             {
                 $io->writeln('------------------');
+                $io->writeln($warranty->getId());
                 $io->writeln($warranty->getItem()->getName());
                 $io->writeln($warranty->getItem()->getCategory()->getName());
                 $io->writeln($warranty->getExpiration()->format('d.m.Y'));
                 $io->writeln($warranty->getNotifyDaysBefore());
-                $warranty->setNotifiedByEmail(true);
-                $this->warrantyRepository->save($warranty, true);
+                //$warranty->setNotifiedByEmail(true);
+                //$this->warrantyRepository->save($warranty, true);
             }
 
-            $this->localeSwitcher->runWithLocale($user->getPreferredLocale(), function() use ($user, $length, $warranties, $io) {
+           /* $this->localeSwitcher->runWithLocale($user->getPreferredLocale(), function() use ($user, $length, $warranties, $io) {
 
                 $email = (new TemplatedEmail())->to(new Address($user->getEmail()));
 
@@ -86,7 +87,7 @@ class NotifyExpirationCommand extends Command
                 {
                     $io->error($e->getMessage());
                 }
-            });
+            });*/
 
         }
         return Command::SUCCESS;

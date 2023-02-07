@@ -11,6 +11,7 @@ use App\Form\SelectCategoryType;
 use App\Repository\UserRepository;
 use App\Repository\WarrantyRepository;
 use App\Service\ItemService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,15 +52,28 @@ class UserController extends AbstractController
    #[IsGranted('access', 'user')]
    public function showNotifications(User $user): Response
    {
-        return $this->render('notification/index.html.twig', ['items' => $this->itemService->findNotifiedItems($user->getId())
+        return $this->render('notification/index.html.twig', [
+            'notClearedItems' => $this->itemService->findToBeNotifiedInAppOneUserByCleared($user->getId(), false),
+            'clearedItems' => $this->itemService->findToBeNotifiedInAppOneUserByCleared($user->getId(), true)
         ]);
    }
+
+    #[Route('/users/{userId}/notifications/{itemId}/clear', name: 'app_notification_clear', requirements: ['userId' => '\d+', 'itemId' => '\d+'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+   public function clearNotificationItem(User $user, Item $item): Response
+   {
+        $this->itemService->clearNotification($item);
+        return $this->redirectToRoute('app_notifications', ['id' => $user->getId()]);
+   }
+
+
 
    #[Route('/users/{id}/notifications/clear', name: 'app_notifications_clear', requirements: ['id' => '\d+'])]
    #[IsGranted('access', 'user')]
    public function clearNotifications(User $user): Response
    {
-       $items = $this->itemService->findNotifiedItems($user->getId());
+       $items = $this->itemService->findToBeNotifiedInAppOneUserByCleared($user->getId(), false);
        /** @var Item $item */
        foreach ($items as $item)
        {
@@ -68,4 +82,7 @@ class UserController extends AbstractController
        }
        return $this->redirectToRoute('app_notifications', ['id' => $user->getId()]);
    }
+
+
+
 }

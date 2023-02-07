@@ -54,7 +54,10 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findCategoryItemsAndSort(int $catId, string $sort): array
+    /**
+     * @return Item[] Items of given user
+     */
+    public function findCategoryItemsAndSortBy(int $catId, string $sort): array
     {
         return $this->createQueryBuilder('i')
             ->innerJoin('i.category', 'i_category')
@@ -65,7 +68,10 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findCategoryItemsSortWarranty(int $catId): array
+    /**
+     * @return Item[] Items of given user
+     */
+    public function findCategoryItemsSortByExpiration(int $catId): array
     {
         return $this->createQueryBuilder('i')
             ->innerJoin('i.category', 'i_category')
@@ -77,45 +83,24 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findNotifiedItems(int $userId): array
+    /**
+     * @return Item[] Items that should be notified in app (not cleared)
+     */
+    public function findToBeNotifiedInAppOneUserByCleared(int $userId, bool $cleared): array
     {
         return $this->createQueryBuilder('i')
-            ->innerJoin('i.category', 'i_category')
-            ->innerJoin('i_category.owner', 'i_owner')
-            ->andWhere('i_owner.id = :userId')
+            ->innerJoin('i.warranty', 'w')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
             ->setParameter('userId', $userId)
-            ->innerJoin('i.warranty', 'i_warranty')
-            ->andWhere('i_warranty.notifiedByEmail = true')
-            ->andWhere('i_warranty.notificationCleared = false')
-            ->orderBy('i_category.id')
+            ->andWhere('w.notificationCleared = :cleared')
+            ->setParameter('cleared', $cleared)
+            ->andWhere('w.notifyDaysBefore is not null')
+            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
             ->getQuery()
             ->getResult();
     }
-
-//    /**
-//     * @return Item[] Returns an array of Item objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('i.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Item
-//    {
-//        return $this->createQueryBuilder('i')
-//            ->andWhere('i.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 
 
 }

@@ -21,7 +21,7 @@ class HomepageController extends AbstractController
     {
         $user = $this->getUser();
         return $this->render('index.html.twig', ['notificationsCount' =>
-            $user ? sizeof($itemRepository->findNotifiedItems($user->getId())) : 0]);
+            $user ? sizeof($itemRepository->findToBeNotifiedInAppOneUserByCleared($user->getId(), false)) : 0]);
     }
 
     #[Route('/set-locale/{_locale<%supported_locales%>}', name: 'app_set_locale')]

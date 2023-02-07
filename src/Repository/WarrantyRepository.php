@@ -45,9 +45,9 @@ class WarrantyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Warranty[] Warranties to be notified for given user
+     * @return Warranty[] Warranties to be notified by email for given user
      */
-    public function findToBeNotifiedOfOneUser(int $userId): array
+    public function findToBeNotifiedByEmailOneUser(int $userId): array
     {
         return $this->createQueryBuilder('w')
             ->andWhere('w.notifiedByEmail = false')
@@ -62,30 +62,4 @@ class WarrantyRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
-//    /**
-//     * @return Warranty[] Returns an array of Warranty objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('w.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Warranty
-//    {
-//        return $this->createQueryBuilder('w')
-//            ->andWhere('w.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }
