@@ -50,8 +50,10 @@ class UserController extends AbstractController
 
    #[Route('/users/{id}/notifications', name: 'app_notifications', requirements: ['id' => '\d+'])]
    #[IsGranted('access', 'user')]
-   public function showNotifications(User $user): Response
+   public function showNotifications(User $user, Request $request): Response
    {
+       $request->getSession()->set('itemsUrl', $request->getRequestUri());
+
         return $this->render('notification/index.html.twig', [
             'notClearedItems' => $this->itemService->findToBeNotifiedInAppOneUserByCleared($user->getId(), false),
             'clearedItems' => $this->itemService->findToBeNotifiedInAppOneUserByCleared($user->getId(), true)
@@ -66,23 +68,5 @@ class UserController extends AbstractController
         $this->itemService->clearNotification($item);
         return $this->redirectToRoute('app_notifications', ['id' => $user->getId()]);
    }
-
-
-
-   #[Route('/users/{id}/notifications/clear', name: 'app_notifications_clear', requirements: ['id' => '\d+'])]
-   #[IsGranted('access', 'user')]
-   public function clearNotifications(User $user): Response
-   {
-       $items = $this->itemService->findToBeNotifiedInAppOneUserByCleared($user->getId(), false);
-       /** @var Item $item */
-       foreach ($items as $item)
-       {
-           $item->getWarranty()->setNotificationCleared(true);
-           $this->warrantyRepository->save($item->getWarranty(), true);
-       }
-       return $this->redirectToRoute('app_notifications', ['id' => $user->getId()]);
-   }
-
-
 
 }

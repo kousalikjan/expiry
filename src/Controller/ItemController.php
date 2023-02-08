@@ -31,15 +31,6 @@ class ItemController extends AbstractController
     }
 
 
-
-
-
-
-
-
-
-
-
     #[Route('/users/{userId}/categories/{catId}/items', name: 'app_items_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
@@ -48,18 +39,17 @@ class ItemController extends AbstractController
         $this->denyAccessUnlessGranted('access', $user);
         $this->denyAccessUnlessGranted('access', $category);
 
+        $request->getSession()->set('itemsUrl', $request->getRequestUri());
+
         $form = $this->createForm(FilterItemsType::class, null, [
                 'sort' => $request->query->get('sort'),
                 'name' => $request->query->get('name')]);
 
 
-        if($request->query->count() > 0)
-        {
-            $items = $this->itemService->findUserItemsFilter($user->getId(), $category->getId(), $request->query->all());
-        }
+        $items = $request->query->count() > 0
+            ? $this->itemService->findUserItemsFilter($user->getId(), $category->getId(), $request->query->all())
+            : $this->itemService->findUserItems($user->getId(), $category->getId());
 
-        else
-            $items = $this->itemService->findUserItems($user->getId(), $category->getId());
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
@@ -78,31 +68,12 @@ class ItemController extends AbstractController
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     #[Route('/users/{id}/items', name: 'app_items', requirements: ['id' => '\d+'])]
     #[IsGranted('access', 'user')]
-    public function listAll(User $user): Response
+    public function listAll(User $user, Request $request): Response
     {
 
+        $request->getSession()->set('itemsUrl', $request->getRequestUri());
         $form = $this->createForm(FilterItemsType::class);
 
         return $this->render('item/list_all.html.twig', [
@@ -171,6 +142,9 @@ class ItemController extends AbstractController
             $this->itemService->save($item, true);
             $this->addFlash('success', 'Item successfully updated!');
 
+            if($request->getSession()->get('itemsUrl'))
+                return $this->redirect( $request->getSession()->get('itemsUrl'));
+
             return $this->redirectToRoute('app_items_category', [
                 'userId' => $user->getId(),
                 'catId' => $item->getCategory()->getId()
@@ -193,14 +167,15 @@ class ItemController extends AbstractController
     public function delete(User $user, Category $category, Item $item, Request $request): Response
     {
         $this->denyAccessUnlessGranted('access', $user);
+
         $this->itemService->remove($item, true);
         $this->addFlash('item_success', 'Item successfully deleted!');
-        
-        return match ($request->query->get('from')) {
-            'all' => $this->redirectToRoute('app_items', ['id' => $user->getId()]),
-            'notifications' => $this->redirectToRoute('app_notifications', ['id' => $user->getId()]),
-            default => $this->redirectToRoute('app_items_category', ['userId' => $user->getId(), 'catId' => $category->getId()]),
-        };
+
+
+        if($request->getSession()->get('itemsUrl'))
+            return $this->redirect( $request->getSession()->get('itemsUrl'));
+
+        return $this->redirectToRoute('app_items_category', ['userId' => $user->getId(), 'catId' => $category->getId()]);
 
     }
 
@@ -208,6 +183,7 @@ class ItemController extends AbstractController
     public function searchUserItems(int $id, Request $request): Response
     {
         $term = $request->query->get('term');
+
         return $this->render('item/_search_preview.html.twig', [
             'items' => $this->itemService->findUserItems($id, null, $term)
         ]);

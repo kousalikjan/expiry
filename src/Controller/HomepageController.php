@@ -17,8 +17,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $request->getSession()->set('itemsUrl', $request->getRequestUri());
+
         return $this->render('index.html.twig');
     }
 
