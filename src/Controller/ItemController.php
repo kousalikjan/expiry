@@ -35,6 +35,11 @@ class ItemController extends AbstractController
 
 
 
+
+
+
+
+
     #[Route('/users/{userId}/categories/{catId}/items', name: 'app_items_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
@@ -49,7 +54,10 @@ class ItemController extends AbstractController
 
 
         if($request->query->count() > 0)
+        {
             $items = $this->itemService->findUserItemsFilter($user->getId(), $category->getId(), $request->query->all());
+        }
+
         else
             $items = $this->itemService->findUserItems($user->getId(), $category->getId());
 

@@ -42,7 +42,6 @@ class ItemRepository extends ServiceEntityRepository
 
     public function findUserItemsFilter(int $userId, ?int $catId, ?string $name, ?string $sort): array
     {
-        dump($sort);
         $qb = $this->createQueryBuilder('i')
             ->leftJoin('i.warranty', 'w')
             ->innerJoin('i.category', 'c')

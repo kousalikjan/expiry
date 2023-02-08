@@ -15,11 +15,12 @@
             'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
             'text': 'Add item'|trans,} %}
 
-        <turbo-frame id="items-preview" class="flex flex-col items-center w-full max-w-xl gap-8" target="_top">
 
+        <turbo-frame id="items-preview" class="flex flex-col items-center w-full max-w-xl gap-8" target="_top">
             {{ include('item/_filters.html.twig') }}
+
             {% include('components/_item_flashes.html.twig') %}
-            
+
             <section class="flex flex-col gap-6 w-full max-w-xl">
                 {% for item in items %}
                     {% include('item/_item_preview.html.twig') with {

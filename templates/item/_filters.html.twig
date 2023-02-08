@@ -9,7 +9,7 @@
     {{ form_start(form, {attr: {class: 'w-full flex flex-col gap-3 max-w-xl', 'data-hide-content-target': 'content'}}) }}
     {{ form_row(form.name) }}
     {{ form_row(form.sort) }}
-    <button type="submit" class="btn" data-turbo-frame="items-preview" >Filter</button>
+    <button type="submit" class="btn" data-turbo-frame="items-preview" data-turbo-action="replace">Filter</button>
     {{ form_end(form) }}
 
 </article>
