@@ -39,16 +39,62 @@ class ItemRepository extends ServiceEntityRepository
         }
     }
 
+
+    public function findUserItemsFilter(int $userId, ?int $catId, ?string $name, ?string $sort): array
+    {
+        dump($sort);
+        $qb = $this->createQueryBuilder('i')
+            ->leftJoin('i.warranty', 'w')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId);
+
+        if($catId !== null)
+        {
+            $qb->andWhere('c.id = :catId')
+                ->setParameter('catId', $catId);
+        }
+
+        if($name !== null) {
+            $qb->andWhere('LOWER(i.name) LIKE LOWER(:name)')
+                ->setParameter('name', '%'.$name.'%');
+        }
+
+        switch ($sort)
+        {
+            case 'name':
+                $qb->orderBy('i.name');
+                break;
+            case 'count':
+                $qb->orderBy('i.count');
+                break;
+            default:
+                $qb->orderBy('w.expiration');
+                break;
+        }
+        return $qb->getQuery()
+            ->getResult();
+
+    }
+
+
     /**
      * @return Item[] Items of given user
      */
-    public function findUserItems(int $userId, ?string $term = null) : array
+    public function findUserItems(int $userId, ?int $catId = null, ?string $term = null) : array
     {
         $qb = $this->createQueryBuilder('i')
-                ->innerJoin('i.category', 'i_category')
-                ->innerJoin('i_category.owner', 'i_owner')
-                ->andWhere('i_owner.id = :userId')
-                ->setParameter('userId', $userId);
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId);
+
+        if($catId !== null)
+        {
+            $qb->andWhere('c.id = :catId')
+                ->setParameter('catId', $catId);
+        }
 
         if($term) {
             $qb->andWhere('LOWER(i.name) LIKE LOWER(:term) OR LOWER(i.vendor) LIKE LOWER(:term)')
@@ -57,37 +103,10 @@ class ItemRepository extends ServiceEntityRepository
 
         return
             $qb->getQuery()
-            ->getResult();
+                ->getResult();
     }
 
-    /**
-     * @return Item[] Items of given user
-     */
-    public function findCategoryItemsAndSortBy(int $catId, string $sort): array
-    {
-        return $this->createQueryBuilder('i')
-            ->innerJoin('i.category', 'i_category')
-            ->andWhere('i_category.id = :catId')
-            ->setParameter('catId', $catId)
-            ->orderBy('i.' . $sort)
-            ->getQuery()
-            ->getResult();
-    }
 
-    /**
-     * @return Item[] Items of given user
-     */
-    public function findCategoryItemsSortByExpiration(int $catId): array
-    {
-        return $this->createQueryBuilder('i')
-            ->innerJoin('i.category', 'i_category')
-            ->leftJoin('i.warranty', 'w')
-            ->andWhere('i_category.id = :catId')
-            ->setParameter('catId', $catId)
-            ->orderBy('w.expiration')
-            ->getQuery()
-            ->getResult();
-    }
 
     /**
      * @return Item[] Items that should be notified in app (not cleared)

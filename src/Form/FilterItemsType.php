@@ -15,10 +15,14 @@ class FilterItemsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', TextType::class, [
+                'required' => false,
+                'data' => $options['name']
+            ])
             ->add('sort', ChoiceType::class, [
                 'required' => false,
                 'choices' => ['Expiration' => 'expiration', 'Item name' => 'name', 'Count' => 'amount'],
-                'data' => $options['selected'],
+                'data' => $options['sort'],
                 'placeholder' => false
             ]);
     }
@@ -26,7 +30,8 @@ class FilterItemsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'selected' => 'expiration'
+            'sort' => 'expiration',
+            'name' => null
         ]);
     }
 }

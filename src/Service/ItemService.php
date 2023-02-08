@@ -66,17 +66,14 @@ class ItemService
         $item->setNullWarranty();
     }
 
-    public function findUserItems(int $userId, ?string $term = null): array
+    public function findUserItems(int $userId, ?int $catId = null, ?string $term = null): array
     {
-        return $this->itemRepository->findUserItems($userId, $term);
+        return $this->itemRepository->findUserItems($userId, $catId, $term);
     }
 
-    public function findCategoryItemsAndSort(int $catId, ?string $sort): array
+    public function findUserItemsFilter(int $userId, ?int $catId = null, array $query = []): array
     {
-        return match ($sort) {
-            'name', 'amount' => $this->itemRepository->findCategoryItemsAndSortBy($catId, $sort),
-            default => $this->itemRepository->findCategoryItemsSortByExpiration($catId),
-        };
+        return $this->itemRepository->findUserItemsFilter($userId, $catId, $query['name'] ?? null, $query['sort'] ?? null);
     }
 
     public function findToBeNotifiedInAppOneUserByCleared(int $userId, bool $cleared): array
@@ -89,9 +86,8 @@ class ItemService
         if($item->getWarranty() === null)
             return;
 
-        $warranty =$item->getWarranty();
+        $warranty = $item->getWarranty();
         $warranty->setNotificationCleared(true);
         $this->warrantyRepository->save($warranty, true);
     }
-
 }

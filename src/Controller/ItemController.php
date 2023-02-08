@@ -30,6 +30,11 @@ class ItemController extends AbstractController
         $this->itemService = $itemService;
     }
 
+
+
+
+
+
     #[Route('/users/{userId}/categories/{catId}/items', name: 'app_items_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
@@ -38,15 +43,23 @@ class ItemController extends AbstractController
         $this->denyAccessUnlessGranted('access', $user);
         $this->denyAccessUnlessGranted('access', $category);
 
+        $form = $this->createForm(FilterItemsType::class, null, [
+                'sort' => $request->query->get('sort'),
+                'name' => $request->query->get('name')]);
 
-        $form = $this->createForm(FilterItemsType::class, null, ['selected' => $request->query->get('sort')]);
-        $items = $this->itemService->findCategoryItemsAndSort($category->getId(), $request->query->get('sort'));
+
+        if($request->query->count() > 0)
+            $items = $this->itemService->findUserItemsFilter($user->getId(), $category->getId(), $request->query->all());
+        else
+            $items = $this->itemService->findUserItems($user->getId(), $category->getId());
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
             return $this->redirectToRoute('app_items_category',
-                ['userId' => $user->getId(), 'catId' => $category->getId(), 'sort' => $form->get('sort')->getData()]);
+                ['userId' => $user->getId(), 'catId' => $category->getId(),
+                    'sort' => $form->get('sort')->getData(),
+                    'name' => $form->get('name')->getData()]);
         }
 
         return $this->render('item/list_in_category.html.twig', [
@@ -55,6 +68,27 @@ class ItemController extends AbstractController
             'form' => $form->createView()
             ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     #[Route('/users/{id}/items', name: 'app_items', requirements: ['id' => '\d+'])]
     #[IsGranted('access', 'user')]
@@ -167,7 +201,7 @@ class ItemController extends AbstractController
     {
         $term = $request->query->get('term');
         return $this->render('item/_search_preview.html.twig', [
-            'items' => $this->itemService->findUserItems($id, $term)
+            'items' => $this->itemService->findUserItems($id, null, $term)
         ]);
     }
 }

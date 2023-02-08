@@ -1,4 +1,4 @@
-<article class="flex flex-col w-full max-w-xl gap-3" {{ stimulus_controller('hide-content', {hiddenText: 'Hide filters', visibleText: 'Show filters'}) }}>
+<article class="flex flex-col w-full gap-3" {{ stimulus_controller('hide-content', {hiddenText: 'Hide filters', visibleText: 'Show filters'}) }}>
     <h3 class="flex gap-2 text-info" data-action="click->hide-content#toggle">
         <span data-hide-content-target="text">Hide filters</span>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -7,8 +7,9 @@
     </h3>
 
     {{ form_start(form, {attr: {class: 'w-full flex flex-col gap-3 max-w-xl', 'data-hide-content-target': 'content'}}) }}
+    {{ form_row(form.name) }}
     {{ form_row(form.sort) }}
-    <button type="submit" class="btn">Filter</button>
+    <button type="submit" class="btn" data-turbo-frame="items-preview" >Filter</button>
     {{ form_end(form) }}
 
 </article>
