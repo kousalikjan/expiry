@@ -98,6 +98,7 @@ class ItemRepository extends ServiceEntityRepository
             ->setParameter('cleared', $cleared)
             ->andWhere('w.notifyDaysBefore is not null')
             ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->orderBy('w.expiration')
             ->getQuery()
             ->getResult();
     }

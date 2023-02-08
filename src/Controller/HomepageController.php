@@ -17,11 +17,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(ItemRepository $itemRepository): Response
+    public function index(): Response
     {
-        $user = $this->getUser();
-        return $this->render('index.html.twig', ['notificationsCount' =>
-            $user ? sizeof($itemRepository->findToBeNotifiedInAppOneUserByCleared($user->getId(), false)) : 0]);
+        return $this->render('index.html.twig');
     }
 
     #[Route('/set-locale/{_locale<%supported_locales%>}', name: 'app_set_locale')]

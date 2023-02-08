@@ -10,7 +10,12 @@
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow rounded-box bg-base-100 w-52">
                 <li><a href="{{ path('app_categories', {id: app.user.id}) }}" class="text-lg">{{ 'Inventory'|trans }}</a></li>
                 <li><a href="{{ path('app_notifications', {id: app.user.id}) }}" class="text-lg">
-                        {{ 'Notifications'|trans }}
+                        <div class="flex gap-3 items-center">
+                            <span class="text-lg">{{ 'Notifications'|trans }}</span>
+                            {% if notificationsCount(app.user.id) > 0 %}
+                            <div class="badge badge-outline badge-primary">{{ notificationsCount(app.user.id) }}</div>
+                            {% endif %}
+                        </div>
                     </a>
                 </li>
                     <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Profile'|trans }}</a></li>
@@ -26,7 +31,12 @@
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Inventory'|trans }}</a></li>
             <li><a href="{{ path('app_notifications', {id: app.user.id}) }}">
-                {{ 'Notifications'|trans }}
+                    <div class="flex gap-2 items-center">
+                        <span>{{ 'Notifications'|trans }}</span>
+                        {% if notificationsCount(app.user.id) > 0 %}
+                        <div class="badge badge-outline badge-primary">{{ notificationsCount(app.user.id) }}</div>
+                        {% endif %}
+                    </div>
                 </a>
             </li>
             <li tabindex="0">
@@ -43,9 +53,17 @@
         </ul>
 
     </div>
-    <div class="navbar-end">
+
+    <div class="navbar-end gap-3 md:gap-6">
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <button class="btn btn-ghost">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+            </button>
+        {% endif %}
         <div class="dropdown dropdown-end">
-            <label tabindex="0" class="btn btn-ghost rounded-btn font-normal mr-1 lg:mr-3 px-1 flex-nowrap">
+            <label tabindex="0" class="btn btn-ghost rounded-btn font-normal px-0 flex-nowrap">
                 <span>{{ app.request.locale[0:2] }}</span>
                 <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
             </label>
@@ -58,9 +76,13 @@
         <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
             {{ 'Add item'|trans }}</a>
             {% else %}
+                <div>
                 <a href="{{ path('app_login') }}" class="btn btn-sm btn-ghost lg:btn-md">{{ 'Login'|trans }}</a>
                 <a href="{{ path('app_register') }}" class="btn btn-sm btn-primary lg:btn-md">{{ 'Sign up'|trans }}</a>
+                </div>
         {% endif %}
     </div>
+
+
 </nav>
 </header>

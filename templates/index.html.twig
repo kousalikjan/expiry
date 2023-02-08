@@ -6,7 +6,7 @@
 
     <article class="base-article">
         <hgroup class="flex flex-col gap-2 items-center">
-            <h1 class="h1">{{ 'Welcome to Expiry!'|trans }}</h1>
+            <h1 class="h1 text-center">{{ 'Welcome to Expiry!'|trans }}</h1>
             <h2 class="text-lg mt-0 mb-8">{{ 'Your helper for storing receipts'|trans }}</h2>
         </hgroup>
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
@@ -14,7 +14,7 @@
                 <a href="{{ path('app_notifications', {id: app.user.id}) }}"
                    class="btn btn-info btn-outline indicator">
                     {{ 'Show notifications'|trans }}
-                    <span class="indicator-item badge">{{ notificationsCount }}</span>
+                    <span class="indicator-item badge">{{ notificationsCount(app.user.id) }}</span>
                 </a>
                 <a href="{{ path('app_categories', {id: app.user.id}) }}" class="btn btn-primary btn-outline">{{ 'See inventory'|trans }}</a>
             </section>
