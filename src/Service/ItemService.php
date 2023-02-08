@@ -56,6 +56,7 @@ class ItemService
         {
             // User has changed expiration date
             $item->getWarranty()->setNotifiedByEmail(false);
+            $item->getWarranty()->setNotificationCleared(false);
         }
 
     }
