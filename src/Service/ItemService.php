@@ -66,9 +66,9 @@ class ItemService
         $item->setNullWarranty();
     }
 
-    public function findUserItems(int $userId): array
+    public function findUserItems(int $userId, ?string $term = null): array
     {
-        return $this->itemRepository->findUserItems($userId);
+        return $this->itemRepository->findUserItems($userId, $term);
     }
 
     public function findCategoryItemsAndSort(int $catId, ?string $sort): array
@@ -93,7 +93,5 @@ class ItemService
         $warranty->setNotificationCleared(true);
         $this->warrantyRepository->save($warranty, true);
     }
-
-
 
 }

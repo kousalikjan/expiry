@@ -19,6 +19,25 @@
                 <a href="{{ path('app_categories', {id: app.user.id}) }}" class="btn btn-primary btn-outline">{{ 'See inventory'|trans }}</a>
             </section>
 
+            <section class="w-full">
+                <div class="divider"></div>
+                    <div
+                            class="w-full flex flex-col items-center "
+                            {{ stimulus_controller('search-preview', {url: path('_app_item_search', {id: app.user.id})}) }} >
+                        <div class="relative w-full max-w-xl">
+                            <input type="search" placeholder="Search your items..."
+                                   class="input input-bordered w-full"
+                                   data-action="input->search-preview#onSearchInput"
+                                   data-search-preview-target="input"
+                            />
+                            <div
+                                    class="absolute z-20 w-full top-14"
+                                    data-search-preview-target="result">
+                            </div>
+                        </div>
+                    </div>
+            </section>
+
         {% else %}
             <div class="flex gap-2">
                 <a href="{{ path('app_login') }}" class="btn btn-outline lg:btn-md">{{ 'Login'|trans }}</a>

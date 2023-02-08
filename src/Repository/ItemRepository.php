@@ -42,15 +42,21 @@ class ItemRepository extends ServiceEntityRepository
     /**
      * @return Item[] Items of given user
      */
-    public function findUserItems(int $userId) : array
+    public function findUserItems(int $userId, ?string $term = null) : array
     {
-        return $this->createQueryBuilder('i')
-            ->innerJoin('i.category', 'i_category')
-            ->innerJoin('i_category.owner', 'i_owner')
-            ->andWhere('i_owner.id = :userId')
-            ->setParameter('userId', $userId)
-            ->orderBy('i_category.id')
-            ->getQuery()
+        $qb = $this->createQueryBuilder('i')
+                ->innerJoin('i.category', 'i_category')
+                ->innerJoin('i_category.owner', 'i_owner')
+                ->andWhere('i_owner.id = :userId')
+                ->setParameter('userId', $userId);
+
+        if($term) {
+            $qb->andWhere('LOWER(i.name) LIKE LOWER(:term) OR LOWER(i.vendor) LIKE LOWER(:term)')
+                ->setParameter('term', '%'.$term.'%');
+        }
+
+        return
+            $qb->getQuery()
             ->getResult();
     }
 
@@ -102,6 +108,5 @@ class ItemRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 
 }

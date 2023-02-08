@@ -162,5 +162,12 @@ class ItemController extends AbstractController
 
     }
 
-
+    #[Route('/users/{id}/items/search', name: '_app_item_search', requirements: ['id' => '\d+'])]
+    public function searchUserItems(int $id, Request $request): Response
+    {
+        $term = $request->query->get('term');
+        return $this->render('item/_search_preview.html.twig', [
+            'items' => $this->itemService->findUserItems($id, $term)
+        ]);
+    }
 }
