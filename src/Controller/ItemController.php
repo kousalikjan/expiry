@@ -63,7 +63,8 @@ class ItemController extends AbstractController
         return $this->render('item/list_in_category.html.twig', [
             'category' => $category,
             'items' => $items,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'visibleFilters' => $request->query->count() > 0
             ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 

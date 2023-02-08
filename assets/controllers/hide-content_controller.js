@@ -6,16 +6,31 @@ export default class extends Controller {
     static values = {
         hiddenText: String,
         visibleText: String,
+        visible: Boolean
     };
 
-    visible = false;
+    connect() {
+        this.visibleValue = !this.visibleValue;
+        this.toggle();
+    }
 
+    toggle() {
+        this.visibleValue = !this.visibleValue;
+        if(this.visibleValue)
+            this.show();
+        else
+            this.hide();
+    }
 
-    toggle(event)
-    {
-        this.visible = !this.visible;
-        this.textTarget.innerText = this.visible ? this.visibleTextValue : this.hiddenTextValue;
-        this.contentTarget.classList.toggle('hidden')
+    show() {
+        this.textTarget.innerText = this.visibleTextValue;
+        this.contentTarget.classList.remove('hidden');
+    }
+
+    hide() {
+
+        this.textTarget.innerText = this.hiddenTextValue;
+        this.contentTarget.classList.add('hidden');
     }
 
 }
