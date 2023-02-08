@@ -21,16 +21,16 @@ class FilterItemsType extends AbstractType
             ])
             ->add('sort', ChoiceType::class, [
                 'required' => false,
-                'choices' => ['Expiration' => 'expiration', 'Item name' => 'name', 'Count' => 'amount'],
+                'choices' => ['Expiration' => 'expiration', 'Count' => 'amount'],
                 'data' => $options['sort'],
-                'placeholder' => false
+                'placeholder' => 'Item name'
             ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'sort' => 'expiration',
+            'sort' => 'name',
             'name' => null
         ]);
     }

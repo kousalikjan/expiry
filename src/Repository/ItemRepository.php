@@ -62,14 +62,14 @@ class ItemRepository extends ServiceEntityRepository
 
         switch ($sort)
         {
-            case 'name':
-                $qb->orderBy('i.name');
+            case 'expiration':
+                $qb->orderBy('w.expiration');
                 break;
-            case 'count':
-                $qb->orderBy('i.count');
+            case 'amount':
+                $qb->orderBy('i.amount');
                 break;
             default:
-                $qb->orderBy('w.expiration');
+                $qb->orderBy('i.name');
                 break;
         }
         return $qb->getQuery()
@@ -101,7 +101,9 @@ class ItemRepository extends ServiceEntityRepository
         }
 
         return
-            $qb->getQuery()
+            $qb
+                ->orderBy('LOWER(i.name)')
+                ->getQuery()
                 ->getResult();
     }
 
