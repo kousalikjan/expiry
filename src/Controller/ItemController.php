@@ -44,7 +44,8 @@ class ItemController extends AbstractController
         $form = $this->createForm(FilterItemsType::class, null, [
                 'name' => $request->query->get('name'),
                 'vendor' => $request->query->get('vendor'),
-                'expires' => $request->query->get('expires'),
+                'expiresIn' => $request->query->get('expiresIn'),
+                'includeExpired' => $request->query->get('includeExpired'),
                 'sort' => $request->query->get('sort')
             ]);
 
@@ -60,7 +61,8 @@ class ItemController extends AbstractController
                 ['userId' => $user->getId(), 'catId' => $category->getId(),
                     'name' => $form->get('name')->getData(),
                     'vendor' => $form->get('vendor')->getData(),
-                    'expires' => $form->get('expires')->getData(),
+                    'expiresIn' => $form->get('expiresIn')->getData(),
+                    'includeExpired' => $form->get('includeExpired')->getData(),
                     'sort' => $form->get('sort')->getData(),
                     ]);
         }

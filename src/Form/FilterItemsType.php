@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use phpDocumentor\Reflection\PseudoTypes\True_;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -24,9 +25,13 @@ class FilterItemsType extends AbstractType
                 'required' => false,
                 'data' => $options['vendor']
             ])
-            ->add('expires', NumberType::class, [
+            ->add('expiresIn', NumberType::class, [
                 'required' => false,
-                'data' => $options['expires']
+                'data' => $options['expiresIn']
+            ])
+            ->add('includeExpired', CheckboxType::class, [
+                'required' => false,
+                'data' => !($options['includeExpired'] === '0'),
             ])
             ->add('sort', ChoiceType::class, [
                 'required' => false,
@@ -42,7 +47,8 @@ class FilterItemsType extends AbstractType
             'sort' => 'name',
             'name' => null,
             'vendor' => null,
-            'expires' => null
+            'expiresIn' => null,
+            'includeExpired' => '1'
         ]);
     }
 }

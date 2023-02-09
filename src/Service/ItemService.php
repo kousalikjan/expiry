@@ -74,12 +74,15 @@ class ItemService
 
     public function findUserItemsFilter(int $userId, ?int $catId = null, array $query = []): array
     {
+        $includeExpired = $query['includeExpired'] ?? '1';
+
         return $this->itemRepository->findUserItemsFilter(
             $userId,
             $catId,
             $query['name'] ?? null,
             $query['vendor'] ?? null,
-            $query['expires'] ?? null,
+            $query['expiresIn'] ?? null,
+            $includeExpired === '1',
             $query['sort'] ?? null);
     }
 

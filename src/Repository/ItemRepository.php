@@ -42,7 +42,7 @@ class ItemRepository extends ServiceEntityRepository
     }
 
 
-    public function findUserItemsFilter(int $userId, ?int $catId, ?string $name, ?string $vendor, ?string $expireIn, ?string $sort): array
+    public function findUserItemsFilter(int $userId, ?int $catId, ?string $name, ?string $vendor, ?string $expireIn, bool $includeExpired, ?string $sort): array
     {
         $qb = $this->createQueryBuilder('i')
             ->leftJoin('i.warranty', 'w')
@@ -77,6 +77,10 @@ class ItemRepository extends ServiceEntityRepository
                 ->setParameter('expires', $expireBefore);
         }
 
+        if($includeExpired === false) {
+            $qb->andWhere('w IS NULL OR w.expiration >= current_date()');
+        }
+
 
         switch ($sort)
         {
@@ -87,7 +91,7 @@ class ItemRepository extends ServiceEntityRepository
                 $qb->orderBy('i.amount');
                 break;
             default:
-                $qb->orderBy('i.name');
+                $qb->orderBy('LOWER(i.name)');
                 break;
         }
 
