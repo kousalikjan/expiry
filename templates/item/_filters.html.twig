@@ -47,7 +47,7 @@
         {{ form_widget(form.includeExpired, {attr: {class: 'toggle toggle-secondary'}}) }}
         {{ form_label(form.includeExpired, 'Include expired?'|trans, {label_attr: {class: 'text-sm'}}) }}
         </div>
-        <button type="reset" class="btn btn-sm btn-ghost" data-action="click->hide-content#resetForm">{{ 'Reset filters'|trans }}</button>
+        <button type="reset" class="btn btn-sm btn-ghost" data-turbo-action="replace" data-action="click->hide-content#resetForm">{{ 'Reset filters'|trans }}</button>
 
     </div>
 

@@ -36,6 +36,9 @@ class ItemController extends AbstractController
     #[Entity('category', options: ['id' => 'catId'])]
     public function listInCategory(User $user, ?Category $category, Request $request): Response
     {
+
+        dump($request->getPathInfo(), $request->getUri());
+
         $this->denyAccessUnlessGranted('access', $user);
         $this->denyAccessUnlessGranted('access', $category);
 
@@ -62,10 +65,12 @@ class ItemController extends AbstractController
                     'name' => $form->get('name')->getData(),
                     'vendor' => $form->get('vendor')->getData(),
                     'expiresIn' => $form->get('expiresIn')->getData(),
-                    'includeExpired' => $form->get('includeExpired')->getData(),
+                    'includeExpired' => $form->get('includeExpired')->getData() === false ? '0' : null,
                     'sort' => $form->get('sort')->getData(),
                     ]);
         }
+
+        dump($request->getPathInfo());
         return $this->render('item/list_in_category.html.twig', [
             'category' => $category,
             'items' => $items,

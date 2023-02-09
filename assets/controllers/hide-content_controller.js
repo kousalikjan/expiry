@@ -35,9 +35,12 @@ export default class extends Controller {
         this.contentTarget.classList.add('hidden');
     }
 
-    resetForm() {
+    resetForm(event) {
         if(this.resetUrlValue !== 'none')
-            visit(this.resetUrlValue, {frame: this.dataFrameValue});
+        {
+            visit(this.resetUrlValue, {frame: this.dataFrameValue, action: 'replace'});
+        }
+
     }
 
 }
