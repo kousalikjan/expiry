@@ -66,12 +66,12 @@ class ItemController extends AbstractController
                     'sort' => $form->get('sort')->getData(),
                     ]);
         }
-
         return $this->render('item/list_in_category.html.twig', [
             'category' => $category,
             'items' => $items,
             'form' => $form->createView(),
-            'visibleFilters' => $request->query->count() > 0
+            'visibleFilters' => $request->query->count() > 0,
+            'resetUrl' => $request->getPathInfo()
             ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 

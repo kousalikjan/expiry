@@ -1,8 +1,10 @@
 <article class="flex flex-col w-full gap-3"
         {{ stimulus_controller('hide-content',{
-            hiddenText: 'Show filters',
-            visibleText: 'Hide filters',
-            visible: visibleFilters
+            hiddenText: 'Show filters'|trans,
+            visibleText: 'Hide filters'|trans,
+            visible: visibleFilters,
+            resetUrl: resetUrl,
+            dataFrame: 'items-preview'
         }) }}>
 
     <h3 class="flex gap-2 text-info" data-action="click->hide-content#toggle">
@@ -27,7 +29,7 @@
     <div class="input-group input-group-sm w-full flex-nowrap">
         <span class="basis-1/3 grow shrink-0 whitespace-nowrap">{{ form_label(form.expiresIn,'Expires in') }}</span>
         {{ form_widget(form.expiresIn, {attr: {class: 'input input-bordered input-sm shrink w-full'}}) }}
-        <span class="w-36 grow">DAYS</span>
+        <span class="w-36 grow">{{ 'DAYS'|trans }}</span>
     </div>
 
     {% if form.expiresIn.vars.errors|length %}
@@ -40,12 +42,17 @@
         {{ form_widget(form.sort, {attr: {class: 'input input-bordered input-sm w-full'}}) }}
     </div>
 
-    <div class="flex gap-2 items-center">
+    <div class="flex justify-between items-center">
+        <div class="flex gap-2 items-center">
         {{ form_widget(form.includeExpired, {attr: {class: 'toggle toggle-secondary'}}) }}
-        {{ form_label(form.includeExpired, 'Include expired?', {label_attr: {class: 'text-sm'}}) }}
+        {{ form_label(form.includeExpired, 'Include expired?'|trans, {label_attr: {class: 'text-sm'}}) }}
+        </div>
+        <button type="reset" class="btn btn-sm btn-ghost" data-action="click->hide-content#resetForm">{{ 'Reset filters'|trans }}</button>
+
     </div>
 
-    <button type="submit" class="btn btn-sm btn-primary btn-outline" data-turbo-frame="items-preview" data-turbo-action="replace">Filter</button>
+    <button type="submit" class="btn btn-sm btn-primary btn-outline" data-turbo-frame="items-preview" data-turbo-action="replace">
+        {{ 'Filter'|trans }}</button>
     {{ form_end(form) }}
 
 </article>

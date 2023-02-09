@@ -1,4 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
+import { visit } from '@hotwired/turbo';
 
 export default class extends Controller {
 
@@ -6,7 +7,9 @@ export default class extends Controller {
     static values = {
         hiddenText: String,
         visibleText: String,
-        visible: Boolean
+        visible: Boolean,
+        resetUrl: {type: String, default: 'none'},
+        dataFrame: {type: String, default: '_top'}
     };
 
     connect() {
@@ -28,9 +31,13 @@ export default class extends Controller {
     }
 
     hide() {
-
         this.textTarget.innerText = this.hiddenTextValue;
         this.contentTarget.classList.add('hidden');
+    }
+
+    resetForm() {
+        if(this.resetUrlValue !== 'none')
+            visit(this.resetUrlValue, {frame: this.dataFrameValue});
     }
 
 }
