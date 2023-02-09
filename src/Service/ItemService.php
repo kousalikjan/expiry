@@ -74,7 +74,13 @@ class ItemService
 
     public function findUserItemsFilter(int $userId, ?int $catId = null, array $query = []): array
     {
-        return $this->itemRepository->findUserItemsFilter($userId, $catId, $query['name'] ?? null, $query['sort'] ?? null);
+        return $this->itemRepository->findUserItemsFilter(
+            $userId,
+            $catId,
+            $query['name'] ?? null,
+            $query['vendor'] ?? null,
+            $query['expires'] ?? null,
+            $query['sort'] ?? null);
     }
 
     public function findToBeNotifiedInAppOneUserByCleared(int $userId, bool $cleared): array

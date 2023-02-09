@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -40,7 +42,7 @@ class ItemRepository extends ServiceEntityRepository
     }
 
 
-    public function findUserItemsFilter(int $userId, ?int $catId, ?string $name, ?string $sort): array
+    public function findUserItemsFilter(int $userId, ?int $catId, ?string $name, ?string $vendor, ?string $expireIn, ?string $sort): array
     {
         $qb = $this->createQueryBuilder('i')
             ->leftJoin('i.warranty', 'w')
@@ -57,8 +59,24 @@ class ItemRepository extends ServiceEntityRepository
 
         if($name !== null) {
             $qb->andWhere('LOWER(i.name) LIKE LOWER(:name)')
-                ->setParameter('name', '%'.$name.'%');
+                ->setParameter('name', '%'.$name.'%', ParameterType::STRING);
         }
+
+        if($vendor !== null) {
+            $qb->andWhere('LOWER(i.vendor) LIKE LOWER(:vendor)')
+                ->setParameter('vendor', '%'.$vendor.'%');
+        }
+
+        if($expireIn !== null) {
+
+            $expireBefore = new \DateTime();
+            $expireBefore->modify("+".$expireIn.' days');
+
+            $qb->andWhere('w IS NOT NULL')
+                ->andWhere('w.expiration <= :expires' )
+                ->setParameter('expires', $expireBefore);
+        }
+
 
         switch ($sort)
         {
@@ -72,6 +90,7 @@ class ItemRepository extends ServiceEntityRepository
                 $qb->orderBy('i.name');
                 break;
         }
+
         return $qb->getQuery()
             ->getResult();
 

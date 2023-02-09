@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,6 +20,14 @@ class FilterItemsType extends AbstractType
                 'required' => false,
                 'data' => $options['name']
             ])
+            ->add('vendor', TextType::class, [
+                'required' => false,
+                'data' => $options['vendor']
+            ])
+            ->add('expires', NumberType::class, [
+                'required' => false,
+                'data' => $options['expires']
+            ])
             ->add('sort', ChoiceType::class, [
                 'required' => false,
                 'choices' => ['Expiration' => 'expiration', 'Count' => 'amount'],
@@ -31,7 +40,9 @@ class FilterItemsType extends AbstractType
     {
         $resolver->setDefaults([
             'sort' => 'name',
-            'name' => null
+            'name' => null,
+            'vendor' => null,
+            'expires' => null
         ]);
     }
 }

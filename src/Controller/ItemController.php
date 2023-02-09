@@ -42,9 +42,11 @@ class ItemController extends AbstractController
         $request->getSession()->set('itemsUrl', $request->getRequestUri());
 
         $form = $this->createForm(FilterItemsType::class, null, [
-                'sort' => $request->query->get('sort'),
-                'name' => $request->query->get('name')]);
-
+                'name' => $request->query->get('name'),
+                'vendor' => $request->query->get('vendor'),
+                'expires' => $request->query->get('expires'),
+                'sort' => $request->query->get('sort')
+            ]);
 
         $items = $request->query->count() > 0
             ? $this->itemService->findUserItemsFilter($user->getId(), $category->getId(), $request->query->all())
@@ -56,8 +58,11 @@ class ItemController extends AbstractController
         {
             return $this->redirectToRoute('app_items_category',
                 ['userId' => $user->getId(), 'catId' => $category->getId(),
+                    'name' => $form->get('name')->getData(),
+                    'vendor' => $form->get('vendor')->getData(),
+                    'expires' => $form->get('expires')->getData(),
                     'sort' => $form->get('sort')->getData(),
-                    'name' => $form->get('name')->getData()]);
+                    ]);
         }
 
         return $this->render('item/list_in_category.html.twig', [
