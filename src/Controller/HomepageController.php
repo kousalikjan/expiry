@@ -2,26 +2,25 @@
 
 namespace App\Controller;
 
-use App\Repository\ItemRepository;
-use App\Repository\WarrantyRepository;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Service\ItemService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+
 
 class HomepageController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(Request $request): Response
+    public function index(Request $request, ItemService $itemService): Response
     {
-        $request->getSession()->set('itemsUrl', $request->getRequestUri());
+        $showTutorial = true;
+        $userId = $this->getUser()?->getId();
+        if($userId !== null)
+            $showTutorial = count($itemService->findUserItems($userId)) === 0;
 
-        return $this->render('index.html.twig');
+        $request->getSession()->set('itemsUrl', $request->getRequestUri());
+        return $this->render('index.html.twig', ['showTutorial' => $showTutorial]);
     }
 
     #[Route('/set-locale/{_locale<%supported_locales%>}', name: 'app_set_locale')]

@@ -1,5 +1,5 @@
-<section class="w-full">
-    <div class="divider"></div>
+<section class="w-full flex flex-col mt-8 max-w-xl mb-14">
+    <h2 class="text-xl mb-2 ">{{ 'Quick search'|trans }}</h2>
     <div
             class="w-full flex flex-col items-center "
             {{ stimulus_controller('search-preview', {url: path('_app_item_search', {id: app.user.id})}) }} >

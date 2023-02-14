@@ -1,0 +1,47 @@
+<div class="w-full flex flex-col gap-14 max-w-2xl {% if hidden %} hidden {% endif %}" data-hide-content-target="content">
+    <section class="w-full flex flex-col gap-3">
+        <div class="flex gap-4 items-center">
+            <div class="tutorial-step bg-primary">1</div>
+            <h2 class="text-2xl font-semibold">{{ 'Create a category'|trans }}</h2>
+        </div>
+        <p>{{ 'Navigate to your inventory and press new category button'|trans }}.</p>
+        <div class="mockup-window bg-base-300 border overflow-hidden">
+            <div class="flex justify-center bg-base-200">
+                <img src="{{ asset('img/category_index.jpg') }}" alt="Screenshot of category index page">
+            </div>
+        </div>
+        <p>{{ 'Enter category name and pick its color, then hit the create button'|trans }}!</p>
+    </section>
+
+    <section class="w-full flex flex-col gap-3">
+        <div class="flex gap-4 items-center">
+            <div class="tutorial-step">2</div>
+            <h2 class="text-2xl font-semibold">{{ 'Create an item'|trans }}</h2>
+        </div>
+        <p>{{ 'After creating a category, click the detail link to enter the category'|trans}}.
+            {{ 'Then press new item button'|trans }}.
+            {{ 'That will open an item form'|trans }}.</p>
+        <div class="mockup-window bg-base-300 border overflow-hidden">
+            <div class="flex justify-center bg-base-200">
+                <img src="{{ asset('img/item_create.jpg') }}" alt="Screenshot of new item form">
+            </div>
+        </div>
+        <p>{{ 'Fill in the mandatory information'|trans}}.
+            {{'To enable notification, toggle expiration checkbox, set expiration date and how many days in advance you want to be notified'|trans }}.</p>
+        <div class="mockup-window bg-base-300 border overflow-hidden">
+            <div class="flex justify-center bg-base-200">
+                <img src="{{ asset('img/item_expiration.jpg') }}" alt="Screenshot of expiration part of new item form">
+            </div>
+        </div>
+        <p>{{ 'After filling in the form, click continue to attach files to the created item'|trans }}!</p>
+    </section>
+
+    <section class="w-full flex flex-col gap-3 mb-52">
+        <div class="flex gap-4 items-center">
+            <div class="tutorial-step bg-accent">3</div>
+            <h2 class="text-2xl font-semibold">{{ 'That\'s all it takes'|trans}}!</h2>
+        </div>
+            <p>{{ 'You will be notified via email and in this application'|trans }}.
+                {{ 'If you do not want to recieve email notifications, you can disable them in your profile page'|trans }}.</p>
+    </section>
+</div>
