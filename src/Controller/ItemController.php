@@ -31,16 +31,16 @@ class ItemController extends AbstractController
     }
 
 
+    #[Route('/users/{userId}/items', name: 'app_items', requirements: ['userId' => '\d+'])]
     #[Route('/users/{userId}/categories/{catId}/items', name: 'app_items_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
-    public function listInCategory(User $user, ?Category $category, Request $request): Response
+    public function list(User $user, ?Category $category, Request $request): Response
     {
-
-        dump($request->getPathInfo(), $request->getUri());
-
         $this->denyAccessUnlessGranted('access', $user);
-        $this->denyAccessUnlessGranted('access', $category);
+
+        if($category !== null)
+            $this->denyAccessUnlessGranted('access', $category);
 
         $request->getSession()->set('itemsUrl', $request->getRequestUri());
 
@@ -53,15 +53,17 @@ class ItemController extends AbstractController
             ]);
 
         $items = $request->query->count() > 0
-            ? $this->itemService->findUserItemsFilter($user->getId(), $category->getId(), $request->query->all())
-            : $this->itemService->findUserItems($user->getId(), $category->getId());
+            ? $this->itemService->findUserItemsFilter($user->getId(), $category?->getId(), $request->query->all())
+            : $this->itemService->findUserItems($user->getId(), $category?->getId());
 
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            return $this->redirectToRoute('app_items_category',
-                ['userId' => $user->getId(), 'catId' => $category->getId(),
+            return $this->redirectToRoute(
+                $category === null ? 'app_items' : 'app_items_category', [
+                    'userId' => $user->getId(),
+                    'catId' => $category?->getId(),
                     'name' => $form->get('name')->getData(),
                     'vendor' => $form->get('vendor')->getData(),
                     'expiresIn' => $form->get('expiresIn')->getData(),
@@ -70,8 +72,7 @@ class ItemController extends AbstractController
                     ]);
         }
 
-        dump($request->getPathInfo());
-        return $this->render('item/list_in_category.html.twig', [
+        return $this->render('item/list.html.twig', [
             'category' => $category,
             'items' => $items,
             'form' => $form->createView(),
@@ -79,22 +80,6 @@ class ItemController extends AbstractController
             'resetUrl' => $request->getPathInfo()
             ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
-
-
-    #[Route('/users/{id}/items', name: 'app_items', requirements: ['id' => '\d+'])]
-    #[IsGranted('access', 'user')]
-    public function listAll(User $user, Request $request): Response
-    {
-
-        $request->getSession()->set('itemsUrl', $request->getRequestUri());
-        $form = $this->createForm(FilterItemsType::class);
-
-        return $this->render('item/list_all.html.twig', [
-            'items' => $this->itemService->findUserItems($user->getId()),
-            'form' => $form->createView()
-        ]);
-    }
-
 
     #[Route('/users/{userId}/items/create', name: 'app_item_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
     #[Route('/users/{userId}/categories/{catId}/items/create', name: 'app_item_create_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]

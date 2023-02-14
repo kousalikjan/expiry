@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ category.name|default('All items'|trans) }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <li><a href="{{ path('app_index') }}">{{ 'Home'|trans }}</a></li>
+    <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Inventory'|trans }}</a></li>
+    <li><a href="#">
+            {{ category.name|default('All items'|trans) }}
+    </a></li>
+{% endblock %}
+
+{% block body %}
+    <article class="base-article">
+        <h1 class="h1">
+            {{ category.name|default('All items'|trans) }}
+        </h1>
+
+        {% if category is null %}
+            {% include 'components/_add_link.html.twig' with {
+                'action': path('app_item_create', {userId: app.user.id}),
+                'text': 'Add item'|trans} %}
+        {% else %}
+            {% include 'components/_add_link.html.twig' with {
+                'action': path('app_item_create_category', {userId: app.user.id, catId: category.id}),
+                'text': 'Add item'|trans} %}
+        {% endif %}
+
+        <turbo-frame id="items-preview" class="flex flex-col items-center w-full max-w-xl gap-8" target="_top">
+            {{ include('item/_filters.html.twig') }}
+
+            {% include('components/_item_flashes.html.twig') %}
+
+            <section class="flex flex-col gap-6 w-full max-w-xl">
+                {% for item in items %}
+                    {% include('item/_item_preview.html.twig') with {
+                        showCategory: false,
+                        deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id}),
+                        dataFrame: 'items-preview'
+                    } %}
+                {% endfor %}
+            </section>
+        </turbo-frame>
+
+        {% if category is not null %}
+            <div class="divider"></div>
+            <article class="flex flex-col gap-4 items-center w-full">
+                {% include 'components/_edit_link.html.twig' with {
+                    'action': path('app_category_edit', {userId: app.user.id, catId: category.id}),
+                    'text': 'Edit'|trans ~ ' ' ~ category.name} %}
+
+                {% include 'components/_delete_link.html.twig' with {
+                    'action': path('app_category_delete', {userId: app.user.id, catId: category.id}),
+                    'text': 'Delete'|trans ~ ' ' ~ category.name,
+                    'confirm': false
+                } %}
+            </article>
+        {% endif %}
+
+    </article>
+{% endblock %}
