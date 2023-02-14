@@ -17,7 +17,7 @@ use Symfony\Component\Translation\LocaleSwitcher;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
-    name: 'app:notify-expiration',
+    name: 'app:notify-email',
     description: 'Sends email for each item that is about to expire!',
 )]
 class NotifyExpirationCommand extends Command
@@ -62,33 +62,30 @@ class NotifyExpirationCommand extends Command
                 $io->writeln($warranty->getItem()->getCategory()->getName());
                 $io->writeln($warranty->getExpiration()->format('d.m.Y'));
                 $io->writeln($warranty->getNotifyDaysBefore());
-                //$warranty->setNotifiedByEmail(true);
-                //$this->warrantyRepository->save($warranty, true);
+                $warranty->setNotifiedByEmail(true);
+                $this->warrantyRepository->save($warranty, true);
             }
 
-           /* $this->localeSwitcher->runWithLocale($user->getPreferredLocale(), function() use ($user, $length, $warranties, $io) {
+            $this->localeSwitcher->runWithLocale($user->getPreferredLocale(), function() use ($user, $length, $warranties, $io) {
 
                 $email = (new TemplatedEmail())->to(new Address($user->getEmail()));
 
-                if($length === 1) {
+                if($length === 1)
                     $email->subject($warranties[0]->getItem()->getName() . ' ' . $this->translator->trans('is about to expire!'));
-                }
                 else
                     $email->subject($length . ' '. $this->translator->trans('items are about to expire!'));
 
                 $email->htmlTemplate('emails/expiration.html.twig')
-                    ->context([
-                        'warranties' => $warranties
-                    ]);
+                ->context([
+                    'warranties' => $warranties
+                ]);
 
                 try {
                     $this->mailer->send($email);
-                } catch (TransportExceptionInterface $e)
-                {
+                } catch (TransportExceptionInterface $e) {
                     $io->error($e->getMessage());
                 }
-            });*/
-
+            });
         }
         return Command::SUCCESS;
     }
