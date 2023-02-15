@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-2.5 pt-2">
     {% for item in items %}
         <a href="{{ path('app_item_edit', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}">
-        <article class="card card-side bg-base-100 shadow-xl border border-slate-100 h-28 w-full">
+        <article class="card card-side bg-base-100 shadow-xl border border-slate-100 h-28 w-full hover:bg-gray-100">
             <figure class="hidden"><img src="{{ path('app_item_thumbnail', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}" alt="Photo of {{ item.name }}" class="h-full w-24"/></figure>
             <div class="px-2 py-0.5 flex justify-between w-full">
                 <div>

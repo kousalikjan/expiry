@@ -34,5 +34,9 @@
         {% endblock %}
     {% endembed %}
 
+    {% if edit|default %}
+        <a href="{{ path('app_item_file_edit', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id})}}"
+           class="btn btn-info w-full max-w-md">{{ 'Manage files'|trans }}</a>
+    {% endif %}
     <button type="submit" class="btn btn-primary max-w-md">{{ buttonText }}</button>
 {{ form_end(form) }}

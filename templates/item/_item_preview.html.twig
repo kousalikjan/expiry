@@ -1,7 +1,9 @@
-<article class="card card-side bg-base-100 shadow-xl border border-slate-100 h-28 w-full {{ cardStyle|default }}">
-    <figure class="hidden"><img src="{{ path('app_item_thumbnail', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}" alt="Photo of {{ item.name }}" class="h-full w-24"/></figure>
-    <div class="px-2 py-0.5 flex justify-between w-full">
-        <div>
+<div class="relative w-full">
+    <a
+        href="{{ path('app_item_edit', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}"
+        class="card card-side bg-base-100 shadow-xl border border-slate-100 h-28 w-full hover:bg-gray-100 {{ cardStyle|default }}">
+        <figure class="hidden"><img src="{{ path('app_item_thumbnail', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}" alt="Photo of {{ item.name }}" class="h-full w-24"/></figure>
+        <div class="px-2 py-0.5 w-full">
             <h2 class="sm:text-lg font-semibold">{{ item.name }}</h2>
 
             {% if showCategory|default %}
@@ -15,29 +17,25 @@
             {% if item.amount is not null  %}
                 <p>{{ 'Count'|trans }}: {{ item.amount }}</p>
             {% endif %}
+        </div>
+    </a>
 
-        </div>
-        <div class="flex flex-col justify-between items-end">
-            <a
-                    href="{{ deletePath }}"
-                    class="p-2 text-error hover:text-red-800"
-                    {{ stimulus_controller('sweetalert-confirm', {
-                        title: 'Delete'|trans ~ ' ' ~ item.name,
-                        text: 'You won\'t be able to revert this!'|trans,
-                        confirmButtonText: 'Yes, delete it!'|trans,
-                        cancelButtonText: 'Cancel'|trans,
-                        urlConfirm: deletePath,
-                        dataFrame: dataFrame|default('_top')
-                    }) }}
-                    data-action="click->sweetalert-confirm#onSubmit"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-h h-5 sm:w-6 sm:h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                </svg>
-            </a>
-        <a href="{{ path('app_item_edit', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}"
-           class="self-end p-2 sm:text-lg link link-info link-hover" >
-            {{ 'Detail'|trans }}</a>
-        </div>
-    </div>
-</article>
+
+    <a
+            href="{{ deletePath }}"
+            class="p-2 text-error hover:text-red-800 absolute top-1 right-1 z-5"
+            {{ stimulus_controller('sweetalert-confirm', {
+                title: 'Delete'|trans ~ ' ' ~ item.name,
+                text: 'You won\'t be able to revert this!'|trans,
+                confirmButtonText: 'Yes, delete it!'|trans,
+                cancelButtonText: 'Cancel'|trans,
+                urlConfirm: deletePath,
+                dataFrame: dataFrame|default('_top')
+            }) }}
+            data-action="click->sweetalert-confirm#onSubmit"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-h h-5 sm:w-6 sm:h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+        </svg>
+    </a>
+</div>
