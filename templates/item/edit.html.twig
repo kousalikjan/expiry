@@ -18,15 +18,15 @@
         <h1 class="h1">{{ item.name }}</h1>
         {% include 'item/_create_edit_form.html.twig' with {buttonText: 'save'|trans, edit: true} %}
 
-
-
-        <div class="flex mt-6 w-full justify-center">
+        <div class="flex flex-col mt-6 gap-3 w-full justify-center items-center">
         {% include 'components/_delete_link.html.twig' with {
             'action': path('app_item_delete', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id}),
             'text': 'Delete'|trans ~ ' ' ~ item.name,
              cancelButtonText: 'Cancel'|trans,
             'confirm': true
         } %}
+            <a href="{{ path('app_item_file_edit', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id})}}"
+               class="btn btn-sm btn-info btn-outline w-full max-w-xs">{{ 'Manage files'|trans }}</a>
         </div>
     </article>
 {% endblock %}

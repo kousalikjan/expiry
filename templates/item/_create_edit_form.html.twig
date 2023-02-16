@@ -1,42 +1,66 @@
 {# Mandatory #}
-{{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-6'}}) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.category) }}
+{% if edit|default %}
+    {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md grid gap-y-8 grid-cols-1 xl:grid-cols-2 xl:max-w-6xl xl:gap-y-12 xl:gap-x-8'}}) }}
+{% else %}
+    {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md grid gap-y-8 grid-cols-1'}}) }}
+{% endif %}
 
-    {% include 'form/_number_plus_minus.html.twig' with {
-        'input': form.amount
-    } %}
+<section class="flex flex-col items-center">
+    {% if edit|default %}
+        <h2 class="text-2xl font-semibold mt-5 mb-3 max-w-md hidden xl:block">{{ 'Item information'|trans }}</h2>
+    {% endif %}
+    <div class="form-control gap-6 w-full max-w-md">
+        {{ form_row(form.name) }}
+        {{ form_row(form.category) }}
 
-    {{ form_row(form.purchase) }}
-    <div class="divider my-2"></div>
-    {# Expiration/Warranty #}
-        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': 'Expiration/Warranty?'|trans, 'toggled': warrantyToggled} %}
+        {% include 'form/_number_plus_minus.html.twig' with {
+            'input': form.amount
+        } %}
+
+        {{ form_row(form.purchase) }}
+        <div class="divider my-2"></div>
+        {# Expiration/Warranty #}
+            {% embed 'form/_toggle_form.html.twig' with {'toggle_label': 'Expiration/Warranty?'|trans, 'toggled': warrantyToggled} %}
+                {% block form_body %}
+
+                    {% include 'form/_date_adder.html.twig' with {
+                        'input': form.warranty.expiration
+                    }%}
+
+                    {% include 'form/_number_button_setters.html.twig' with {
+                        'input': form.warranty.notifyDaysBefore
+                    } %}
+                {% endblock %}
+            {% endembed %}
+
+
+        {# Additional information #}
+        {% embed 'form/_toggle_form.html.twig' with {'toggle_label': 'Additional information?'|trans, 'toggled': additionalToggled} %}
             {% block form_body %}
-
-                {% include 'form/_date_adder.html.twig' with {
-                    'input': form.warranty.expiration
-                }%}
-
-                {% include 'form/_number_button_setters.html.twig' with {
-                    'input': form.warranty.notifyDaysBefore
-                } %}
+                {{ include('form/_price_currency_input.html.twig') }}
+                {{ form_row(form.vendor) }}
+                {{ form_row(form.barcode) }}
+                {{ form_row(form.note) }}
             {% endblock %}
         {% endembed %}
-
-
-    {# Additional information #}
-    {% embed 'form/_toggle_form.html.twig' with {'toggle_label': 'Additional information?'|trans, 'toggled': additionalToggled} %}
-        {% block form_body %}
-            {{ include('form/_price_currency_input.html.twig') }}
-            {{ form_row(form.vendor) }}
-            {{ form_row(form.barcode) }}
-            {{ form_row(form.note) }}
-        {% endblock %}
-    {% endembed %}
-
+    </div>
+</section>
     {% if edit|default %}
-        <a href="{{ path('app_item_file_edit', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id})}}"
-           class="btn btn-info w-full max-w-md">{{ 'Manage files'|trans }}</a>
+        <section class="flex flex-col items-center">
+            <h2 class="text-2xl font-semibold mt-5 mb-3 max-w-md">{{ 'Item files'|trans }}</h2>
+            <turbo-frame id="item-files"
+                         src="{{ path('app_item_file_edit', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id}) }}"
+                         class="flex flex-col items-center gap-8 w-full"
+            >
+                <div class="flex gap-2 items-center">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 to-pink-500 animate-spin">
+                        <div class="h-6 w-6 rounded-full bg-base-100"></div>
+                    </div>
+                <span>{{ 'Loading'|trans }}...</span>
+                </div>
+
+            </turbo-frame>
+        </section>
     {% endif %}
-    <button type="submit" class="btn btn-primary max-w-md">{{ buttonText }}</button>
+    <button type="submit" class="btn btn-primary max-w-md xl:max-w-xl xl:col-span-2 xl:mx-auto xl:w-full">{{ buttonText }}</button>
 {{ form_end(form) }}

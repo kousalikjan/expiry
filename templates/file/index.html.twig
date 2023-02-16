@@ -37,7 +37,6 @@
                 </li>
             {% endfor %}
             </ul>
-
         {% if redirect %}
             <a
                 href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}"
@@ -57,7 +56,9 @@
             >
                 {{ 'finish'|trans }}
             </a>
-        {% else %}
+            {% endif %}
+        </turbo-frame>
+        {% if not redirect %}
             <a
                 href="{{ path('app_item_edit', {userId: user.id, catId: category.id, itemId: item.id}) }}"
                 class="btn btn-primary w-full max-w-md"
@@ -65,6 +66,5 @@
                 {{ 'save'|trans }}
             </a>
         {% endif %}
-        </turbo-frame>
         </article>
 {% endblock %}
