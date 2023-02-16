@@ -1,7 +1,16 @@
 <div class="w-full flex flex-col gap-14 max-w-2xl {% if hidden %} hidden {% endif %}" data-hide-content-target="content">
+
     <section class="w-full flex flex-col gap-3">
         <div class="flex gap-4 items-center">
             <div class="tutorial-step bg-primary">1</div>
+            <h2 class="text-2xl font-semibold">{{ 'Open your inventory'|trans }}</h2>
+        </div>
+        <p>{{ 'Open your inventory using "SEE INVENTORY" button or "INVENTORY" button in navigation bar'|trans }}.</p>
+    </section>
+
+    <section class="w-full flex flex-col gap-3">
+        <div class="flex gap-4 items-center">
+            <div class="tutorial-step bg-secondary">2</div>
             <h2 class="text-2xl font-semibold">{{ 'Create a category'|trans }}</h2>
         </div>
         <p>{{ 'Navigate to your inventory and press new category button'|trans }}.</p>
@@ -21,7 +30,7 @@
 
     <section class="w-full flex flex-col gap-3">
         <div class="flex gap-4 items-center">
-            <div class="tutorial-step">2</div>
+            <div class="tutorial-step bg-accent">3</div>
             <h2 class="text-2xl font-semibold">{{ 'Create an item'|trans }}</h2>
         </div>
         <p>{{ 'After creating a category, click the detail link to enter the category'|trans}}.
@@ -50,7 +59,7 @@
 
     <section class="w-full flex flex-col gap-3 mb-52">
         <div class="flex gap-4 items-center">
-            <div class="tutorial-step bg-accent">3</div>
+            <div class="tutorial-step bg-info">4</div>
             <h2 class="text-2xl font-semibold">{{ 'That\'s all it takes'|trans}}!</h2>
         </div>
             <p>{{ 'You will be notified via email and in this application'|trans }}.
