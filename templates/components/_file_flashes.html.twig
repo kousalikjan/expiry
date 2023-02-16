@@ -1,4 +1,4 @@
-<div class="toast toast-bottom toast-end bottom-10 lg:top-20 fixed z-50">
+<div class="toast toast-bottom toast-end bottom-10 lg:top-20 fixed z-20">
     {% for message in app.flashes('file_error') %}
         <div class="flex bg-error p-3.5 rounded-xl gap-8 justify-between items-center" {{ stimulus_controller('toast-hide') }}>
             <span>{{ message|trans }}</span>
