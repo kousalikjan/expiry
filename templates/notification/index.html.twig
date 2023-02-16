@@ -17,22 +17,25 @@
             {% if notClearedItems|length > 0 %}
                 <p>{{ 'You have %number% new notifications'|trans({'%number%': notClearedItems|length}) }}!</p>
                 {% for item in notClearedItems %}
-{#                    <div class="indicator w-full">#}
-{#                        <a#}
-{#                                href="{{ path('app_notification_clear', {userId: app.user.id, itemId: item.id}) }}"#}
-{#                                class="indicator-item indicator-start badge badge-primary left-2 top-1"#}
-{#                                data-turbo-frame="user-notifications"#}
-{#                        >#}
-{#                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">#}
-{#                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />#}
-{#                            </svg>#}
-{#                        </a>#}
+                    <div class="indicator w-full">
+                        <a
+                                href="{{ path('app_notification_clear', {userId: app.user.id, itemId: item.id}) }}"
+                                class="indicator-item indicator-bottom badge badge-primary right-11 bottom-5 hover:badge-outline"
+                                data-turbo-frame="user-notifications"
+                        >
+                            <div class="flex items-center gap-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                <span>{{ 'Clear'|trans }}</span>
+                            </div>
+                        </a>
                             {% include('item/_item_preview.html.twig') with {
                                 showCategory: false,
                                 deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id, from: 'notifications'}),
                                 dataFrame: 'user-notifications'
                             } %}
-{#                    </div>#}
+                    </div>
                 {% endfor %}
 
             {% else %}

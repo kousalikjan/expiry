@@ -38,7 +38,8 @@
                     {% include('item/_item_preview.html.twig') with {
                         showCategory: false,
                         deletePath: path('app_item_delete', {userId: app.user.id, catId: item.category.id, itemId: item.id}),
-                        dataFrame: 'items-preview'
+                        dataFrame: 'items-preview',
+                        showCategory: category is null
                     } %}
                 {% endfor %}
             </section>

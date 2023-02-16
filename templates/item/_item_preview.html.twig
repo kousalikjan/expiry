@@ -7,7 +7,7 @@
             <h2 class="sm:text-lg font-semibold">{{ item.name }}</h2>
 
             {% if showCategory|default %}
-                <p><a class="text-sky-700 hover:underline" href="{{ path('app_items_category', {userId: app.user.id, catId: item.category.id}) }}">{{ item.category.name }}</a></p>
+                <p>{{ item.category.name }}</p>
             {% endif %}
 
             {% if item.warranty is not null %}
