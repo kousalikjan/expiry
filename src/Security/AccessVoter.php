@@ -4,6 +4,7 @@ namespace App\Security;
 
 use App\Entity\Category;
 use App\Entity\Item;
+use App\Entity\ItemFile;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
@@ -20,7 +21,8 @@ class AccessVoter extends Voter
 
         if(!$subject instanceof Category
             && !$subject instanceof Item
-            && !$subject instanceof User)
+            && !$subject instanceof User
+            && !$subject instanceof ItemFile)
             return false;
 
         return true;
@@ -43,6 +45,9 @@ class AccessVoter extends Voter
 
         if($subject instanceof User)
             return $subject->getUserIdentifier() === $user->getUserIdentifier();
+
+        if($subject instanceof ItemFile)
+            return $subject->getItem()->getCategory()->getOwner()->getUserIdentifier() === $user->getUserIdentifier();
 
         // This should never be reached
         return false;

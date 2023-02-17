@@ -16,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CategoryController extends AbstractController
 {
@@ -30,9 +31,9 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
+    #[IsGranted('access', 'user')]
     public function index(User $user): Response
     {
-        $this->denyAccessUnlessGranted('access', $user);
         return $this->render('category/index.html.twig', [
             'categories' => $user->getCategories(),
             'itemsCount' => count($this->itemService->findUserItems($user->getId()))]);
@@ -42,11 +43,9 @@ class CategoryController extends AbstractController
     #[Route('/users/{userId}/categories/{catId}/edit', name: 'app_category_edit', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
+    #[IsGranted('access', 'user')]
     public function createEdit(User $user, ?Category $category, Request $request): Response
     {
-        // So I can't create categories for other users
-        $this->denyAccessUnlessGranted('access', $user);
-
         if($category)
             $this->denyAccessUnlessGranted('access', $category);
         else
@@ -67,20 +66,20 @@ class CategoryController extends AbstractController
             'create' => !$category->getId(),
             'category' => $category
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
-
     }
 
 
     #[Route('/users/{userId}/categories/{catId}/delete', name: 'app_category_delete', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
     public function delete(User $user, Category $category, Request $request): Response
     {
 
         $form = $this->createForm(SelectCategoryType::class, null, [
             'allCategories' => array_filter($user->getCategories()->toArray(), fn (Category $elem) => $elem->getId() !== $category->getId() )
         ]);
-        $this->denyAccessUnlessGranted('access', $category);
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {

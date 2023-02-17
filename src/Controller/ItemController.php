@@ -35,10 +35,9 @@ class ItemController extends AbstractController
     #[Route('/users/{userId}/categories/{catId}/items', name: 'app_items_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
+    #[IsGranted('access', 'user')]
     public function list(User $user, ?Category $category, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $user);
-
         if($category !== null)
             $this->denyAccessUnlessGranted('access', $category);
 
@@ -85,9 +84,9 @@ class ItemController extends AbstractController
     #[Route('/users/{userId}/categories/{catId}/items/create', name: 'app_item_create_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
+    #[IsGranted('access', 'user')]
     public function create(User $user, ?Category $category, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $user);
         $item = ItemFactory::createItem($user);
 
         if ($category) {
@@ -122,9 +121,12 @@ class ItemController extends AbstractController
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
-    public function edit(User $user, Category $category, Item $item, bool $redirect, Request $request): Response
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
+    public function edit(User $user, Category $category, Item $item, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $user);
+
         $form = $this->createForm(ItemType::class, $item, [
             'categories' => $user->getCategories()
         ]);
@@ -162,13 +164,14 @@ class ItemController extends AbstractController
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
     public function delete(User $user, Category $category, Item $item, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $user);
 
         $this->itemService->remove($item, true);
         $this->addFlash('item_success', 'Item successfully deleted!');
-
 
         if($request->getSession()->get('itemsUrl'))
             return $this->redirect( $request->getSession()->get('itemsUrl'));
@@ -178,12 +181,13 @@ class ItemController extends AbstractController
     }
 
     #[Route('/users/{id}/items/search', name: '_app_item_search', requirements: ['id' => '\d+'])]
-    public function searchUserItems(int $id, Request $request): Response
+    #[IsGranted('access', 'user')]
+    public function searchUserItems(User $user, Request $request): Response
     {
         $term = $request->query->get('term');
 
         return $this->render('item/_search_preview.html.twig', [
-            'items' => $this->itemService->findUserItems($id, null, $term)
+            'items' => $this->itemService->findUserItems($user->getId(), null, $term)
         ]);
     }
 }

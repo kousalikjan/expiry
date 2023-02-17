@@ -22,13 +22,11 @@ class UserController extends AbstractController
 {
     private UserRepository $userRepository;
     private ItemService $itemService;
-    private WarrantyRepository $warrantyRepository;
 
-    public function __construct(UserRepository $userRepository, ItemService $itemService, WarrantyRepository $warrantyRepository)
+    public function __construct(UserRepository $userRepository, ItemService $itemService)
     {
         $this->userRepository = $userRepository;
         $this->itemService = $itemService;
-        $this->warrantyRepository = $warrantyRepository;
     }
 
 
@@ -63,6 +61,8 @@ class UserController extends AbstractController
     #[Route('/users/{userId}/notifications/{itemId}/clear', name: 'app_notification_clear', requirements: ['userId' => '\d+', 'itemId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'item')]
    public function clearNotificationItem(User $user, Item $item): Response
    {
         $this->itemService->clearNotification($item);

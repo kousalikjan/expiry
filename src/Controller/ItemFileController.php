@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -36,10 +37,11 @@ class ItemFileController extends AbstractController
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
-    public function edit(User $user, Category $category, Item $item, ?bool $redirect, Request $request): Response
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
+    public function edit(User $user, Category $category, Item $item, ?bool $redirect): Response
     {
-        $this->denyAccessUnlessGranted('access', $item);
-
         return $this->render('file/index.html.twig', [
             'user' => $user,
             'category' => $category,
@@ -52,9 +54,11 @@ class ItemFileController extends AbstractController
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
     public function uploadItemFile(User $user, Category $category, Item $item, Request $request, UploaderHelper $uploaderHelper, ValidatorInterface $validator): Response
     {
-        $this->denyAccessUnlessGranted('access', $item);
 
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('item-file');
@@ -116,10 +120,12 @@ class ItemFileController extends AbstractController
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
     #[Entity('file', options: ['id' => 'fileId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
+    #[IsGranted('access', 'file')]
     public function downloadItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $item);
-
         $response = new StreamedResponse(function () use ($file, $uploaderHelper, $request) {
             $outputStream = fopen('php://output', 'wb');
 
@@ -150,9 +156,12 @@ class ItemFileController extends AbstractController
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
     #[Entity('file', options: ['id' => 'fileId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
+    #[IsGranted('access', 'file')]
     public function deleteItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('access', $item);
 
         $this->itemFileRepository->remove($file, true);
         $uploaderHelper->deleteFile($file->getItemFilePath());
@@ -171,9 +180,11 @@ class ItemFileController extends AbstractController
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
     public function getItemThumbnail(User $user, Category $category, Item $item, UploaderHelper $uploaderHelper): Response
     {
-        $this->denyAccessUnlessGranted('access', $item);
         $items = $this->itemFileRepository->findImageFiles($item->getId());
         if(count($items) <= 0)
         {
