@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Config\Currency;
 use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\User;
@@ -14,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -59,7 +59,12 @@ class ItemType extends AbstractType
             ])
             ->add('price', NumberType::class, [
                 'required' => false,
-                'html5' => true
+                'html5' => true,
+                'scale' => 2,
+                'attr' => [
+                    'step' => 0.01
+                ]
+
             ])
             ->add('currency', ChoiceType::class, [
                 'required' => false,

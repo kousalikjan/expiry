@@ -41,7 +41,7 @@ class Item
     private ?string $vendor = null;
 
     #[ORM\Column(nullable: true)]
-    private ?int $price = null;
+    private ?float $price = null;
 
     #[ORM\Column(length: 3, nullable: true)]
     #[Assert\Length(max: 3)]
@@ -146,12 +146,12 @@ class Item
         return $this;
     }
 
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function setPrice(?int $price): self
+    public function setPrice(?float $price): self
     {
         $this->price = $price;
 
