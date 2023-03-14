@@ -41,6 +41,7 @@
             <a
                 href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}"
                 class="btn btn-primary w-full max-w-md"
+		data-turbo-frame="_top"
                 {% if item.itemFiles|length < 1 %}
                     {{ stimulus_controller('sweetalert-confirm', {
                         title: 'No files uploaded'|trans,
