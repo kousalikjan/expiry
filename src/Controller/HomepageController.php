@@ -17,7 +17,7 @@ class HomepageController extends AbstractController
         $showTutorial = true;
         $userId = $this->getUser()?->getId();
         if($userId !== null)
-            $showTutorial = count($itemService->findUserItems($userId)) === 0;
+            $showTutorial = $itemService->getUserItemsCount($userId) === 0;
 
         $request->getSession()->set('itemsUrl', $request->getRequestUri());
         return $this->render('index.html.twig', ['showTutorial' => $showTutorial]);

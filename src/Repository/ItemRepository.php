@@ -6,6 +6,8 @@ use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -128,6 +130,20 @@ class ItemRepository extends ServiceEntityRepository
                 ->orderBy('LOWER(i.name)')
                 ->getQuery()
                 ->getResult();
+    }
+
+
+
+    public function getUserItemsCount(int $userId) : int
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->select('count(i.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 

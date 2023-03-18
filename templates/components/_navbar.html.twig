@@ -18,7 +18,7 @@
                         </div>
                     </a>
                 </li>
-                    <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Profile'|trans }}</a></li>
+                    <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Categories'|trans }}</a></li>
                     <li class="block divider my-2"></li>
                     <li><a class="text-lg text-gray-600" href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
             </ul>
@@ -29,7 +29,7 @@
     <div class="navbar-center hidden lg:flex">
         <ul tabindex="0" class="menu menu-horizontal px-1">
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-            <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Inventory'|trans }}</a></li>
+            <li><a href="{{ path('app_categories', {id: app.user.id}) }}">{{ 'Categories'|trans }}</a></li>
             <li><a href="{{ path('app_notifications', {id: app.user.id}) }}">
                     <div class="flex gap-2 items-center">
                         <span>{{ 'Notifications'|trans }}</span>
@@ -40,7 +40,7 @@
                 </a>
             </li>
             <li tabindex="0">
-                <button>
+                <button class="mx-2">
                     {{ 'Profile'|trans }}
                     <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
                 </button>
@@ -80,6 +80,7 @@
             </ul>
         </div>
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+
         <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
             {{ 'Add item'|trans }}</a>
             {% else %}

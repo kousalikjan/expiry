@@ -36,7 +36,7 @@ class CategoryController extends AbstractController
     {
         return $this->render('category/index.html.twig', [
             'categories' => $user->getCategories(),
-            'itemsCount' => count($this->itemService->findUserItems($user->getId()))]);
+            'itemsCount' => $this->itemService->getUserItemsCount($user->getId())]);
     }
 
     #[Route('/users/{userId}/categories/create', name: 'app_category_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
