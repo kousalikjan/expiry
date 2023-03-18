@@ -164,4 +164,20 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getAppNotificationsCount(int $userId): int
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.warranty', 'w')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('w.notificationCleared = false')
+            ->andWhere('w.notifyDaysBefore is not null')
+            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->select('count(i.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }

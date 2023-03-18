@@ -55,20 +55,6 @@
     </div>
 
     <div class="navbar-end gap-3 md:gap-6">
-{#        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}#}
-{#            <div class="relative">#}
-{#            <button class="btn btn-ghost">#}
-{#                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">#}
-{#                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />#}
-{#                </svg>#}
-{#            </button>#}
-{#            <article class="absolute w-72 -translate-x-1/2">#}
-{#                <form>#}
-{#                    <input type="text" id="search" class="input input-bordered w-full">#}
-{#                </form>#}
-{#            </article>#}
-{#            </div>#}
-{#        {% endif %}#}
         <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost rounded-btn font-normal px-0 flex-nowrap">
                 <span>{{ app.request.locale[0:2] }}</span>
@@ -80,13 +66,18 @@
             </ul>
         </div>
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
-            {{ 'Add item'|trans }}</a>
-            {% else %}
-                <div class="flex flex-nowrap">
-                <a href="{{ path('app_login') }}" class="btn btn-sm btn-ghost lg:btn-md">{{ 'Login'|trans }}</a>
-                <a href="{{ path('app_register') }}" class="btn btn-sm btn-primary lg:btn-md">{{ 'Sign up'|trans }}</a>
-                </div>
+            {% if categoriesCount(app.user.id) > 0 %}
+                <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
+                {{ 'Add item'|trans }}</a>
+                {% else %}
+                    <a href="{{ path('app_category_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
+                        {{ 'Add category'|trans }}</a>
+            {% endif %}
+        {% else %}
+            <div class="flex flex-nowrap">
+            <a href="{{ path('app_login') }}" class="btn btn-sm btn-ghost lg:btn-md">{{ 'Login'|trans }}</a>
+            <a href="{{ path('app_register') }}" class="btn btn-sm btn-primary lg:btn-md">{{ 'Sign up'|trans }}</a>
+            </div>
         {% endif %}
     </div>
 </nav>

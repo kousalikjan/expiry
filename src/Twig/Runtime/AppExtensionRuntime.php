@@ -20,7 +20,7 @@ class AppExtensionRuntime implements RuntimeExtensionInterface
 
     public function notificationsCount(int $userId): int
     {
-        return sizeof($this->itemRepository->findToBeNotifiedInAppOneUserByCleared($userId, false));
+        return $this->itemRepository->getAppNotificationsCount($userId);
     }
 
     public function categoriesCount(int $userId): int
