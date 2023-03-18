@@ -5,11 +5,11 @@
             <div class="tutorial-step bg-primary">1</div>
             <h2 class="text-2xl font-semibold">{{ 'Create a category'|trans }}</h2>
         </div>
-        <p>{{ '1. See a list of your categories by pressing "Categories" link in the main navigation bar'|trans }}.
-            <br>
-            {{ '2. Press "New Category" button on that page'|trans }}.
-            <br>
-            {{ '3. Fill in category name and its color'|trans }}.</p>
+        <ol class="list-decimal list-inside">
+            <li>{{ 'Press "Categories" link in the main navigation bar'|trans }}.</li>
+            <li>{{ 'Press "New Category" button on that page'|trans }}.</li>
+            <li>{{ 'Enter category name and its color, then hit "Create" button'|trans }}.</li>
+        </ol>
         <div class="mockup-window bg-base-300 border overflow-hidden">
             <div class="flex justify-center bg-base-200">
                 {% if app.user %}
@@ -25,12 +25,13 @@
 
     <section class="w-full flex flex-col gap-3">
         <div class="flex gap-4 items-center">
-            <div class="tutorial-step bg-accent">3</div>
+            <div class="tutorial-step bg-secondary">2</div>
             <h2 class="text-2xl font-semibold">{{ 'Create an item'|trans }}</h2>
         </div>
-        <p>{{ 'After creating a category, click the detail link to enter the category'|trans}}.
-            {{ 'Then press new item button'|trans }}.
-            {{ 'That will open an item form'|trans }}.</p>
+        <ol class="list-decimal list-inside">
+            <li>{{ 'Click on the created category preview and press "Add item" button'|trans}}.</li>
+            <li>{{ 'Enter new item mandatory information'|trans }}.</li>
+        </ol>
         <div class="mockup-window bg-base-300 border overflow-hidden">
             <div class="flex justify-center bg-base-200">
                 {% if app.user %}
@@ -42,7 +43,6 @@
                 {% endif %}
             </div>
         </div>
-        <p>{{ 'Fill in the mandatory information'|trans}}.
             {{'To enable notification, toggle expiration checkbox, set expiration date and how many days in advance you want to be notified'|trans }}.</p>
         <div class="mockup-window bg-base-300 border overflow-hidden">
             <div class="flex justify-center bg-base-200">
@@ -54,7 +54,7 @@
 
     <section class="w-full flex flex-col gap-3 mb-52">
         <div class="flex gap-4 items-center">
-            <div class="tutorial-step bg-info">4</div>
+            <div class="tutorial-step bg-info">3</div>
             <h2 class="text-2xl font-semibold">{{ 'That\'s all it takes'|trans}}!</h2>
         </div>
             <p>{{ 'You will be notified via email and in this application'|trans }}.

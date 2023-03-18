@@ -68,10 +68,10 @@
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
             {% if categoriesCount(app.user.id) > 0 %}
                 <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
-                {{ 'Add item'|trans }}</a>
+                {{ 'New item'|trans }}</a>
                 {% else %}
                     <a href="{{ path('app_category_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
-                        {{ 'Add category'|trans }}</a>
+                        {{ 'New category'|trans }}</a>
             {% endif %}
         {% else %}
             <div class="flex flex-nowrap">
