@@ -95,6 +95,7 @@ class ItemController extends AbstractController
         $form = $this->createForm(ItemType::class, $item, [
             'categories' => $user->getCategories(),
         ]);
+        dump($form);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
