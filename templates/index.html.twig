@@ -16,7 +16,7 @@
                     {{ 'Show notifications'|trans }}
                     <span class="indicator-item badge">{{ notificationsCount(app.user.id) }}</span>
                 </a>
-                <a href="{{ path('app_categories', {id: app.user.id}) }}" class="btn btn-primary btn-outline">{{ 'See inventory'|trans }}</a>
+                <a href="{{ path('app_categories', {id: app.user.id}) }}" class="btn btn-primary btn-outline">{{ 'See categories'|trans }}</a>
             </section>
 
             {% include('item/_item_search.html.twig') %}

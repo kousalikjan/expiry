@@ -15,6 +15,4 @@ class ItemFactory
         $item->setCurrency($user->getDefaultCurrency());
         return $item;
     }
-
-
 }

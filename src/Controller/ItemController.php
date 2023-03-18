@@ -22,14 +22,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ItemController extends AbstractController
 {
-
     private ItemService $itemService;
 
     public function __construct(ItemService $itemService)
     {
         $this->itemService = $itemService;
     }
-
 
     #[Route('/users/{userId}/items', name: 'app_items', requirements: ['userId' => '\d+'])]
     #[Route('/users/{userId}/categories/{catId}/items', name: 'app_items_category', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
@@ -43,6 +41,7 @@ class ItemController extends AbstractController
 
         $request->getSession()->set('itemsUrl', $request->getRequestUri());
 
+        // create form based on query params
         $form = $this->createForm(FilterItemsType::class, null, [
                 'name' => $request->query->get('name'),
                 'vendor' => $request->query->get('vendor'),
@@ -52,9 +51,8 @@ class ItemController extends AbstractController
             ]);
 
         $items = $request->query->count() > 0
-            ? $this->itemService->findUserItemsFilter($user->getId(), $category?->getId(), $request->query->all())
+            ? $this->itemService->findUserItemsAndFilter($user->getId(), $category?->getId(), $request->query->all())
             : $this->itemService->findUserItems($user->getId(), $category?->getId());
-
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
@@ -68,7 +66,7 @@ class ItemController extends AbstractController
                     'expiresIn' => $form->get('expiresIn')->getData(),
                     'includeExpired' => $form->get('includeExpired')->getData() === false ? '0' : null,
                     'sort' => $form->get('sort')->getData(),
-                    ]);
+            ]);
         }
 
         return $this->render('item/list.html.twig', [
@@ -77,7 +75,7 @@ class ItemController extends AbstractController
             'form' => $form->createView(),
             'visibleFilters' => $request->query->count() > 0,
             'resetUrl' => $request->getPathInfo()
-            ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
 
     #[Route('/users/{userId}/items/create', name: 'app_item_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
@@ -97,6 +95,7 @@ class ItemController extends AbstractController
         $form = $this->createForm(ItemType::class, $item, [
             'categories' => $user->getCategories(),
         ]);
+        dump($form);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid())
@@ -108,10 +107,16 @@ class ItemController extends AbstractController
             $this->addFlash('success', 'Item successfully created!');
             $this->addFlash('info', 'Pressing back will not delete the item');
 
-            return $this->redirectToRoute('app_item_file_edit_redirect',
-                ['userId' => $user->getId(), 'catId' => $category->getId(), 'itemId' => $item->getId(), 'redirect' => true]);
+            return $this->redirectToRoute('app_item_file_edit_redirect', [
+                'userId' => $user->getId(),
+                'catId' => $category->getId(),
+                'itemId' => $item->getId(),
+                'redirect' => true
+            ]);
         }
-        return $this->render('item/create.html.twig', ['form' => $form->createView(),
+
+        return $this->render('item/create.html.twig', [
+            'form' => $form->createView(),
             'warrantyToggled' => $item->warrantyToggled(),
             'additionalToggled' => $item->additionalToggled()
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
@@ -126,13 +131,12 @@ class ItemController extends AbstractController
     #[IsGranted('access', 'item')]
     public function edit(User $user, Category $category, Item $item, Request $request): Response
     {
-
         $form = $this->createForm(ItemType::class, $item, [
             'categories' => $user->getCategories()
         ]);
 
         $oldExpiration = null;
-        if( $item->getWarranty() !== null)
+        if($item->getWarranty() !== null)
             $oldExpiration = clone $item->getWarranty()->getExpiration();
 
         $form->handleRequest($request);
@@ -169,15 +173,16 @@ class ItemController extends AbstractController
     #[IsGranted('access', 'item')]
     public function delete(User $user, Category $category, Item $item, Request $request): Response
     {
-
         $this->itemService->remove($item, true);
         $this->addFlash('item_success', 'Item successfully deleted!');
 
         if($request->getSession()->get('itemsUrl'))
             return $this->redirect( $request->getSession()->get('itemsUrl'));
 
-        return $this->redirectToRoute('app_items_category', ['userId' => $user->getId(), 'catId' => $category->getId()]);
-
+        return $this->redirectToRoute('app_items_category', [
+            'userId' => $user->getId(),
+            'catId' => $category->getId()
+        ]);
     }
 
     #[Route('/users/{id}/items/search', name: '_app_item_search', requirements: ['id' => '\d+'])]

@@ -58,7 +58,6 @@ class ItemService
             $item->getWarranty()->setNotifiedByEmail(false);
             $item->getWarranty()->setNotificationCleared(false);
         }
-
     }
 
     private function removeWarranty(Item $item): void
@@ -72,7 +71,12 @@ class ItemService
         return $this->itemRepository->findUserItems($userId, $catId, $term);
     }
 
-    public function findUserItemsFilter(int $userId, ?int $catId = null, array $query = []): array
+    public function getUserItemsCount(int $userId): int
+    {
+        return $this->itemRepository->getUserItemsCount($userId);
+    }
+
+    public function findUserItemsAndFilter(int $userId, ?int $catId = null, array $query = []): array
     {
         $includeExpired = $query['includeExpired'] ?? '1';
 

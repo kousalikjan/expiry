@@ -25,6 +25,25 @@
     </div>
 {%- endblock form_row -%}
 
+{%- block choice_row -%}
+    {%- set widget_attr = {'attr': {'class': 'select select-bordered w-full font-semibold '}} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help", 'class': 'select select-bordered w-full'}} -%}
+    {%- endif -%}
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %}>
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        <div class="text-error font-semibold">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error.message|trans }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {{- form_help(form) -}}
+    </div>
+{%- endblock choice_row -%}
+
 {%- block file_row -%}
     {%- set widget_attr = {'attr': {'class': 'file-input file-input-bordered w-full'}} -%}
     {%- if help is not empty -%}

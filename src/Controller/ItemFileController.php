@@ -6,8 +6,11 @@ use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\ItemFile;
 use App\Entity\User;
+use App\Factory\ItemFileFactory;
 use App\Repository\ItemFileRepository;
+use App\Service\ItemFileService;
 use App\Service\UploaderHelper;
+use League\Flysystem\FilesystemException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,11 +28,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ItemFileController extends AbstractController
 {
 
-    private ItemFileRepository $itemFileRepository;
+    private ItemFileService $itemFileService;
 
-    public function __construct(ItemFileRepository $itemFileRepository)
+    public function __construct(ItemFileService $itemFileService)
     {
-        $this->itemFileRepository = $itemFileRepository;
+        $this->itemFileService = $itemFileService;
     }
 
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{redirect}', name: 'app_item_file_edit_redirect', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], defaults: ['redirect' => null], methods: ['GET'])]
@@ -40,15 +43,14 @@ class ItemFileController extends AbstractController
     #[IsGranted('access', 'user')]
     #[IsGranted('access', 'category')]
     #[IsGranted('access', 'item')]
-    public function edit(User $user, Category $category, Item $item, ?bool $redirect): Response
+    public function list(User $user, Category $category, Item $item, ?bool $redirect): Response
     {
-        return $this->render('file/index.html.twig', [
+        return $this->render('file/list.html.twig', [
             'user' => $user,
             'category' => $category,
             'item' => $item,
             'redirect' => $redirect]);
     }
-
 
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/files', name: 'app_item_file_add', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'], methods: ['POST'])]
     #[Entity('user', options: ['id' => 'userId'])]
@@ -59,7 +61,6 @@ class ItemFileController extends AbstractController
     #[IsGranted('access', 'item')]
     public function uploadItemFile(User $user, Category $category, Item $item, Request $request, UploaderHelper $uploaderHelper, ValidatorInterface $validator): Response
     {
-
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('item-file');
 
@@ -83,9 +84,9 @@ class ItemFileController extends AbstractController
             ])]
         );
 
-        if($violations->count() > 0) {
+        if($violations->count() > 0)
+        {
             /** @var ConstraintViolation $violation */
-
             $violation = $violations[0];
             $this->addFlash('file_error', $violation->getMessage());
 
@@ -98,15 +99,56 @@ class ItemFileController extends AbstractController
         }
 
         // store file and get its filename
-        $filename = $uploaderHelper->uploadFile($uploadedFile, preg_match('/image\/*/', $uploadedFile->getMimeType()));
-        $itemFile = new ItemFile($item);
-        $itemFile->setFilename($filename);
-        $itemFile->setThumbnail(preg_match('/image\/*/', $uploadedFile->getMimeType()));
-        $itemFile->setOriginalFilename($uploadedFile->getClientOriginalName() ?? $filename);
-        $itemFile->setMimeType($uploadedFile->getMimeType() ?? 'application/octet-stream');
+        try
+        {
+            $filename = $uploaderHelper->uploadFile($uploadedFile, preg_match('/image\/*/', $uploadedFile->getMimeType()));
+        }
+        catch (FilesystemException $e)
+        {
+            $this->addFlash('file_error', 'Unexpected error has occurred while saving the file!');
+            return $this->redirectToRoute('app_item_file_edit_redirect', [
+                'userId' => $user->getId(),
+                'catId' => $category->getId(),
+                'itemId' => $item->getId(),
+                'redirect'=> $request->query->get('redirect'),
+            ]);
+        }
 
-        $this->itemFileRepository->save($itemFile, true);
+        $itemFile = ItemFileFactory::createItemFile($item, $filename, $uploadedFile);
+        $this->itemFileService->save($itemFile, true);
         $this->addFlash('file_success', 'File successfully uploaded!');
+
+        return $this->redirectToRoute('app_item_file_edit_redirect', [
+            'userId' => $user->getId(),
+            'catId' => $category->getId(),
+            'itemId' => $item->getId(),
+            'redirect'=> $request->query->get('redirect'),
+        ]);
+    }
+
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/delete', name: 'app_item_file_delete', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+', 'fileId' => '\d+'],  methods: ['GET'])]
+    #[Entity('user', options: ['id' => 'userId'])]
+    #[Entity('category', options: ['id' => 'catId'])]
+    #[Entity('item', options: ['id' => 'itemId'])]
+    #[Entity('file', options: ['id' => 'fileId'])]
+    #[IsGranted('access', 'user')]
+    #[IsGranted('access', 'category')]
+    #[IsGranted('access', 'item')]
+    #[IsGranted('access', 'file')]
+    public function deleteItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper, Request $request): Response
+    {
+        $this->itemFileService->remove($file, true);
+        try
+        {
+            $uploaderHelper->deleteFile($file->getItemFilePath());
+            if($file->isThumbnail())
+                $uploaderHelper->deleteFile($file->getItemFileThumbnailPath());
+        }
+        catch (FilesystemException $e)
+        {
+            $this->addFlash('file_error', 'Unexpected error has occurred while deleting the file!');
+        }
+
         return $this->redirectToRoute('app_item_file_edit_redirect', [
             'userId' => $user->getId(),
             'catId' => $category->getId(),
@@ -151,31 +193,6 @@ class ItemFileController extends AbstractController
         return $response;
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/delete', name: 'app_item_file_delete', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+', 'fileId' => '\d+'],  methods: ['GET'])]
-    #[Entity('user', options: ['id' => 'userId'])]
-    #[Entity('category', options: ['id' => 'catId'])]
-    #[Entity('item', options: ['id' => 'itemId'])]
-    #[Entity('file', options: ['id' => 'fileId'])]
-    #[IsGranted('access', 'user')]
-    #[IsGranted('access', 'category')]
-    #[IsGranted('access', 'item')]
-    #[IsGranted('access', 'file')]
-    public function deleteItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper, Request $request): Response
-    {
-
-        $this->itemFileRepository->remove($file, true);
-        $uploaderHelper->deleteFile($file->getItemFilePath());
-        if($file->isThumbnail())
-            $uploaderHelper->deleteFile($file->getItemFileThumbnailPath());
-
-        return $this->redirectToRoute('app_item_file_edit_redirect', [
-            'userId' => $user->getId(),
-            'catId' => $category->getId(),
-            'itemId' => $item->getId(),
-            'redirect'=> $request->query->get('redirect'),
-        ]);
-    }
-
     #[Route('users/{userId}/categories/{catId}/items/{itemId}/thumbnail', name: 'app_item_thumbnail', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
@@ -185,7 +202,7 @@ class ItemFileController extends AbstractController
     #[IsGranted('access', 'item')]
     public function getItemThumbnail(User $user, Category $category, Item $item, UploaderHelper $uploaderHelper): Response
     {
-        $items = $this->itemFileRepository->findImageFiles($item->getId());
+        $items = $this->itemFileService->findImageFiles($item->getId());
         if(count($items) <= 0)
         {
             return $this->file('img/no-image.png');
@@ -199,6 +216,4 @@ class ItemFileController extends AbstractController
         $response->headers->set('Content-Type', $items[0]->getMimeType());
         return $response;
     }
-
-
 }

@@ -6,6 +6,8 @@ use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -123,14 +125,24 @@ class ItemRepository extends ServiceEntityRepository
                 ->setParameter('term', '%'.$term.'%');
         }
 
-        return
-            $qb
-                ->orderBy('LOWER(i.name)')
-                ->getQuery()
-                ->getResult();
+        return $qb
+            ->orderBy('LOWER(i.name)')
+            ->getQuery()
+            ->getResult();
     }
 
 
+    public function getUserItemsCount(int $userId) : int
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->select('count(i.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 
     /**
      * @return Item[] Items that should be notified in app (not cleared)
@@ -150,6 +162,22 @@ class ItemRepository extends ServiceEntityRepository
             ->orderBy('w.expiration')
             ->getQuery()
             ->getResult();
+    }
+
+    public function getAppNotificationsCount(int $userId): int
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.warranty', 'w')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('w.notificationCleared = false')
+            ->andWhere('w.notifyDaysBefore is not null')
+            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->select('count(i.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
 }
