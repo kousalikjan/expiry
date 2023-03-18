@@ -64,7 +64,6 @@ class ItemType extends AbstractType
                 'attr' => [
                     'step' => 0.01
                 ]
-
             ])
             ->add('currency', ChoiceType::class, [
                 'required' => false,

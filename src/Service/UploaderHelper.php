@@ -31,11 +31,17 @@ class UploaderHelper
         $this->imagine = new Imagine();
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function readStream(string $path)
     {
         return $this->filesystem->readStream($path);
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function uploadFile(UploadedFile $file, bool $createThumbnail): string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -44,15 +50,10 @@ class UploaderHelper
 
         $stream = fopen($file->getPathname(), 'r');
 
-        try {
-            $this->filesystem->writeStream(
-                self::ITEM_FILE . DIRECTORY_SEPARATOR . $newFilename,
-                $stream
-            );
-        } catch (FilesystemException $e)
-        {
-            throw new \Exception("Could not write uploaded file %s", $newFilename);
-        }
+        $this->filesystem->writeStream(
+            self::ITEM_FILE . DIRECTORY_SEPARATOR . $newFilename,
+            $stream
+        );
 
         if (is_resource($stream)) {
             fclose($stream);
@@ -83,14 +84,12 @@ class UploaderHelper
         return $newFilename;
     }
 
+    /**
+     * @throws FilesystemException
+     */
     public function deleteFile(string $path)
     {
-        try {
-            $this->filesystem->delete($path);
-
-        } catch (FilesystemException $e) {
-            throw new \Exception("Could not delete file %s", $path);
-        }
+        $this->filesystem->delete($path);
     }
 
 }

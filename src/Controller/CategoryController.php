@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\Item;
 use App\Entity\User;
 use App\Form\CategoryType;
 use App\Form\SelectCategoryType;
-use App\Repository\CategoryRepository;
-use App\Repository\ItemRepository;
 use App\Service\CategoryService;
 use App\Service\ItemService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
@@ -23,7 +20,6 @@ class CategoryController extends AbstractController
     private CategoryService $categoryService;
     private ItemService $itemService;
 
-
     public function __construct(CategoryService $categoryService, ItemService $itemService)
     {
         $this->categoryService = $categoryService;
@@ -32,11 +28,12 @@ class CategoryController extends AbstractController
 
     #[Route('/users/{id}/categories', name: 'app_categories', requirements: ['id' => '\d+'])]
     #[IsGranted('access', 'user')]
-    public function index(User $user): Response
+    public function list(User $user): Response
     {
-        return $this->render('category/index.html.twig', [
+        return $this->render('category/list.html.twig', [
             'categories' => $user->getCategories(),
-            'itemsCount' => $this->itemService->getUserItemsCount($user->getId())]);
+            'itemsCount' => $this->itemService->getUserItemsCount($user->getId())
+        ]);
     }
 
     #[Route('/users/{userId}/categories/create', name: 'app_category_create', requirements: ['userId' => '\d+'], defaults: ['catId' => null])]
@@ -61,13 +58,13 @@ class CategoryController extends AbstractController
             $this->addFlash('success', 'Category successfully created!');
             return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
+
         return $this->render('category/create_edit.html.twig', [
             'form' => $form->createView(),
             'create' => !$category->getId(),
             'category' => $category
         ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
     }
-
 
     #[Route('/users/{userId}/categories/{catId}/delete', name: 'app_category_delete', requirements: ['userId' => '\d+', 'catId' => '\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
@@ -76,9 +73,8 @@ class CategoryController extends AbstractController
     #[IsGranted('access', 'category')]
     public function delete(User $user, Category $category, Request $request): Response
     {
-
         $form = $this->createForm(SelectCategoryType::class, null, [
-            'allCategories' => array_filter($user->getCategories()->toArray(), fn (Category $elem) => $elem->getId() !== $category->getId() )
+            'allCategories' => array_filter($user->getCategories()->toArray(), fn (Category $elem) => $elem->getId() !== $category->getId())
         ]);
 
         $form->handleRequest($request);
@@ -88,8 +84,10 @@ class CategoryController extends AbstractController
             $this->addFlash('success', 'Category successfully deleted!');
             return $this->redirectToRoute('app_categories', ['id' => $user->getId()]);
         }
-        return $this->render('category/delete.html.twig', ['category' => $category, 'form' => $form
-            ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
-    }
 
+        return $this->render('category/delete.html.twig', [
+            'category' => $category,
+            'form' => $form
+        ], new Response(null, $form->isSubmitted() && !$form->isValid() ? 422 : 200));
+    }
 }

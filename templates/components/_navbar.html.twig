@@ -80,7 +80,6 @@
             </ul>
         </div>
         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-
         <a href="{{ path('app_item_create', {userId: app.user.id}) }}" class="btn btn-sm btn-accent lg:btn-md">
             {{ 'Add item'|trans }}</a>
             {% else %}

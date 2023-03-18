@@ -125,13 +125,11 @@ class ItemRepository extends ServiceEntityRepository
                 ->setParameter('term', '%'.$term.'%');
         }
 
-        return
-            $qb
-                ->orderBy('LOWER(i.name)')
-                ->getQuery()
-                ->getResult();
+        return $qb
+            ->orderBy('LOWER(i.name)')
+            ->getQuery()
+            ->getResult();
     }
-
 
 
     public function getUserItemsCount(int $userId) : int
@@ -145,8 +143,6 @@ class ItemRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-
-
 
     /**
      * @return Item[] Items that should be notified in app (not cleared)

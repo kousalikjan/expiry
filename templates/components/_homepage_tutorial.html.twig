@@ -3,17 +3,13 @@
     <section class="w-full flex flex-col gap-3">
         <div class="flex gap-4 items-center">
             <div class="tutorial-step bg-primary">1</div>
-            <h2 class="text-2xl font-semibold">{{ 'Open your inventory'|trans }}</h2>
-        </div>
-        <p>{{ 'Open your inventory using "SEE INVENTORY" button or "INVENTORY" button in navigation bar'|trans }}.</p>
-    </section>
-
-    <section class="w-full flex flex-col gap-3">
-        <div class="flex gap-4 items-center">
-            <div class="tutorial-step bg-secondary">2</div>
             <h2 class="text-2xl font-semibold">{{ 'Create a category'|trans }}</h2>
         </div>
-        <p>{{ 'Navigate to your inventory and press new category button'|trans }}.</p>
+        <p>{{ '1. See a list of your categories by pressing "Categories" link in the main navigation bar'|trans }}.
+            <br>
+            {{ '2. Press "New Category" button on that page'|trans }}.
+            <br>
+            {{ '3. Fill in category name and its color'|trans }}.</p>
         <div class="mockup-window bg-base-300 border overflow-hidden">
             <div class="flex justify-center bg-base-200">
                 {% if app.user %}
@@ -25,7 +21,6 @@
                 {% endif %}
             </div>
         </div>
-        <p>{{ 'Enter category name and pick its color, then hit the create button'|trans }}!</p>
     </section>
 
     <section class="w-full flex flex-col gap-3">

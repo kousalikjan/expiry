@@ -42,7 +42,6 @@ class RegistrationController extends AbstractController
                 $formLoginAuthenticator,
                 $request
             );
-
         }
 
         return $this->render('auth/register.html.twig', [

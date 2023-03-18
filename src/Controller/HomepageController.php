@@ -20,7 +20,9 @@ class HomepageController extends AbstractController
             $showTutorial = $itemService->getUserItemsCount($userId) === 0;
 
         $request->getSession()->set('itemsUrl', $request->getRequestUri());
-        return $this->render('index.html.twig', ['showTutorial' => $showTutorial]);
+        return $this->render('index.html.twig', [
+            'showTutorial' => $showTutorial
+        ]);
     }
 
     #[Route('/set-locale/{_locale<%supported_locales%>}', name: 'app_set_locale')]
@@ -32,5 +34,4 @@ class HomepageController extends AbstractController
             return $this->redirectToRoute('app_index');
         return $this->redirect($referer);
     }
-
 }
