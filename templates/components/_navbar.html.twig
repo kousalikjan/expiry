@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li tabindex="0">
-                        <button class="mx-2">
+                        <button>
                             {{ 'Profile'|trans }}
                             <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
                         </button>
@@ -75,9 +75,9 @@
                         {{ 'New category'|trans }}</a>
                 {% endif %}
             {% else %}
-                <div class="flex flex-nowrap">
-                    <a href="{{ path('app_login') }}" class="btn btn-sm btn-ghost lg:btn-md">{{ 'Login'|trans }}</a>
-                    <a href="{{ path('app_register') }}" class="btn btn-sm btn-primary lg:btn-md">{{ 'Sign up'|trans }}</a>
+                <div class="flex flex-wrap">
+                    <a href="{{ path('app_login') }}" class="btn btn-sm btn-outline xs:btn-ghost lg:btn-md  ">{{ 'Login'|trans }}</a>
+                    <a href="{{ path('app_register') }}" class="hidden xs:btn xs:btn-sm xs:btn-primary lg:btn-md">{{ 'Sign up'|trans }}</a>
                 </div>
             {% endif %}
         </div>
