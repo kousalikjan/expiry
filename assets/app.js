@@ -20,3 +20,9 @@ document.addEventListener('turbo:before-cache', () => {
         Swal.close();
     }
 });
+
+document.addEventListener('turbo:frame-missing', event => {
+    const { detail: { response, visit } } = event;
+    event.preventDefault();
+    visit(response.url);
+})
