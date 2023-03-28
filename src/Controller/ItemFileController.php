@@ -61,6 +61,7 @@ class ItemFileController extends AbstractController
     #[IsGranted('access', 'item')]
     public function uploadItemFile(User $user, Category $category, Item $item, Request $request, UploaderHelper $uploaderHelper, ValidatorInterface $validator): Response
     {
+        // Inspired and partly taken from: https://symfonycasts.com/screencast/symfony-uploads/mime-type-validation#requiring-the-file
         /** @var UploadedFile $uploadedFile */
         $uploadedFile = $request->files->get('item-file');
 
@@ -168,6 +169,7 @@ class ItemFileController extends AbstractController
     #[IsGranted('access', 'file')]
     public function downloadItemFile(User $user, Category $category, Item $item, ItemFile $file, UploaderHelper $uploaderHelper, Request $request): Response
     {
+        // Inspired and partly taken from: https://symfonycasts.com/screencast/symfony-uploads/file-streaming#content-disposition-forcing-download
         $response = new StreamedResponse(function () use ($file, $uploaderHelper, $request) {
             $outputStream = fopen('php://output', 'wb');
 

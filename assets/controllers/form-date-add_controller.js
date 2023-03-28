@@ -4,6 +4,10 @@ export default class extends Controller {
 
     static targets = ['input']
 
+    PLUS_WEEK = 7;
+    MINUS_WEEK = -7;
+    ISO_LENGTH_UNTIL_TIME = 10;
+
     setOneYear(date, plus)
     {
         let newYear = date.getFullYear();
@@ -23,7 +27,7 @@ export default class extends Controller {
     setOneWeek(date, plus)
     {
         let newDays = date.getDate();
-        newDays += plus ? 7 : -7;
+        newDays += plus ? this.PLUS_WEEK : this.MINUS_WEEK;
         date.setDate(newDays);
         return date;
     }
@@ -39,22 +43,22 @@ export default class extends Controller {
             switch (data)
             {
                 case '+year':
-                    this.inputTarget.value = this.setOneYear(date, true).toISOString().substring(0, 10);
+                    this.inputTarget.value = this.setOneYear(date, true).toISOString().substring(0, this.ISO_LENGTH_UNTIL_TIME);
                     break;
                 case '-year':
-                    this.inputTarget.value = this.setOneYear(date, false).toISOString().substring(0, 10);
+                    this.inputTarget.value = this.setOneYear(date, false).toISOString().substring(0, this.ISO_LENGTH_UNTIL_TIME);
                     break;
                 case '+month':
-                    this.inputTarget.value = this.setOneMonth(date, true).toISOString().substring(0, 10);
+                    this.inputTarget.value = this.setOneMonth(date, true).toISOString().substring(0, this.ISO_LENGTH_UNTIL_TIME);
                     break;
                 case '-month':
-                    this.inputTarget.value = this.setOneMonth(date, false).toISOString().substring(0, 10);
+                    this.inputTarget.value = this.setOneMonth(date, false).toISOString().substring(0, this.ISO_LENGTH_UNTIL_TIME);
                     break;
                 case '+week':
-                    this.inputTarget.value = this.setOneWeek(date, true).toISOString().substring(0, 10);
+                    this.inputTarget.value = this.setOneWeek(date, true).toISOString().substring(0, this.ISO_LENGTH_UNTIL_TIME);
                     break;
                 case '-week':
-                    this.inputTarget.value = this.setOneWeek(date, false).toISOString().substring(0, 10);
+                    this.inputTarget.value = this.setOneWeek(date, false).toISOString().substring(0, this.ISO_LENGTH_UNTIL_TIME);
                     break;
             }
         }
