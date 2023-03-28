@@ -34,7 +34,6 @@
                 <button type="submit"
                         class="btn btn-outline btn-info w-full"
                         {{ stimulus_target('file-upload-checker', 'uploadButton') }}
-
                 >
                     <span class="flex items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -56,7 +55,7 @@
             <a
                 href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}"
                 data-turbo-frame="_top"
-                class="btn btn-primary w-full max-w-md"
+                class="btn btn-primary w-full max-w-md submit-button"
                 {% if item.itemFiles|length < 1 %}
                     {{ stimulus_controller('sweetalert-confirm', {
                         title: 'No files uploaded'|trans,
@@ -68,6 +67,17 @@
                         confirmColor: '37cdbe'
                     }) }}
                     data-action="click->sweetalert-confirm#onSubmit"
+                {% else %}
+                    {{ stimulus_controller('sweetalert-confirm', {
+                        title: 'Leave without uploading the selected file?'|trans,
+                        text: 'You have selected a file but you did not upload it, do you really want to leave?'|trans,
+                        confirmButtonText: 'Yes, leave!'|trans,
+                        cancelButtonText: 'Cancel'|trans,
+                        icon: 'question',
+                        confirmColor: '37cdbe'
+                    }) }}
+                    {{ stimulus_action('sweetalert-confirm', 'checkFile', 'click') }}
+                    data-sweetalert-confirm-file-upload-checker-outlet="#file-upload-checker"
                 {% endif %}
             >
                 {{ 'finish'|trans }}
