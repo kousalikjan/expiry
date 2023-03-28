@@ -142,3 +142,4 @@ Enter category name and its color, then hit "Create" button: 'Zadajte název a b
 Leave without uploading the selected file?: 'Odejít bez nahrání vybraného souboru?'
 You have selected a file but you did not upload it, do you really want to leave?: 'Vybrali jste soubor, ale do aplikace jste ho nenahráli, opravdu chcete odejít?'
 Yes, leave!: 'Ano, odejít!'
+Password must contain at least 6 characters: 'Heslo musí obsahovat alespoň 6 znaků'
