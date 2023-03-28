@@ -193,27 +193,28 @@ class ItemFileController extends AbstractController
         return $response;
     }
 
-    #[Route('users/{userId}/categories/{catId}/items/{itemId}/thumbnail', name: 'app_item_thumbnail', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+'])]
+    #[Route('users/{userId}/categories/{catId}/items/{itemId}/files/{fileId}/thumbnail', name: 'app_item_thumbnail', requirements: ['userId' => '\d+', 'catId' => '\d+', 'itemId' => '\d+', 'fileId' => '-?\d+'])]
     #[Entity('user', options: ['id' => 'userId'])]
     #[Entity('category', options: ['id' => 'catId'])]
     #[Entity('item', options: ['id' => 'itemId'])]
     #[IsGranted('access', 'user')]
     #[IsGranted('access', 'category')]
     #[IsGranted('access', 'item')]
-    public function getItemThumbnail(User $user, Category $category, Item $item, UploaderHelper $uploaderHelper): Response
+    public function getItemThumbnail(User $user, Category $category, Item $item, int $fileId, UploaderHelper $uploaderHelper): Response
     {
-        $items = $this->itemFileService->findImageFiles($item->getId());
-        if(count($items) <= 0)
-        {
+        if($fileId == -1)
             return $this->file('img/no-image.png');
-        }
-        $response = new StreamedResponse(function () use ($uploaderHelper, $items)
+
+        $file = $this->itemFileService->find($fileId);
+        $this->denyAccessUnlessGranted('access', $file);
+
+        $response = new StreamedResponse(function () use ($uploaderHelper, $file)
         {
             $outputStream = fopen('php://output', 'wb');
-            $fileStream = $uploaderHelper->readStream($items[0]->getItemFileThumbnailPath());
+            $fileStream = $uploaderHelper->readStream($file->getItemFileThumbnailPath());
             stream_copy_to_stream($fileStream, $outputStream);
         });
-        $response->headers->set('Content-Type', $items[0]->getMimeType());
+        $response->headers->set('Content-Type', $file->getMimeType());
         return $response;
     }
 }

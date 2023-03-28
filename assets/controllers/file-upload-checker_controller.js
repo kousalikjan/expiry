@@ -16,6 +16,8 @@ export default class extends Controller {
 
     changeUploadButtonColor()
     {
+        /*if(this.hasSelectedFile())
+            this.element.requestSubmit();*/
         const ACTIVE_CLASSES = ['btn-primary'];
         const NON_ACTIVE_CLASSES = ['btn-info', 'btn-outline'];
         const submitBtn = document.querySelector('.submit-button');
@@ -33,7 +35,6 @@ export default class extends Controller {
             submitBtn.classList.remove(...NON_ACTIVE_CLASSES);
             submitBtn.classList.add(...ACTIVE_CLASSES)
         }
-
     }
 
 }
