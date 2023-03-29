@@ -6,12 +6,12 @@
         <div class="relative w-full max-w-xl">
             <input type="search" placeholder="{{ 'Search your items'|trans }}..."
                    class="input input-bordered w-full"
-                   data-action="input->search-preview#onSearchInput"
-                   data-search-preview-target="input"
+                   {{ stimulus_action('search-preview', 'onSearchInput', 'input') }}
+                   {{ stimulus_target('search-preview', 'input') }}
             />
             <div
                     class="absolute z-20 w-full top-14"
-                    data-search-preview-target="result">
+                    {{ stimulus_target('search-preview', 'result') }}
             </div>
         </div>
     </div>
