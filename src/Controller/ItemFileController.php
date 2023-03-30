@@ -204,7 +204,7 @@ class ItemFileController extends AbstractController
     #[IsGranted('access', 'item')]
     public function getItemThumbnail(User $user, Category $category, Item $item, int $fileId, UploaderHelper $uploaderHelper): Response
     {
-        if($fileId == -1)
+        if($fileId === -1)
             return $this->file('img/no-image.png');
 
         $file = $this->itemFileService->find($fileId);

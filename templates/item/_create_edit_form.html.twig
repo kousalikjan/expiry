@@ -63,20 +63,7 @@
             </turbo-frame>
         </section>
     {% endif %}
-    <button
-            type="submit"
-            class="btn btn-primary max-w-md xl:max-w-xl xl:col-span-2 xl:mx-auto xl:w-full submit-button"
-            {% if edit|default %}
-            {{ stimulus_controller('sweetalert-confirm', {
-                title: 'Leave without uploading the selected file?'|trans,
-                text: 'You have selected a file but you did not upload it, do you really want to leave?'|trans,
-                confirmButtonText: 'Yes, leave!'|trans,
-                cancelButtonText: 'Cancel'|trans,
-                icon: 'question',
-                confirmColor: '37cdbe'
-            }) }}
-            {{ stimulus_action('sweetalert-confirm', 'checkFile', 'click') }}
-                data-sweetalert-confirm-file-upload-checker-outlet="#file-upload-checker"
-            {% endif %}
-    >{{ buttonText }}</button>
+    <button type="submit" class="btn btn-primary max-w-md xl:max-w-xl xl:col-span-2 xl:mx-auto xl:w-full submit-button">
+        {{ buttonText }}
+    </button>
 {{ form_end(form) }}

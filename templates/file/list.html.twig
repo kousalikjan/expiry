@@ -23,17 +23,24 @@
                 enctype="multipart/form-data"
                 class="form-control w-full max-w-md gap-3"
                 id="file-upload-checker"
-                {{ stimulus_controller('file-upload-checker') }}
+                {{ stimulus_controller('file-auto-uploader') }}
             >
+                <div class="flex gap-2 justify-center items-center hidden" {{ stimulus_target('file-auto-uploader', 'spinner') }}>
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 to-pink-500 animate-spin">
+                        <div class="h-6 w-6 rounded-full bg-base-100"></div>
+                    </div>
+                    <span>{{ 'Uploading'|trans }}...</span>
+                </div>
                 <input  type="file"
                         name="item-file"
                         class="file-input file-input-bordered w-full"
-                        {{ stimulus_target('file-upload-checker', 'input') }}
-                        {{ stimulus_action('file-upload-checker', 'changeUploadButtonColor', 'input') }}
+                        {{ stimulus_target('file-auto-uploader', 'input') }}
+                        {{ stimulus_action('file-auto-uploader', 'sendSelectedFile', 'input') }}
                 >
+                <noscript>
                 <button type="submit"
                         class="btn btn-outline btn-info w-full"
-                        {{ stimulus_target('file-upload-checker', 'uploadButton') }}
+                        {{ stimulus_target('file-auto-uploader', 'uploadButton') }}
                 >
                     <span class="flex items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -42,6 +49,7 @@
                         {{ 'Upload'|trans }}
                     </span>
                 </button>
+                </noscript>
             </form>
 
             <ul class="flex flex-col gap-8 mb-8 w-full max-w-md">
@@ -67,17 +75,6 @@
                         confirmColor: '37cdbe'
                     }) }}
                     {{ stimulus_action('sweetalert-confirm', 'onSubmit', 'click') }}
-                {% else %}
-                    {{ stimulus_controller('sweetalert-confirm', {
-                        title: 'Leave without uploading the selected file?'|trans,
-                        text: 'You have selected a file but you did not upload it, do you really want to leave?'|trans,
-                        confirmButtonText: 'Yes, leave!'|trans,
-                        cancelButtonText: 'Cancel'|trans,
-                        icon: 'question',
-                        confirmColor: '37cdbe'
-                    }) }}
-                    {{ stimulus_action('sweetalert-confirm', 'checkFile', 'click') }}
-                    data-sweetalert-confirm-file-upload-checker-outlet="#file-upload-checker"
                 {% endif %}
             >
                 {{ 'finish'|trans }}

@@ -139,7 +139,5 @@ Enter new item mandatory information: 'Zadejte povinné informace o nové polož
 Press "Categories" link in the main navigation bar: 'Zmáčkněte odkaz "Kategorie" v hlavním navigačním menu'
 Press "New Category" button on that page: 'Na zobrazené stránkce zmáčkněte tlačítko "Nová kategorie"'
 Enter category name and its color, then hit "Create" button: 'Zadajte název a barvu kategorie, poté zmáčkněte tlačítko "Vytvořit"'
-Leave without uploading the selected file?: 'Odejít bez nahrání vybraného souboru?'
-You have selected a file but you did not upload it, do you really want to leave?: 'Vybrali jste soubor, ale do aplikace jste ho nenahráli, opravdu chcete odejít?'
-Yes, leave!: 'Ano, odejít!'
 Password must contain at least 6 characters: 'Heslo musí obsahovat alespoň 6 znaků'
+Uploading: 'Nahrávání'

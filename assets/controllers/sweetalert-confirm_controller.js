@@ -4,8 +4,6 @@ import { visit } from '@hotwired/turbo';
 
 export default class extends Controller {
 
-    static outlets = ["file-upload-checker"];
-
     static values = {
         title: String,
         text: String,
@@ -36,15 +34,5 @@ export default class extends Controller {
                     visit(this.urlConfirmValue, {frame: this.dataFrameValue});
             }
         })
-    }
-
-    checkFile(event) {
-        if(this.hasFileUploadCheckerOutlet)
-        {
-            if(this.fileUploadCheckerOutlet.hasSelectedFile())
-            {
-                this.onSubmit(event);
-            }
-        }
     }
 }
