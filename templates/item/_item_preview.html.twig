@@ -28,7 +28,7 @@
             href="{{ deletePath }}"
             class="p-2 text-error hover:text-red-800 absolute top-1 right-1 z-5"
             {{ stimulus_controller('sweetalert-confirm', {
-                title: 'Delete'|trans ~ ' ' ~ item.name,
+                title: 'Delete'|trans ~ ' ' ~ item.name ~ '?',
                 text: 'You won\'t be able to revert this!'|trans,
                 confirmButtonText: 'Yes, delete it!'|trans,
                 cancelButtonText: 'Cancel'|trans,

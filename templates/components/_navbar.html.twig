@@ -21,13 +21,17 @@
                                 </div>
                             </a>
                         </li>
-                        <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Profile'|trans }}</a></li>
+                        <li><a class="text-lg" href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Settings'|trans }}</a></li>
                         <li class="block divider my-2"></li>
-                        <li><a class="text-lg text-gray-600" href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
+                        <li><a class="text-lg text-error" href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
                     </ul>
                 </div>
             {% endif %}
-            <a href="{{ path('app_index') }}" class="btn btn-ghost normal-case text-xl">Expiry!</a>
+            <a href="{{ path('app_index') }}" class="btn btn-ghost normal-case text-xl hidden xs:inline-flex">Expiry!</a>
+            <a href="{{ path('app_index') }}" class="btn btn-ghost normal-case text-xl xs:hidden px-0"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
+            </a>
         </div>
         {# LARGE SCREENS #}
         <div class="hidden lg:flex">
@@ -45,12 +49,12 @@
                     </li>
                     <li tabindex="0">
                         <button>
-                            {{ 'Profile'|trans }}
+                            {{ 'Settings'|trans }}
                             <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
                         </button>
                         <ul class="p-2 shadow bg-base-100 rounded-box w-48">
-                            <li><a href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Detail'|trans }}</a></li>
-                            <li><a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
+                            <li><a href="{{ path('app_profile', {id: app.user.id}) }}">{{ 'Profile'|trans }}</a></li>
+                            <li><a href="{{ path('app_logout') }}" class="text-error">{{ 'Logout'|trans }}</a></li>
                         </ul>
                     </li>
                 {% endif %}
