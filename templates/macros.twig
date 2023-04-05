@@ -1,0 +1,17 @@
+{% macro thumbnail(item) %}
+    {% if item.imageFileId %}
+        <img src="{{ path('app_item_file_download', {
+            userId: app.user.id,
+            catId: item.category.id,
+            itemId: item.id,
+            fileId: item.imageFileId,
+            thumbnail: true
+        }) }}"
+             alt="Photo of {{ item.name }}"
+             class="h-full w-24"/>
+        {% else %}
+        <img src="{{ asset('img/no-image.png') }}"
+             alt="Image not found photo"
+             class="h-full w-24"/>
+    {% endif %}
+{% endmacro %}
