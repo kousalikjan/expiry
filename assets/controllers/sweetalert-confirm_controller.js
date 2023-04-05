@@ -16,7 +16,6 @@ export default class extends Controller {
     }
 
     onSubmit(event) {
-        console.log(event);
         event.preventDefault();
         Swal.fire({
             title: this.titleValue,
@@ -36,5 +35,4 @@ export default class extends Controller {
             }
         })
     }
-
 }

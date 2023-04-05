@@ -14,7 +14,7 @@
         {{ form_row(registrationForm.email) }}
         <div>
             {{ form_row(registrationForm.plainPassword) }}
-            <p>Password must contain at least 6 characters</p>
+            <p>{{ 'Password must contain at least 6 characters'|trans }}</p>
         </div>
 
         <div class="flex items-center gap-2">

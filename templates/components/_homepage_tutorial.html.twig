@@ -1,5 +1,5 @@
-<div class="w-full flex flex-col gap-14 max-w-2xl {% if hidden %} hidden {% endif %}" data-hide-content-target="content">
-
+<div class="w-full flex flex-col gap-14 max-w-2xl {% if hidden %} hidden {% endif %}"
+     {{ stimulus_target('hide-content', 'content') }}
     <section class="w-full flex flex-col gap-3">
         <div class="flex gap-4 items-center">
             <div class="tutorial-step bg-primary">1</div>

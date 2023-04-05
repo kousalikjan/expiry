@@ -7,8 +7,10 @@
             dataFrame: 'items-preview'
         }) }}>
 
-    <h3 class="flex gap-2 text-info" data-action="click->hide-content#toggle">
-        <span data-hide-content-target="text">Show filters</span>
+    <h3 class="flex gap-2 text-info"
+        {{ stimulus_action('hide-content', 'toggle', 'click') }}
+    >
+        <span {{ stimulus_target('hide-content', 'text') }}>Show filters</span>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
         </svg>
@@ -47,12 +49,14 @@
         {{ form_widget(form.includeExpired, {attr: {class: 'toggle toggle-secondary'}}) }}
         {{ form_label(form.includeExpired, 'Include expired?'|trans, {label_attr: {class: 'text-sm'}}) }}
         </div>
-        <button type="reset" class="btn btn-sm btn-ghost" data-turbo-action="replace" data-action="click->hide-content#resetForm">{{ 'Reset filters'|trans }}</button>
-
+        <button type="reset"
+                class="btn btn-sm btn-ghost"
+                data-turbo-action="replace"
+                {{ stimulus_action('hide-content', 'resetForm', 'click') }}
+        >{{ 'Reset filters'|trans }}
+        </button>
     </div>
-
     <button type="submit" class="btn btn-sm btn-primary btn-outline" data-turbo-frame="items-preview" data-turbo-action="replace">
         {{ 'Filter'|trans }}</button>
     {{ form_end(form) }}
-
 </article>

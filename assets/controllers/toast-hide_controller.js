@@ -3,6 +3,8 @@ import {useTransition} from "stimulus-use";
 
 export default class extends Controller {
 
+    DEFAULT_TIMEOUT = 6500;
+
     connect()
     {
         useTransition(this, {
@@ -17,7 +19,7 @@ export default class extends Controller {
         });
         setTimeout(() => {
             this.leave();
-        }, 6500);
+        }, this.DEFAULT_TIMEOUT);
     }
 
     close(){

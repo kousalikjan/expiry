@@ -21,15 +21,19 @@
         </div>
         {{ form_start(form, {'attr': {'class': 'form-control w-full max-w-md gap-8'}}) }}
         {{ form_row(form.category) }}
-            <button type="submit" class="btn btn-error max-w-md col-span-2 block" data-action="click->sweetalert-confirm#onSubmit"
-                    {{ stimulus_controller('sweetalert-confirm', {
-                        title: 'Delete'|trans ~ ' ' ~ category.name,
-                        text: 'You won\'t be able to revert this!'|trans,
-                        confirmButtonText: 'Yes, delete it!'|trans,
-                        cancelButtonText: 'Cancel'|trans,
-                    }) }}>
-                {{ 'Delete'|trans }} {{ category.name }}
-            </button>
+        <button
+            type="submit"
+            class="btn btn-error max-w-md col-span-2 block"
+            {{ stimulus_controller('sweetalert-confirm', {
+                title: 'Delete'|trans ~ ' ' ~ category.name,
+                text: 'You won\'t be able to revert this!'|trans,
+                confirmButtonText: 'Yes, delete it!'|trans,
+                cancelButtonText: 'Cancel'|trans,
+            }) }}
+        {{ stimulus_action('sweetalert-confirm', 'onSubmit', 'click') }}
+        >
+        {{ 'Delete'|trans }} {{ category.name }}
+        </button>
         {{ form_end(form) }}
     </article>
 {% endblock %}

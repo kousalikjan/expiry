@@ -29,4 +29,8 @@ class ItemFileService
         return $this->itemFileRepository->findImageFiles($id);
     }
 
+    public function find(int $id): ItemFile|null {
+        return $this->itemFileRepository->find($id);
+    }
+
 }

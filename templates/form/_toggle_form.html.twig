@@ -4,12 +4,14 @@
             <span>{{ toggle_label }}</span>
             <input type="checkbox"
                    class="toggle toggle-secondary"
-                   data-action="click->form-hide#toggle"
+                   {{ stimulus_action('form-hide', 'toggle', 'click') }}
                     {% if toggled %} checked {% endif %}
             >
         </label>
     </div>
-    <div class="flex flex-col gap-6 mt-6 {% if not toggled %} hidden {% endif %}" data-form-hide-target="mainContent">
+    <div class="flex flex-col gap-6 mt-6 {% if not toggled %} hidden {% endif %}"
+         {{ stimulus_target('form-hide', 'mainContent') }}
+    >
         {% block form_body %}
         {% endblock form_body %}
     </div>

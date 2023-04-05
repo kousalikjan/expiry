@@ -219,4 +219,15 @@ class Item
         return $this;
     }
 
+    public function getImageFileId(): int
+    {
+        /** @var ItemFile $file */
+        foreach ($this->itemFiles as $file)
+        {
+            if(str_contains($file->getMimeType(), 'image'))
+                return $file->getId();
+        }
+        return -1;
+    }
+
 }

@@ -5,9 +5,13 @@ module.exports = {
     "./templates/**/*.html.twig",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'xs': '380px',
+      },
+    },
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  plugins: [require("daisyui")],
   daisyui: {
     themes: false,
   },

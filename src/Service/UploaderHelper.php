@@ -11,12 +11,13 @@ use League\Flysystem\FilesystemException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+// Inspired and partly taken from: https://symfonycasts.com/screencast/symfony-uploads/uploading-private-files#creating-a-private-filesystem
 class UploaderHelper
 {
     public const ITEM_FILE = 'item_file';
     public const THUMBNAIL = 'thumbnails';
     private const MAX_WIDTH = 200;
-    private const MAX_HEIGHT = 150;
+    private const MAX_HEIGHT = 200;
 
     private Filesystem $filesystem;
 
@@ -65,8 +66,8 @@ class UploaderHelper
         {
             $photo = $this->imagine->read($stream);
             $photo->thumbnail(new Box(
-                min($photo->getSize()->getWidth() / 10, 200),
-               min($photo->getSize()->getHeight() / 10, 200)),
+                min($photo->getSize()->getWidth() / 10, self::MAX_WIDTH),
+               min($photo->getSize()->getHeight() / 10, self::MAX_HEIGHT)),
                 ManipulatorInterface::THUMBNAIL_INSET|ManipulatorInterface::THUMBNAIL_FLAG_NOCLONE);
             $stream = fopen('php://temp', 'r+');
             fwrite($stream, $photo->get('jpg'));

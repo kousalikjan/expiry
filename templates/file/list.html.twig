@@ -17,10 +17,31 @@
         <turbo-frame id="item-files" class="flex flex-col items-center gap-8 w-full">
 
             {{ include('components/_file_flashes.html.twig') }}
-            <form action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id})}}{% if redirect %}?redirect=1{% endif %}" method="POST" enctype="multipart/form-data"
-            class="form-control w-full max-w-md gap-3">
-                <input type="file" name="item-file" class="file-input file-input-bordered w-full">
-                <button type="submit" class="btn btn-outline btn-info w-full">
+            <form
+                action="{{ path('app_item_file_add', {userId: user.id, catId: category.id, itemId: item.id})}}{% if redirect %}?redirect=1{% endif %}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="form-control w-full max-w-md gap-3"
+                id="file-upload-checker"
+                {{ stimulus_controller('file-auto-uploader') }}
+            >
+                <div class="flex gap-2 justify-center items-center hidden" {{ stimulus_target('file-auto-uploader', 'spinner') }}>
+                    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-tr from-indigo-500 to-pink-500 animate-spin">
+                        <div class="h-6 w-6 rounded-full bg-base-100"></div>
+                    </div>
+                    <span>{{ 'Uploading'|trans }}...</span>
+                </div>
+                <input  type="file"
+                        name="item-file"
+                        class="file-input file-input-bordered w-full"
+                        {{ stimulus_target('file-auto-uploader', 'input') }}
+                        {{ stimulus_action('file-auto-uploader', 'sendSelectedFile', 'input') }}
+                >
+                <noscript>
+                <button type="submit"
+                        class="btn btn-outline btn-info w-full"
+                        {{ stimulus_target('file-auto-uploader', 'uploadButton') }}
+                >
                     <span class="flex items-center justify-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
@@ -28,6 +49,7 @@
                         {{ 'Upload'|trans }}
                     </span>
                 </button>
+                </noscript>
             </form>
 
             <ul class="flex flex-col gap-8 mb-8 w-full max-w-md">
@@ -41,8 +63,7 @@
             <a
                 href="{{ path('app_items_category', {userId: user.id, catId: category.id}) }}"
                 data-turbo-frame="_top"
-                class="btn btn-primary w-full max-w-md"
-		data-turbo-frame="_top"
+                class="btn btn-primary w-full max-w-md submit-button"
                 {% if item.itemFiles|length < 1 %}
                     {{ stimulus_controller('sweetalert-confirm', {
                         title: 'No files uploaded'|trans,
@@ -53,7 +74,7 @@
                         icon: 'question',
                         confirmColor: '37cdbe'
                     }) }}
-                    data-action="click->sweetalert-confirm#onSubmit"
+                    {{ stimulus_action('sweetalert-confirm', 'onSubmit', 'click') }}
                 {% endif %}
             >
                 {{ 'finish'|trans }}
