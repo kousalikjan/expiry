@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>500 Internal Server Error</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<article class="base-article justify-center mt-28">
+    <hgroup class="flex flex-col items-center gap-2">
+        <h1 class="h1">Whoops!</h1>
+        <h2>500 Internal Server Error</h2>
+    </hgroup>
+    <p>Something on our side went wrong – <span class="text-secondary">please let us know how you got here</span>.</p>
+    <div class="flex flex-col items-center gap-2">
+        <p>Send us an email with details, we will try to fix it as soon as possible</p>
+        <a href="mailto:kousaja1@fit.cvut.cz" class="text-info">kousaja1@fit.cvut.cz</a>
+    </div>
+    <a href="{{ path('app_index') }}" class="btn btn-primary">Take me home</a>
+</article>
+</body>
+</html>
