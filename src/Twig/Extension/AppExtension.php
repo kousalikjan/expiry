@@ -14,6 +14,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('notificationsCount', [AppExtensionRuntime::class, 'notificationsCount']),
             new TwigFunction('categoriesCount', [AppExtensionRuntime::class, 'categoriesCount']),
+            new TwigFunction('findItemImageId', [AppExtensionRuntime::class, 'findItemImageId']),
         ];
     }
 }

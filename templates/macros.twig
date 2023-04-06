@@ -1,10 +1,11 @@
 {% macro thumbnail(item) %}
-    {% if item.imageFileId %}
+    {% set imageId = findItemImageId(item.id) %}
+    {% if imageId %}
         <img src="{{ path('app_item_file_download', {
             userId: app.user.id,
             catId: item.category.id,
             itemId: item.id,
-            fileId: item.imageFileId,
+            fileId: imageId,
             thumbnail: true
         }) }}"
              alt="Photo of {{ item.name }}"

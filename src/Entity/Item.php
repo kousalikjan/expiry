@@ -215,19 +215,6 @@ class Item
 
     public function setNullWarranty(): self {
         $this->warranty = null;
-
         return $this;
     }
-
-    public function getImageFileId(): int|null
-    {
-        /** @var ItemFile $file */
-        foreach ($this->itemFiles as $file)
-        {
-            if(str_contains($file->getMimeType(), 'image'))
-                return $file->getId();
-        }
-        return null;
-    }
-
 }

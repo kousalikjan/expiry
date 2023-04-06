@@ -24,9 +24,10 @@ class ItemFileService
         $this->itemFileRepository->remove($itemFile, $flush);
     }
 
-    public function findImageFiles(int $id): array
+    public function findImageFileId(int $itemId): int|null
     {
-        return $this->itemFileRepository->findImageFiles($id);
+        $images = $this->itemFileRepository->findImageFiles($itemId);
+        return count($images) > 0 ? $images[0]->getId() : null;
     }
 
     public function find(int $id): ItemFile|null {

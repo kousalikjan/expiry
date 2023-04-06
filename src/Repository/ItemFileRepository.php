@@ -39,6 +39,9 @@ class ItemFileRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return ItemFile[] array of item files that are images
+     */
     public function findImageFiles(int $itemId): array
     {
         return $this->createQueryBuilder('f')
