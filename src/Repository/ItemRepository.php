@@ -158,7 +158,8 @@ class ItemRepository extends ServiceEntityRepository
             ->andWhere('w.notificationCleared = :cleared')
             ->setParameter('cleared', $cleared)
             ->andWhere('w.notifyDaysBefore is not null')
-            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->andWhere(':today >= w.expiration - w.notifyDaysBefore')
+            ->setParameter('today', new \DateTime())
             ->orderBy('w.expiration')
             ->getQuery()
             ->getResult();
@@ -174,7 +175,8 @@ class ItemRepository extends ServiceEntityRepository
             ->setParameter('userId', $userId)
             ->andWhere('w.notificationCleared = false')
             ->andWhere('w.notifyDaysBefore is not null')
-            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->andWhere(':today >= w.expiration - w.notifyDaysBefore')
+            ->setParameter('today', new \DateTime())
             ->select('count(i.id)')
             ->getQuery()
             ->getSingleScalarResult();
