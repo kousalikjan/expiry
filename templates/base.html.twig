@@ -17,6 +17,13 @@
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+        <noscript>
+            <style>
+                .no-js {
+                    display: block;
+                }
+            </style>
+        </noscript>
     </head>
     <body>
         {% include('components/_navbar.html.twig') %}

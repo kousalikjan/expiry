@@ -9,7 +9,7 @@
             >
         </label>
     </div>
-    <div class="flex flex-col gap-6 mt-6 {% if not toggled %} hidden {% endif %}"
+    <div class="flex flex-col gap-6 mt-6 {% if not toggled %} hidden {% endif %} no-js"
          {{ stimulus_target('form-hide', 'mainContent') }}
     >
         {% block form_body %}
