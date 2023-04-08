@@ -19,6 +19,13 @@ document.addEventListener('turbo:before-cache', () => {
         Swal.getPopup().style.animationDuration = '0ms'
         Swal.close();
     }
+
+    document.querySelectorAll('div[data-controller="toast-hide"]')
+        .forEach(toast => {
+            toast.innerHTML = "";
+            toast.classList.add('bg-transparent')
+            console.log(toast);
+        })
 });
 
 document.addEventListener('turbo:frame-missing', event => {
