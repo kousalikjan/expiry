@@ -24,7 +24,7 @@ class Item
 
     #[ORM\Column]
     #[Assert\PositiveOrZero]
-    private ?int $amount = null;
+    private ?float $amount = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $purchase = null;
@@ -80,12 +80,12 @@ class Item
         return $this;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): self
+    public function setAmount(float $amount): self
     {
         $this->amount = $amount;
 

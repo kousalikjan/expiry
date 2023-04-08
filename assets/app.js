@@ -24,7 +24,7 @@ document.addEventListener('turbo:before-cache', () => {
         .forEach(toast => {
             toast.innerHTML = "";
             toast.classList.add('bg-transparent')
-            console.log(toast);
+            toast.classList.remove('bg-success')
         })
 });
 

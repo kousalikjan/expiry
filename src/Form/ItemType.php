@@ -44,7 +44,10 @@ class ItemType extends AbstractType
                 'required' => true,
                 'html5' => true,
                 'label' => "Quantity",
-                'empty_data' => 1
+                'empty_data' => 1,
+                'attr' => [
+                    'step' => 0.01
+                ]
             ])
             ->add('purchase', DateType::class, [
                 'required' => false,

@@ -34,7 +34,6 @@ export default class extends Controller {
     async search()
     {
         const term = this.inputTarget.value;
-        console.log("send");
         if(term === "")
         {
             this.leave();
