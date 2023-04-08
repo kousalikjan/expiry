@@ -6,7 +6,8 @@ export default class extends Controller {
     static targets = ['result', 'input']
 
     static values = {
-        url: String
+        url: String,
+        names: {type: Boolean, default: false}
     }
 
     static debounces = ['search']
@@ -33,19 +34,29 @@ export default class extends Controller {
     async search()
     {
         const term = this.inputTarget.value;
-
+        console.log("send");
         if(term === "")
         {
             this.leave();
             return;
         }
+        const params = new URLSearchParams(
+        {
+            term: term,
+            names: this.namesValue
+        })
 
-        const response = await fetch(`${this.urlValue}?term=${term}`);
+        const response = await fetch(`${this.urlValue}?${params.toString()}`);
         this.resultTarget.innerHTML = await response.text();
         this.enter();
     }
 
     clickOutside(event) {
+        this.leave();
+    }
+
+    onNameClick(event) {
+        this.inputTarget.value = event.currentTarget.innerHTML;
         this.leave();
     }
 

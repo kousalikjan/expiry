@@ -189,8 +189,11 @@ class ItemController extends AbstractController
     public function searchUserItems(User $user, Request $request): Response
     {
         $term = $request->query->get('term');
+        $names = $request->query->get('names');
 
-        return $this->render('item/_search_preview.html.twig', [
+        return $this->render($names === 'true' ?
+            'item/_search_names.html.twig' :
+            'item/_search_preview.html.twig', [
             'items' => $this->itemService->findUserItems($user->getId(), null, $term)
         ]);
     }

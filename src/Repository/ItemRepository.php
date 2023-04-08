@@ -121,8 +121,8 @@ class ItemRepository extends ServiceEntityRepository
         }
 
         if($term) {
-            $qb->andWhere('LOWER(i.name) LIKE LOWER(:term) OR LOWER(i.vendor) LIKE LOWER(:term)')
-                ->setParameter('term', '%'.$term.'%');
+            $qb->andWhere('LOWER(i.name) LIKE LOWER(:term)')
+                ->setParameter('term', $term.'%');
         }
 
         return $qb

@@ -10,7 +10,25 @@
         <h2 class="text-2xl font-semibold mt-5 mb-3 max-w-md hidden xl:block">{{ 'Item information'|trans }}</h2>
     {% endif %}
     <div class="form-control gap-6 w-full max-w-md">
-        {{ form_row(form.name) }}
+
+        {#  Autocomplete names of items #}
+        <div {{ stimulus_controller('search-preview', {
+            url: path('_app_item_search', {id: app.user.id}),
+            names: true
+        }) }}
+        >
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {attr: {
+                'class': 'input input-bordered w-full',
+                'data-search-preview-target': 'input',
+                'data-action': 'input->search-preview#onSearchInput',
+                'autocomplete': 'off'
+            }}) }}
+            {{ form_errors(form.name) }}
+            <div class="w-full absolute z-50 max-w-md" {{ stimulus_target('search-preview', 'result') }}>
+                {# List of suggested names #}
+            </div>
+        </div>
         {{ form_row(form.category) }}
 
         {% include 'form/_number_plus_minus.html.twig' with {
