@@ -191,9 +191,12 @@ class ItemController extends AbstractController
         $term = $request->query->get('term');
         $names = $request->query->get('names');
 
-        return $this->render($names === 'true' ?
-            'item/_search_names.html.twig' :
-            'item/_search_preview.html.twig', [
+        if($names === 'true')
+            return $this->render('item/_search_names.html.twig', [
+                'names' => $this->itemService->findUserItemsUniqueNamesByTerm($user->getId(), $term)
+            ]);
+
+        return $this->render('item/_search_preview.html.twig', [
             'items' => $this->itemService->findUserItems($user->getId(), null, $term)
         ]);
     }

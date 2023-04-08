@@ -12,7 +12,9 @@
     <div class="form-control gap-6 w-full max-w-md">
 
         {#  Autocomplete names of items #}
-        <div {{ stimulus_controller('search-preview', {
+        <div
+            class="relative"
+            {{ stimulus_controller('search-preview', {
             url: path('_app_item_search', {id: app.user.id}),
             names: true
         }) }}
@@ -25,7 +27,7 @@
                 'autocomplete': 'off'
             }}) }}
             {{ form_errors(form.name) }}
-            <div class="w-full absolute z-50 max-w-md" {{ stimulus_target('search-preview', 'result') }}>
+            <div class="w-full absolute z-50" {{ stimulus_target('search-preview', 'result') }}>
                 {# List of suggested names #}
             </div>
         </div>

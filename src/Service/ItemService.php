@@ -71,6 +71,11 @@ class ItemService
         return $this->itemRepository->findUserItems($userId, $catId, $term);
     }
 
+    public function findUserItemsUniqueNamesByTerm(int $userId, string $term): array
+    {
+        return $this->itemRepository->findUserItemsUniqueNamesByTerm($userId , $term);
+    }
+
     public function getUserItemsCount(int $userId): int
     {
         return $this->itemRepository->getUserItemsCount($userId);

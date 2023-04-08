@@ -182,4 +182,24 @@ class ItemRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    /**
+     * @return string[] names of items of given user based on term
+     */
+    public function findUserItemsUniqueNamesByTerm(int $userId, string $term) : array
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('LOWER(i.name) LIKE LOWER(:term)')
+            ->setParameter('term', $term.'%')
+            ->select('i.name')
+            ->orderBy('i.name')
+            ->distinct()
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
