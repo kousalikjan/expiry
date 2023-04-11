@@ -63,7 +63,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function findUsersWithAllowedNotifications(): array
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.allowNotifications = true')
+            ->andWhere('u.allowEmailNotifications = true')
             ->getQuery()
             ->getResult();
     }

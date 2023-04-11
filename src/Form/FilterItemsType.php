@@ -27,6 +27,7 @@ class FilterItemsType extends AbstractType
             ])
             ->add('expiresIn', NumberType::class, [
                 'required' => false,
+                'html5' => true,
                 'data' => $options['expiresIn']
             ])
             ->add('includeExpired', CheckboxType::class, [

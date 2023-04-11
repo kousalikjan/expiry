@@ -27,7 +27,7 @@ class DefaultSettingType extends AbstractType
                 'placeholder' => false,
                 'label' => 'Preferred language'
             ])
-            ->add('allowNotifications', CheckboxType::class, [
+            ->add('allowEmailNotifications', CheckboxType::class, [
                 'required' => false,
             ])
         ;

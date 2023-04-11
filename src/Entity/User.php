@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $categories;
 
     #[ORM\Column]
-    private ?bool $allowNotifications = null;
+    private ?bool $allowEmailNotifications = null;
 
     #[ORM\Column(length: 3, nullable: true)]
     private ?string $defaultCurrency = null;
@@ -47,7 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->categories = new ArrayCollection();
-        $this->allowNotifications = true;
+        $this->allowEmailNotifications = true;
     }
 
     public function getId(): ?int
@@ -150,14 +150,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isAllowNotifications(): ?bool
+    public function isAllowEmailNotifications(): ?bool
     {
-        return $this->allowNotifications;
+        return $this->allowEmailNotifications;
     }
 
-    public function setAllowNotifications(bool $allowNotifications): self
+    public function setAllowEmailNotifications(bool $allowEmailNotifications): self
     {
-        $this->allowNotifications = $allowNotifications;
+        $this->allowEmailNotifications = $allowEmailNotifications;
 
         return $this;
     }
