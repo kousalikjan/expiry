@@ -24,7 +24,7 @@ class Item
 
     #[ORM\Column]
     #[Assert\PositiveOrZero]
-    private ?int $amount = null;
+    private ?float $amount = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $purchase = null;
@@ -80,12 +80,12 @@ class Item
         return $this;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): self
+    public function setAmount(float $amount): self
     {
         $this->amount = $amount;
 
@@ -215,19 +215,6 @@ class Item
 
     public function setNullWarranty(): self {
         $this->warranty = null;
-
         return $this;
     }
-
-    public function getImageFileId(): int
-    {
-        /** @var ItemFile $file */
-        foreach ($this->itemFiles as $file)
-        {
-            if(str_contains($file->getMimeType(), 'image'))
-                return $file->getId();
-        }
-        return -1;
-    }
-
 }

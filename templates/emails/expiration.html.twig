@@ -33,7 +33,7 @@
         margin-top: 2rem;
         padding: 1rem 2rem;
         color: white;
-        border-radius: 1000px;
+        border-radius: 5rem;
         background-color: #540cf1;
         display: inline-block;
         cursor: pointer;
@@ -64,12 +64,12 @@
 {% for warranty in warranties %}
     <article>
         <h2>{{ warranty.item.name }}</h2>
-        <p>{{ 'Category'|trans }}: <a href="{{ path('app_categories', {id: warranty.item.category.owner.id}) }}">{{ warranty.item.category.name }}</a></p>
+        <p>{{ 'Category'|trans }}: <a href="{{ url('app_categories', {id: warranty.item.category.owner.id}) }}">{{ warranty.item.category.name }}</a></p>
         <p>{{ 'Expiration'|trans }}: {{ warranty.expiration|date("d.m.Y") }}</p>
         <p>{{ 'Quantity'|trans }}: {{ warranty.item.amount }}</p>
     </article>
 {% endfor %}
-    <a class="button" href="www.expiry.live">{{ 'Show in Expiry'|trans }}</a>
+    <a class="button" href={{ url('app_index') }}>{{ 'Show in Expiry'|trans }}</a>
 </div>
 
 {% endapply %}

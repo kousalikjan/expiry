@@ -1,11 +1,12 @@
+{% import 'macros.twig' as macros %}
+
 <div class="relative w-full">
+
     <a
         href="{{ path('app_item_edit', {userId: app.user.id, catId: item.category.id, itemId: item.id}) }}"
         class="card card-side bg-base-100 shadow border border-slate-100 h-28 w-full hover:bg-gray-100 {{ cardStyle|default }}">
-        <figure class="hidden">
-            <img src="{{ path('app_item_thumbnail', {userId: app.user.id, catId: item.category.id, itemId: item.id, fileId: item.imageFileId}) }}"
-                 alt="Photo of {{ item.name }}"
-                 class="h-full w-24"/>
+        <figure>
+            {{ macros.thumbnail(item) }}
         </figure>
         <div class="px-2 py-0.5 w-full">
             <h2 class="sm:text-lg font-semibold">{{ item.name }}</h2>

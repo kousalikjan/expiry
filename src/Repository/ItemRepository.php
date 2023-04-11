@@ -121,8 +121,8 @@ class ItemRepository extends ServiceEntityRepository
         }
 
         if($term) {
-            $qb->andWhere('LOWER(i.name) LIKE LOWER(:term) OR LOWER(i.vendor) LIKE LOWER(:term)')
-                ->setParameter('term', '%'.$term.'%');
+            $qb->andWhere('LOWER(i.name) LIKE LOWER(:term)')
+                ->setParameter('term', $term.'%');
         }
 
         return $qb
@@ -158,7 +158,8 @@ class ItemRepository extends ServiceEntityRepository
             ->andWhere('w.notificationCleared = :cleared')
             ->setParameter('cleared', $cleared)
             ->andWhere('w.notifyDaysBefore is not null')
-            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->andWhere(':today >= w.expiration - w.notifyDaysBefore')
+            ->setParameter('today', new \DateTime())
             ->orderBy('w.expiration')
             ->getQuery()
             ->getResult();
@@ -174,10 +175,31 @@ class ItemRepository extends ServiceEntityRepository
             ->setParameter('userId', $userId)
             ->andWhere('w.notificationCleared = false')
             ->andWhere('w.notifyDaysBefore is not null')
-            ->andWhere('current_date() >= w.expiration - w.notifyDaysBefore')
+            ->andWhere(':today >= w.expiration - w.notifyDaysBefore')
+            ->setParameter('today', new \DateTime())
             ->select('count(i.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @return string[] names of items of given user based on term
+     */
+    public function findUserItemsUniqueNamesByTerm(int $userId, string $term) : array
+    {
+        return $this->createQueryBuilder('i')
+            ->innerJoin('i.category', 'c')
+            ->innerJoin('c.owner', 'u')
+            ->andWhere('u.id = :userId')
+            ->setParameter('userId', $userId)
+            ->andWhere('LOWER(i.name) LIKE LOWER(:term)')
+            ->setParameter('term', $term.'%')
+            ->select('i.name')
+            ->orderBy('i.name')
+            ->distinct()
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
     }
 
 }

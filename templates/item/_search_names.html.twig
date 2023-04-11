@@ -1,0 +1,11 @@
+{% import 'macros.twig' as macros %}
+{% if names|length > 0 %}
+<div class="flex flex-col gap-2 bg-white w-full border border-slate-400 rounded-lg py-2">
+    {% for name in names %}
+            <span  tabindex="0"
+                class="px-2 hover:text-primary cursor-pointer"
+                   data-action="click->search-preview#onNameClick keydown.enter->search-preview#onNameClick"
+            >{{ name.name }}</span>
+    {% endfor %}
+</div>
+{% endif %}

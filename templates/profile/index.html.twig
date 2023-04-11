@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'Profile'|trans }}{% endblock %}
+{% block title %}{{ 'Profile'|trans }} | Expiry{% endblock %}
 
 {% block breadcrumbs %}
     <li><a href="{{ path('app_index') }}">{{ 'Home'|trans }}</a></li>
@@ -20,8 +20,8 @@
                 {{ form_row(form.preferredLocale) }}
                 {{ form_row(form.defaultCurrency) }}
                 <div class="flex gap-4">
-                    {{ form_label(form.allowNotifications, 'Recieve email notifications') }}
-                    {{ form_widget(form.allowNotifications, {'attr': {'class': 'toggle toggle-secondary'}}) }}
+                    {{ form_label(form.allowEmailNotifications, 'Recieve email notifications') }}
+                    {{ form_widget(form.allowEmailNotifications, {'attr': {'class': 'toggle toggle-secondary'}}) }}
                 </div>
                 <button type="submit" class="btn btn-primary max-w-md">{{ 'save'|trans }}</button>
                 {{ form_end(form) }}
