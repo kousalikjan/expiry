@@ -22,7 +22,7 @@
         {% include 'components/_delete_link.html.twig' with {
             'action': path('app_item_delete', {userId: item.category.owner.id, catId: item.category.id, itemId: item.id}),
             'text': 'Delete'|trans ~ ' ' ~ item.name,
-             cancelButtonText: 'Cancel'|trans,
+            'cancelButtonText': 'Cancel'|trans,
             'confirm': true
         } %}
             <noscript class="w-full max-w-xs">
