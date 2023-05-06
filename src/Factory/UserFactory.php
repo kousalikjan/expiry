@@ -2,7 +2,6 @@
 
 namespace App\Factory;
 
-use App\Entity\Item;
 use App\Entity\User;
 
 class UserFactory

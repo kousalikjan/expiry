@@ -4,7 +4,6 @@ namespace App\Service;
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use Imagine\Image\ImageInterface;
 use Imagine\Image\ManipulatorInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;

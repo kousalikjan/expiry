@@ -3,9 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Category;
-use App\Entity\User;
 use App\Repository\CategoryRepository;
-use App\Repository\UserRepository;
 use League\Flysystem\FilesystemException;
 
 class CategoryService
