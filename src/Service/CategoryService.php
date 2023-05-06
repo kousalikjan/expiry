@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
+use League\Flysystem\FilesystemException;
 
 class CategoryService
 {
@@ -28,6 +29,14 @@ class CategoryService
         $this->categoryRepository->save($category, $flush);
     }
 
+    /**
+     * Removes a category and optionally moves its items to another category
+     *
+     * @param Category $category the category to remove
+     * @param Category|null $moveToCategory the category to move the items to. If null, the items will be removed
+     * @param bool $flush whether to flush the entity manager after removing the category
+     * @throws FilesystemException
+     */
     public function remove(Category $category, ?Category $moveToCategory, bool $flush = false): void
     {
         if($moveToCategory === null)

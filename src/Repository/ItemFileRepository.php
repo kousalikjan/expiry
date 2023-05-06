@@ -40,7 +40,8 @@ class ItemFileRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return ItemFile[] array of item files that are images
+     * @param int $itemId item id
+     * @return ItemFile[] files of the given item that are images
      */
     public function findImageFiles(int $itemId): array
     {

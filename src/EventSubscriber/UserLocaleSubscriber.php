@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
+/**
+ * After a user logs in, changes the value of locale for that request's session to user's preferred one
+ */
 class UserLocaleSubscriber implements EventSubscriberInterface
 {
     private $requestStack;

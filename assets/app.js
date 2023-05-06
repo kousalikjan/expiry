@@ -1,5 +1,5 @@
 import Swal from 'sweetalert2';
-
+import * as Turbo from '@hotwired/turbo'
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
 
@@ -19,6 +19,13 @@ document.addEventListener('turbo:before-cache', () => {
     if (Swal.isVisible()) {
         Swal.getPopup().style.animationDuration = '0ms'
         Swal.close();
+    }
+});
+
+document.addEventListener('turbo:before-fetch-request', (event) => {
+    if(event.detail.url.pathname.includes('set-locale'))
+    {
+        Turbo.cache.clear();
     }
 });
 

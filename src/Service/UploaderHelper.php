@@ -41,6 +41,11 @@ class UploaderHelper
     }
 
     /**
+     * Saves a file using the Flysystem bundle
+     *
+     * @param UploadedFile $file file to be saved
+     * @param bool $createThumbnail whether a thumbnail should be created
+     * @return string filepath of the saved item
      * @throws FilesystemException
      */
     public function uploadFile(UploadedFile $file, bool $createThumbnail): string

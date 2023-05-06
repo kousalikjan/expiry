@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,6 +41,12 @@ class CategoryRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @param int $userId user id
+     * @return int count of the given user's categories
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
     public function getUserCategoriesCount(int $userId) : int
     {
         return $this->createQueryBuilder('c')

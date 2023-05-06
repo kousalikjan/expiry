@@ -6,6 +6,7 @@ use App\Entity\Item;
 use App\Repository\ItemFileRepository;
 use App\Repository\ItemRepository;
 use App\Repository\WarrantyRepository;
+use League\Flysystem\FilesystemException;
 
 class ItemService
 {
@@ -27,6 +28,13 @@ class ItemService
         $this->itemRepository->save($item, $flush);
     }
 
+    /**
+     * Removes an item, deleting all its associated files
+     *
+     * @param Item $item the item to remove
+     * @param bool $flush whether to flush the entity manager after removing the item
+     * @throws FilesystemException
+     */
     public function remove(Item $item, bool $flush = false): void
     {
         foreach ($item->getItemFiles() as $file)
@@ -44,6 +52,12 @@ class ItemService
         return $this->itemRepository->find($id);
     }
 
+    /**
+     * Checks whether an item's expiration date has been changed, if so, resets its notifications
+     *
+     * @param Item $item item whose expiration date might have been changed
+     * @param \DateTime|null $oldExpiration old expiration date of the given item's warranty
+     */
     public function handleWarrantyChanges(Item $item, ?\DateTime $oldExpiration): void
     {
         if($item->getWarranty() !== null && $item->getWarranty()->getExpiration() === null)

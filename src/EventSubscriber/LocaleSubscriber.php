@@ -7,6 +7,9 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * Sets a locale of a request based on the locale value stored in associated session
+ */
 class LocaleSubscriber implements EventSubscriberInterface
 {
     private TranslatorInterface $translator;
