@@ -40,7 +40,7 @@ class UploaderHelper
     }
 
     /**
-     * Saves a file using the Flysystem bundle
+     * Saves a file using the Flysystem bundle, optionally creates a thumbnail
      *
      * @param UploadedFile $file file to be saved
      * @param bool $createThumbnail whether a thumbnail should be created
@@ -85,7 +85,6 @@ class UploaderHelper
             }
         }
 
-        // returns filename stored on our filesystem
         return $newFilename;
     }
 
