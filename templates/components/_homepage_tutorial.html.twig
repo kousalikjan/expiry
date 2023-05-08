@@ -1,5 +1,5 @@
 <div class="w-full flex flex-col gap-14 max-w-2xl {% if hidden %} hidden {% endif %}"
-     {{ stimulus_target('hide-content', 'content') }}
+     {{ stimulus_target('hide-content', 'content') }}>
     <section class="w-full flex flex-col gap-3">
         <div class="flex gap-4 items-center">
             <div class="tutorial-step bg-primary">1</div>
@@ -7,8 +7,8 @@
         </div>
         <ol class="list-decimal list-inside">
             <li>{{ 'Press "Categories" link in the main navigation bar'|trans }}.</li>
-            <li>{{ 'Press "New Category" button on that page'|trans }}.</li>
-            <li>{{ 'Enter category name and its color, then hit "Create" button'|trans }}.</li>
+            <li>{{ 'On the page displayed, press the "New Category" button'|trans }}.</li>
+            <li>{{ 'Enter the name and color of the category, then press the "Create" button'|trans }}.</li>
         </ol>
         <div class="mockup-window bg-base-300 border overflow-hidden">
             <div class="flex justify-center bg-base-200">
@@ -29,8 +29,8 @@
             <h2 class="text-2xl font-semibold">{{ 'Create an item'|trans }}</h2>
         </div>
         <ol class="list-decimal list-inside">
-            <li>{{ 'Click on the created category preview and press "Add item" button'|trans}}.</li>
-            <li>{{ 'Enter new item mandatory information'|trans }}.</li>
+            <li>{{ 'Click on the newly created category, then press the "New Item" button'|trans}}.</li>
+            <li>{{ 'Enter the mandatory information about the new item'|trans }}.</li>
         </ol>
         <div class="mockup-window bg-base-300 border overflow-hidden">
             <div class="flex justify-center bg-base-200">
@@ -43,7 +43,7 @@
                 {% endif %}
             </div>
         </div>
-            {{'To enable notification, toggle expiration checkbox, set expiration date and how many days in advance you want to be notified'|trans }}.</p>
+            {{'To enable notifications, toggle the expiration checkbox, set the expiration date and the number of days in advance you want to be notified'|trans }}.</p>
         <div class="mockup-window bg-base-300 border overflow-hidden">
             <div class="flex justify-center bg-base-200">
                 <img src="{{ asset('img/item_expiration.jpg') }}" alt="Screenshot of expiration part of new item form">
@@ -57,7 +57,7 @@
             <div class="tutorial-step bg-info">3</div>
             <h2 class="text-2xl font-semibold">{{ 'That\'s all it takes'|trans}}!</h2>
         </div>
-            <p>{{ 'You will be notified via email and in this application'|trans }}.
-                {{ 'If you do not want to receive email notifications, you can disable them in your profile page'|trans }}.</p>
+            <p>{{ 'You will be notified both by email and in this app'|trans }}.
+                {{ 'If you do not wish to receive email notifications, you can turn them off in your profile settings'|trans }}.</p>
     </section>
 </div>

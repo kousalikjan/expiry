@@ -45,7 +45,8 @@ class WarrantyRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Warranty[] Warranties to be notified by email for given user
+     * @param int $userId user id
+     * @return Warranty[] warranties to be notified by email of the given user
      */
     public function findToBeNotifiedByEmailOneUser(int $userId): array
     {

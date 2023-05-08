@@ -4,7 +4,6 @@ namespace App\Service;
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use Imagine\Image\ImageInterface;
 use Imagine\Image\ManipulatorInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemException;
@@ -41,6 +40,11 @@ class UploaderHelper
     }
 
     /**
+     * Saves a file using the Flysystem bundle, optionally creates a thumbnail
+     *
+     * @param UploadedFile $file file to be saved
+     * @param bool $createThumbnail whether a thumbnail should be created
+     * @return string filepath of the saved item
      * @throws FilesystemException
      */
     public function uploadFile(UploadedFile $file, bool $createThumbnail): string
@@ -81,7 +85,6 @@ class UploaderHelper
             }
         }
 
-        // returns filename stored on our filesystem
         return $newFilename;
     }
 

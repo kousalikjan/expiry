@@ -24,6 +24,11 @@ class ItemFileService
         $this->itemFileRepository->remove($itemFile, $flush);
     }
 
+    /**
+     * Finds the id of the first image file associated with the given item
+     *
+     * @param int $itemId item id
+     */
     public function findImageFileId(int $itemId): int|null
     {
         $images = $this->itemFileRepository->findImageFiles($itemId);

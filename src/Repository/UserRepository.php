@@ -58,7 +58,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
 
     /**
-     * @return User[] user with allowed notifications
+     * @return User[] users with allowed email notifications
      */
     public function findUsersWithAllowedNotifications(): array
     {

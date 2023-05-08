@@ -18,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[AsCommand(
     name: 'app:notify-email',
-    description: 'Sends email for each item that is about to expire!',
+    description: 'Sends emails to users who are to be notified of an expiration',
 )]
 class NotifyExpirationCommand extends Command
 {

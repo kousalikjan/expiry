@@ -43,7 +43,16 @@ class ItemRepository extends ServiceEntityRepository
         }
     }
 
-
+    /**
+     * @param int $userId user id
+     * @param int|null $catId category id of the item
+     * @param string|null $name name of the item
+     * @param string|null $vendor vendor of the item
+     * @param string|null $expireIn in how many days the item expires
+     * @param bool $includeExpired whether already expired items should be included
+     * @param string|null $sort ASC or DESC
+     * @return Item[] items of the given user matching the given filters
+     */
     public function findUserItemsFilter(int $userId, ?int $catId, ?string $name, ?string $vendor, ?string $expireIn, bool $includeExpired, ?string $sort): array
     {
         $qb = $this->createQueryBuilder('i')
@@ -104,7 +113,10 @@ class ItemRepository extends ServiceEntityRepository
 
 
     /**
-     * @return Item[] Items of given user
+     * @param int $userId user id
+     * @param int|null $catId category id of the item
+     * @param string|null $term searched name
+     * @return Item[] items whose name matches the given term of the given user
      */
     public function findUserItems(int $userId, ?int $catId = null, ?string $term = null) : array
     {
@@ -145,7 +157,9 @@ class ItemRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Item[] Items that should be notified in app (not cleared)
+     * @param int $userId user id
+     * @param bool $cleared whether cleared items should be returned
+     * @return Item[] items that are to be notified or have already been cleared in app of the given user
      */
     public function findToBeNotifiedInAppOneUserByCleared(int $userId, bool $cleared): array
     {
@@ -165,6 +179,12 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param int $userId user id
+     * @return int count of not cleared notifications of the given user
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
     public function getAppNotificationsCount(int $userId): int
     {
         return $this->createQueryBuilder('i')
@@ -183,7 +203,9 @@ class ItemRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return string[] names of items of given user based on term
+     * @param int $userId user id
+     * @param string $term searched name
+     * @return string[] unique names of items whose name matches the given term of the given user
      */
     public function findUserItemsUniqueNamesByTerm(int $userId, string $term) : array
     {

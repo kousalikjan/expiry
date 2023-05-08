@@ -1,11 +1,12 @@
 import Swal from 'sweetalert2';
-
+import * as Turbo from '@hotwired/turbo'
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
 
 // start the Stimulus application
 import './bootstrap';
 
+// Taken from: https://symfonycasts.com/screencast/turbo/sweet-alert
 document.addEventListener('turbo:before-cache', () => {
     if (document.body.classList.contains('modal-open')) {
         const modalEl = document.querySelector('.modal');
@@ -19,13 +20,13 @@ document.addEventListener('turbo:before-cache', () => {
         Swal.getPopup().style.animationDuration = '0ms'
         Swal.close();
     }
+});
 
-    document.querySelectorAll('div[data-controller="toast-hide"]')
-        .forEach(toast => {
-            toast.innerHTML = "";
-            toast.classList.add('bg-transparent')
-            toast.classList.remove('bg-success')
-        })
+document.addEventListener('turbo:before-fetch-request', (event) => {
+    if(event.detail.url.pathname.includes('set-locale'))
+    {
+        Turbo.cache.clear();
+    }
 });
 
 document.addEventListener('turbo:frame-missing', event => {

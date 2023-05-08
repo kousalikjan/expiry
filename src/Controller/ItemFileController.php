@@ -7,7 +7,6 @@ use App\Entity\Item;
 use App\Entity\ItemFile;
 use App\Entity\User;
 use App\Factory\ItemFileFactory;
-use App\Repository\ItemFileRepository;
 use App\Service\ItemFileService;
 use App\Service\UploaderHelper;
 use League\Flysystem\FilesystemException;
