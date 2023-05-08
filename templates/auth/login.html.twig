@@ -31,9 +31,10 @@
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-            <button type="submit" class="btn max-w-md">{{ 'Login'|trans }}</button>
+            <button type="submit" class="btn btn-primary max-w-md">{{ 'Login'|trans }}</button>
         </form>
-        <a href="{{ path('app_forgot_password_request') }}" class="text-info">{{ 'Forgotten password?'|trans }}</a>
+        <a href="{{ path('app_forgot_password_request') }}" class="text-info hover:link">{{ 'Forgotten password?'|trans }}</a>
+        <a href="{{ path('app_register') }}">{{ 'If you don\'t have an account, you can'|trans }} <span class="text-info hover:link">{{ 'sign up'|trans }}!</span></a>
     </article>
 
 {% endblock %}

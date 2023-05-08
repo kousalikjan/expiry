@@ -17,13 +17,8 @@
             <p>{{ 'Password must contain at least 6 characters'|trans }}</p>
         </div>
 
-        <div class="flex items-center gap-2">
-            {{ form_label(registrationForm.agreeTerms) }}
-            {{ form_errors(registrationForm.agreeTerms) }}
-            {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'checkbox checkbox-primary'}}) }}
-        </div>
-
-            <button type="submit" class="btn max-w-md">{{ 'Register'|trans }}</button>
+        <button type="submit" class="btn btn-primary max-w-md">{{ 'Register'|trans }}</button>
         {{ form_end(registrationForm) }}
+        <a href="{{ path('app_login') }}" class="text-info hover:link">{{ 'Already have an account'|trans }}?</a>
     </article>
 {% endblock %}
